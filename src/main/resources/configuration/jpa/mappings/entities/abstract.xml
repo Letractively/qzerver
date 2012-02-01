@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <mapped-superclass class="com.gainmatrix.lib.business.AbstractBusinessEntity">
+        <pre-persist method-name="updateBusinessModelVersion"/>
+        <pre-update method-name="updateBusinessModelVersion"/>
+        <attributes>
+            <basic name="businessModelVersion">
+                <column name="business_model"/>
+            </basic>
+            <embedded name="businessId"/>
+            <transient name="currentBusinessModelVersion"/>
+        </attributes>
+    </mapped-superclass>
+
+    <embeddable class="com.gainmatrix.lib.business.BusinessId">
+        <attributes>
+            <basic name="hi">
+                <column name="business_id_hi" insertable="true" updatable="false"/>
+            </basic>
+            <basic name="lo">
+                <column name="business_id_lo" insertable="true" updatable="false"/>
+            </basic>
+            <transient name="uuid"/>
+        </attributes>
+    </embeddable>
+
+</entity-mappings>

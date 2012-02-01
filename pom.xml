@@ -52,8 +52,12 @@
         <com.mysql.version>5.1.18</com.mysql.version>
         <org.hsqldb.version>2.2.4</org.hsqldb.version>
         <com.jolbox.bonecp.version>0.7.1.RELEASE</com.jolbox.bonecp.version>
+        <com.jcraft.jsch>0.1.45</com.jcraft.jsch>
         <org.quartz.version>2.1.2</org.quartz.version>
         <org.springframework.version>3.1.0.RELEASE</org.springframework.version>
+        <javax.mail.version>1.4.4</javax.mail.version>
+        <javax.servlet.version>2.5</javax.servlet.version>
+        <javax.activation.version>1.1.1</javax.activation.version>
         <org.easymock.version>3.0</org.easymock.version>
         <org.slf4j.version>1.6.1</org.slf4j.version>
         <org.junit.version>4.8.2</org.junit.version>
@@ -219,6 +223,13 @@
             <version>${org.freemarker.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Jsch -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>${com.jcraft.jsch}</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- AspectJ -->
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -306,12 +317,24 @@
             <version>${org.springframework.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Servlet API -->
+        <!-- Java API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <version>${javax.servlet.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>${javax.activation.version}</version>
+            <scope>compile</scope>
         </dependency>
         <!-- Log -->
         <dependency>
@@ -364,6 +387,41 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Генерация метамодели JPA -->
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>2.0.5</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <outputDirectory>target/generated-sources/jpamodel</outputDirectory>
+                            <processors>
+                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                            </processors>
+                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -ApersistenceXml=/configuration/jpa/persistence.xml.meta</compilerArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>1.1.1.Final</version>
+                        <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
     <scm>
         <connection>scm:git:https://code.google.com/p/qzerver/</connection>
