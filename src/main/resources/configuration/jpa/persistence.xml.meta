@@ -6,7 +6,7 @@
         version="2.0">
 
     <persistence-unit name="ApplicationDataSource" transaction-type="RESOURCE_LOCAL">
-        <description>GainMatrix dashboard</description>
+        <description>QZERVER</description>
         <mapping-file>/configuration/jpa/mappings/persistence-unit-metadata.xml.meta</mapping-file>
         <mapping-file>/configuration/jpa/mappings/entities/abstract.xml</mapping-file>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
