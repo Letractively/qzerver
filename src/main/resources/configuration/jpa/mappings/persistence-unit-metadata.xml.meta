@@ -8,10 +8,15 @@
     <persistence-unit-metadata>
         <xml-mapping-metadata-complete/>
         <persistence-unit-defaults>
-            <schema>qzerver</schema>
             <access>PROPERTY</access>
             <cascade-persist/>
         </persistence-unit-defaults>
     </persistence-unit-metadata>
+
+    <!--
+        Hibernate metamodel generator would not work without <xml-mapping-metadata-complete/> tag. But Intellij IDEA
+        doesn't navigate throught bean with the tag. So we have to different metadata description - one (main) for IDEA,
+        and other (this) for metadata generator.
+    -->
 
 </entity-mappings>

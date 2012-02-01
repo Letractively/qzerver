@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="quartz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="${app.quartz.start.auto}"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="exposeSchedulerInRepository" value="false"/>
+        <property name="overwriteExistingJobs" value="false"/>
+        <property name="waitForJobsToCompleteOnShutdown" value="${app.quartz.shutdown.wait}"/>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.scheduler.instanceName">QZERVER</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <prop key="org.quartz.jobStore.misfireThreshold">${app.quartz.misfire.threshold.ms}</prop>
+                <prop key="org.quartz.jobStore.tablePrefix">qrtz_</prop>
+                <prop key="org.quartz.jobStore.isClustered">true</prop>
+                <prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.HSQLDBDelegate</prop>
+                <prop key="org.quartz.threadPool.threadCount">${app.quartz.thread.count}</prop>
+                <prop key="org.quartz.threadPool.threadPriority">${app.quartz.thread.priority}</prop>
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

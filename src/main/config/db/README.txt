@@ -1,0 +1,2 @@
+These are SQL scripts which must be used to initialize QZERVER table in the same DB schema where Quartz SQL scripts
+have been executed. You should execute the proper script with any DB manager utility.

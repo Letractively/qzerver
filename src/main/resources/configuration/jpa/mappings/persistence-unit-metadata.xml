@@ -7,7 +7,6 @@
 
     <persistence-unit-metadata>
         <persistence-unit-defaults>
-            <schema>qzerver</schema>
             <access>PROPERTY</access>
             <cascade-persist/>
         </persistence-unit-defaults>
