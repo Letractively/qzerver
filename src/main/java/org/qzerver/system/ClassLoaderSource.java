@@ -1,4 +1,4 @@
-package org.qzerver.web;
+package org.qzerver.system;
 
 /**
  * Marker class for FreeMarker template loader

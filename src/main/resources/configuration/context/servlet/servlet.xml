@@ -10,7 +10,7 @@
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <mvc:default-servlet-handler default-servlet-name="${app.servlet.default.name}"/>
 
@@ -32,6 +32,8 @@
 
     <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/info/about" view-name="info/about"/>
+    <!--suppress SpringModelInspection -->
+    <mvc:view-controller path="/info/license" view-name="info/license"/>
 
     <!--suppress SpringModelInspection -->
     <mvc:resources mapping="/css/**" location="/css/" cache-period="31536000"/>
@@ -132,7 +134,7 @@
     <!-- File uploading -->
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="1048576"/>
+        <property name="maxUploadSize" value="${app.servlet.upload.bytes}"/>
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="resolveLazily" value="false"/>
     </bean>
