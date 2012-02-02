@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="quartz" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="${app.quartz.start.auto}"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="transactionManager" ref="transactionManager"/>
@@ -23,6 +23,15 @@
                 <prop key="org.quartz.threadPool.threadPriority">${app.quartz.thread.priority}</prop>
                 <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
             </props>
+        </property>
+    </bean>
+
+    <bean name="quartzSchedulerInitializer" class="org.qzerver.system.quartz.QuartzInitializer">
+        <property name="scheduler" ref="quartzScheduler"/>
+        <property name="jobListeners">
+            <array>
+                <bean class="org.qzerver.system.quartz.QzerverJobListener"/>
+            </array>
         </property>
     </bean>
 
