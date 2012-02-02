@@ -8,18 +8,13 @@ import org.springframework.context.ApplicationContext;
 
 public class QzerverJob implements Job {
 
-    private ApplicationContext applicationContext;
-
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
         Preconditions.checkNotNull(applicationContext, "Application context is not set");
 
         QzerverJobExecutor executor = applicationContext.getBean(QzerverJobExecutor.class);
         executor.executeJob(context.getJobDetail().getKey().getName());
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
     }
 
 }

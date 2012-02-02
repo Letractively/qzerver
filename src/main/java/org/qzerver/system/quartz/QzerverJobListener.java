@@ -10,6 +10,8 @@ public class QzerverJobListener extends JobListenerSupport {
 
     private static final String LISTENER_NAME = "QZERVER job listener";
 
+    protected static final String CONTEXT_NAME = "QzerverApplicationContext";
+
     private ApplicationContext applicationContext;
 
     @Override
@@ -19,7 +21,7 @@ public class QzerverJobListener extends JobListenerSupport {
 
     @Override
     public void jobToBeExecuted(JobExecutionContext context) {
-        context.put("ApplicationContext", applicationContext);
+        context.put(CONTEXT_NAME, applicationContext);
     }
 
     @Resource
