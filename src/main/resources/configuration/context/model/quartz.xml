@@ -17,7 +17,8 @@
                 <prop key="org.quartz.jobStore.misfireThreshold">${app.quartz.misfire.threshold.ms}</prop>
                 <prop key="org.quartz.jobStore.tablePrefix">qrtz_</prop>
                 <prop key="org.quartz.jobStore.isClustered">true</prop>
-                <prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.HSQLDBDelegate</prop>
+                <prop key="org.quartz.jobStore.clusterCheckinInterval">${app.quartz.cluster.checkin.ms}</prop>
+                <prop key="org.quartz.jobStore.driverDelegateClass">${app.quartz.jdbc.delegate}</prop>
                 <prop key="org.quartz.threadPool.threadCount">${app.quartz.thread.count}</prop>
                 <prop key="org.quartz.threadPool.threadPriority">${app.quartz.thread.priority}</prop>
                 <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>

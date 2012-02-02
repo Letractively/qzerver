@@ -12,7 +12,7 @@
     <!-- Entity manager factory -->
 
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-        <property name="databasePlatform" value="${app.database.dialect.class}"/>
+        <property name="databasePlatform" value="${app.hibernate.dialect.class}"/>
     </bean>
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
