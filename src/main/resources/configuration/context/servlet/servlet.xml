@@ -17,9 +17,6 @@
     <mvc:annotation-driven validator="mvcBeanValidator"/>
 
     <!--suppress SpringModelInspection -->
-    <mvc:view-controller path="/login" view-name="root/login"/>
-
-    <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/error/403" view-name="error/403"/>
     <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/error/404" view-name="error/404"/>
