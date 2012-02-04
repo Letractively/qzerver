@@ -18,6 +18,8 @@ public class RenderContext implements Serializable {
 
     private Date now;
 
+    private String domain;
+
     public int getRevision() {
         return revision;
     }
@@ -48,5 +50,13 @@ public class RenderContext implements Serializable {
 
     public void setNow(Date now) {
         this.now = now;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

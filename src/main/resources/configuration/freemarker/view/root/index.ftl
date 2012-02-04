@@ -38,8 +38,6 @@
         [/#transform]
     </p>
 
-    <p>${wrn}</p>
-
     <p>${renderContext.now?datetime?string}</p>
 
     <p>${renderContext.revision}</p>

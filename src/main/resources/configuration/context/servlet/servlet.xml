@@ -136,4 +136,29 @@
         <property name="resolveLazily" value="false"/>
     </bean>
 
+    <!-- Attributes publishing -->
+
+     <bean id="attributePublisher" class="com.gainmatrix.lib.web.attribute.impl.CompositeAttributePublisher">
+         <property name="attributePublishers">
+             <list value-type="com.gainmatrix.lib.web.attribute.AttributePublisher">
+                 <bean class="org.qzerver.web.render.attribute.RenderContextAttributePublisher">
+                     <property name="domain" value="${app.domain}"/>
+                     <property name="chronometer" ref="chronometer"/>
+                     <property name="clientI18nResolver" ref="clientI18nResolver"/>
+                 </bean>
+                 <bean class="org.qzerver.web.render.attribute.FreemarkerAttributePublisher"/>
+             </list>
+         </property>
+     </bean>
+
+    <!-- I18N resolvers -->
+
+    <bean id="timezoneResolver" class="com.gainmatrix.lib.web.resolver.timezone.impl.FixedTimezoneResolver">
+        <property name="defaultTimeZone" value="${app.view.timezone}"/>
+    </bean>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
+        <property name="defaultLocale" value="${app.view.locale}"/>
+    </bean>
+
 </beans>

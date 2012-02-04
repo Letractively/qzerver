@@ -105,7 +105,7 @@
 
     <servlet>
         <servlet-name>springServlet</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <servlet-class>com.gainmatrix.lib.web.servlet.ExtendedDispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:/configuration/context/servlet/root.xml</param-value>
