@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="qzerver-db" default="info" basedir=".">
+
+    <property environment="env"/>
+
+    <property file="${env.QZERVER_CONFIGURATION}/settings.properties"/>
+
+    <macrodef name="psql">
+        <attribute name="scriptfile" default="notset"/>
+        <attribute name="dir" default="${basedir}"/>
+        <sequential>
+            <tempfile property="temp.psql.log.file" deleteonexit="true"/>
+            <exec executable="psql" failonerror="true" failifexecutionfails="true" dir="@{dir}">
+                <env key="PGPASSWORD" value="${app.database.password}"/>
+                <arg value="--host"/>
+                <arg value="${app.database.host}"/>
+                <arg value="--port"/>
+                <arg value="${app.database.port}"/>
+                <arg value="--dbname"/>
+                <arg value="${app.database.name}"/>
+                <arg value="--username"/>
+                <arg value="${app.database.username}"/>
+                <arg value="--file"/>
+                <arg value="@{scriptfile}"/>
+                <arg value="--set"/>
+                <arg value="ON_ERROR_STOP=on"/>
+                <arg value="--set"/>
+                <arg value="ON_ERROR_ROLLBACK=on"/>
+                <arg value="--set"/>
+                <arg value="AUTOCOMMIT=on"/>
+                <arg value="--set"/>
+                <arg value="ENCODING=UTF8"/>
+                <arg value="--set"/>
+                <arg value="VERBOSITY=terse"/>
+                <arg value="--pset"/>
+                <arg value="format=unaligned"/>
+                <arg value="--output"/>
+                <arg value="${temp.psql.log.file}"/>
+            </exec>
+            <delete file="${temp.psql.log.file}" quiet="true"/>
+        </sequential>
+    </macrodef>
+
+    <target name="info" description="Project information">
+        <echo message="DB DDL management project. Run 'ant -p' to get list of the targets."/>
+    </target>
+
+    <target name="drop" description="Drop DB schema">
+        <psql scriptfile="${basedir}/qzerver/drop.sql" dir="${basedir}/qzerver"/>
+    </target>
+
+    <target name="build" description="Build all objects">
+        <psql scriptfile="${basedir}/qzerver/schema.sql" dir="${basedir}/qzerver"/>
+    </target>
+
+    <target name="reset" description="Rebuild DB" depends="drop,build">
+    </target>
+
+</project>

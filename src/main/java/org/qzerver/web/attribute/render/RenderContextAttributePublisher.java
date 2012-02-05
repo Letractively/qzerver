@@ -1,4 +1,4 @@
-package org.qzerver.web.render.attribute;
+package org.qzerver.web.attribute.render;
 
 import com.gainmatrix.lib.spring.i18n.ClientI18nResolver;
 import com.gainmatrix.lib.time.Chronometer;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class RenderContextAttributePublisher implements AttributePublisher {
 
-    private static final String RENDER_CONTEXT_NAME = "renderContext";
+    public static final String ATTRIBUTE_NAME = "renderContext";
 
     private String domain;
 
@@ -28,7 +28,7 @@ public class RenderContextAttributePublisher implements AttributePublisher {
         renderContext.setLocale(clientI18nResolver.getLocale());
         renderContext.setTimezone(clientI18nResolver.getTimeZone());
 
-        request.setAttribute(RENDER_CONTEXT_NAME, renderContext);
+        request.setAttribute(ATTRIBUTE_NAME, renderContext);
     }
 
     @Required

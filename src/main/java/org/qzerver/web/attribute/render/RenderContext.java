@@ -1,13 +1,10 @@
-package org.qzerver.web.render.attribute;
+package org.qzerver.web.attribute.render;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-/**
- * Render context
- */
 public class RenderContext implements Serializable {
 
     private int revision;
