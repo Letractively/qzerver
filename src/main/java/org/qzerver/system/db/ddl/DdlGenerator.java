@@ -1,12 +1,12 @@
-package org.qzerver.ddl;
+package org.qzerver.system.db.ddl;
 
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
-import org.qzerver.system.db.DbConfigurator;
-import org.qzerver.system.db.DbConfiguratorType;
+import org.qzerver.system.db.configurator.DbConfigurator;
+import org.qzerver.system.db.configurator.DbConfiguratorType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

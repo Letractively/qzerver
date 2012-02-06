@@ -1,4 +1,4 @@
-package org.qzerver.system.db;
+package org.qzerver.system.db.configurator;
 
 public enum DbConfiguratorType {
 

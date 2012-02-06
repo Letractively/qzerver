@@ -474,7 +474,7 @@
                         <artifactId>exec-maven-plugin</artifactId>
                         <version>1.2.1</version>
                         <configuration>
-                            <mainClass>org.qzerver.ddl.DdlGenerator</mainClass>
+                            <mainClass>org.qzerver.system.db.ddl.DdlGenerator</mainClass>
                             <classpathScope>test</classpathScope>
                             <arguments>
                                 <argument>${project.build.directory}/sql/qzerver</argument>

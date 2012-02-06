@@ -1,4 +1,4 @@
-package org.qzerver.system.db;
+package org.qzerver.system.db.configurator;
 
 import org.springframework.beans.factory.annotation.Required;
 
