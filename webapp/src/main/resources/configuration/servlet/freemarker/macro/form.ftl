@@ -3,8 +3,8 @@
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.RenderContext" --]
 
-[#import "/configuration/freemarker/macro/system.ftl" as system]
-[#import "/configuration/freemarker/macro/helpers.ftl" as helpers]
+[#import "/configuration/servlet/freemarker/macro/system.ftl" as system]
+[#import "/configuration/servlet/freemarker/macro/helpers.ftl" as helpers]
 
 [#-- Main form block
  * path - bean path

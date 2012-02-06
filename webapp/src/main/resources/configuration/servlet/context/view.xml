@@ -29,7 +29,7 @@
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="cache" value="true"/>
-        <property name="prefix" value="/configuration/freemarker/view/"/>
+        <property name="prefix" value="/configuration/servlet/freemarker/view/"/>
         <property name="suffix" value=".ftl"/>
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="contentType" value="text/html; charset=UTF-8"/>

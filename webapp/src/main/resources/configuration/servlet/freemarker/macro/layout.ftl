@@ -3,7 +3,7 @@
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.RenderContext" --]
 
-[#import "/configuration/freemarker/macro/system.ftl" as system]
+[#import "/configuration/servlet/freemarker/macro/system.ftl" as system]
 
 [#setting locale=renderContext.locale.toString()]
 [#setting time_zone=renderContext.timezone.ID]
