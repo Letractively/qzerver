@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
         // от перечисленных здесь контекстов. Основная цель перечисления контекстов здесь - помощь для IDE в
         // удобной навигации по бинам.
         locations = {
-                "classpath:/configuration/context/model/root.xml",
-                "classpath:/configuration/context/webapp/root.xml",
-                "classpath:/configuration/context/servlet/root.xml",
+                "classpath:/configuration/model/context/root.xml",
+                "classpath:/configuration/webapp/context/root.xml",
+                "classpath:/configuration/servlet/context/root.xml",
                 "classpath:/test/context/test-model.xml",
                 "classpath:/test/context/test-servlet.xml"
         }

@@ -283,13 +283,6 @@
             <version>${javax.activation.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Log -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${org.slf4j.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- Test -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -301,12 +294,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${org.log4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${org.slf4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

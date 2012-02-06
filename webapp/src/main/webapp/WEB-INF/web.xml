@@ -51,8 +51,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:/configuration/context/model/root.xml,
-            classpath:/configuration/context/webapp/root.xml
+            classpath:/configuration/model/context/root.xml,
+            classpath:/configuration/webapp/context/root.xml
         </param-value>
     </context-param>
 
@@ -108,7 +108,7 @@
         <servlet-class>com.gainmatrix.lib.web.servlet.ExtendedDispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:/configuration/context/servlet/root.xml</param-value>
+            <param-value>classpath:/configuration/servlet/context/root.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
