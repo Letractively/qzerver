@@ -27,6 +27,7 @@
                 <prop key="hibernate.show_sql">${app.hibernate.show_sql}</prop>
                 <prop key="hibernate.format_sql">${app.hibernate.format_sql}</prop>
                 <prop key="hibernate.use_sql_comments">${app.hibernate.use_sql_comments}</prop>
+                <prop key="hibernate.order_inserts">${app.hibernate.order_inserts}</prop>
                 <prop key="hibernate.order_updates">${app.hibernate.order_updates}</prop>
                 <prop key="hibernate.cache.use_second_level_cache">${app.hibernate.cache.use_second_level_cache}</prop>
                 <prop key="hibernate.cache.use_query_cache">${app.hibernate.cache.use_query_cache}</prop>

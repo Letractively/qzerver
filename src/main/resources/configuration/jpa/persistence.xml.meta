@@ -9,6 +9,7 @@
         <description>QZERVER</description>
         <mapping-file>/configuration/jpa/mappings/persistence-unit-metadata.xml.meta</mapping-file>
         <mapping-file>/configuration/jpa/mappings/entities/abstract.xml</mapping-file>
+        <mapping-file>/configuration/jpa/mappings/entities/job/scheduler-job.xml</mapping-file>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <validation-mode>CALLBACK</validation-mode>

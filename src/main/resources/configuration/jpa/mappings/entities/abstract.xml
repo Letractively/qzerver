@@ -10,7 +10,7 @@
         <pre-update method-name="updateBusinessModelVersion"/>
         <attributes>
             <basic name="businessModelVersion">
-                <column name="business_model"/>
+                <column name="business_model" nullable="false"/>
             </basic>
             <embedded name="businessId"/>
             <transient name="currentBusinessModelVersion"/>
@@ -20,10 +20,10 @@
     <embeddable class="com.gainmatrix.lib.business.BusinessId">
         <attributes>
             <basic name="hi">
-                <column name="business_id_hi" insertable="true" updatable="false"/>
+                <column name="business_id_hi" insertable="true" updatable="false" nullable="false"/>
             </basic>
             <basic name="lo">
-                <column name="business_id_lo" insertable="true" updatable="false"/>
+                <column name="business_id_lo" insertable="true" updatable="false" nullable="false"/>
             </basic>
             <transient name="uuid"/>
         </attributes>

@@ -42,7 +42,7 @@
 
     <bean name="exampleJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="name" value="rtgqwewethweth"/>
-        <property name="jobClass" value="org.qzerver.system.quartz.QzerverJob" />
+        <property name="jobClass" value="org.qzerver.system.quartz.QzerverJob"/>
         <property name="jobDataAsMap">
             <map>
                 <entry key="test" value="abcdef" />

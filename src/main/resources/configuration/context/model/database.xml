@@ -3,6 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="dbConfigurator" class="org.qzerver.system.db.DbConfigurator">
+        <property name="type" value="HSQLDB"/>
+    </bean>
+
     <bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="${app.database.driver.class}"/>
         <property name="jdbcUrl" value="${app.database.url}"/>
