@@ -11,15 +11,15 @@
     </parent>
 
     <groupId>org.qzerver</groupId>
-    <artifactId>qzerver-webapp</artifactId>
-    <packaging>war</packaging>
+    <artifactId>qzerver-lib-model</artifactId>
+    <packaging>jar</packaging>
     <version>0.1-SNAPSHOT</version>
-    <name>QZERVER - Quartz-based job scheduler server - web application</name>
+    <name>QZERVER - Quartz-based job scheduler server - domain model</name>
     <url>http://code.google.com/p/qzerver/</url>
 
     <description>
     <![CDATA[
-        Job scheduler server bases on Quartz scheduler library - web application
+        Job scheduler server bases on Quartz scheduler library - domain model
     ]]>
     </description>
 
@@ -27,7 +27,13 @@
         <!-- QZERVER -->
         <dependency>
             <groupId>org.qzerver</groupId>
-            <artifactId>qzerver-lib-model</artifactId>
+            <artifactId>qzerver-lib-entities</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.qzerver</groupId>
+            <artifactId>qzerver-lib-ddl</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -71,12 +77,6 @@
             <scope>compile</scope>
         </dependency>
         <!-- Apache Commons -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>${org.apache.commons.fileupload.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
@@ -270,38 +270,19 @@
             <version>${org.springframework.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Spring Framework (MVC) -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- Java API -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${javax.servlet.version}</version>
-            <scope>provided</scope>
+         <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-             <groupId>javax.servlet</groupId>
-             <artifactId>jstl</artifactId>
-             <version>1.1.2</version>
-             <scope>compile</scope>
-         </dependency>
-         <dependency>
-             <groupId>taglibs</groupId>
-             <artifactId>standard</artifactId>
-             <version>1.1.2</version>
-             <scope>compile</scope>
-         </dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>${javax.activation.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- Log -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -309,31 +290,25 @@
             <version>${org.slf4j.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- Test -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${org.slf4j.version}</version>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${org.log4j.version}</version>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${org.slf4j.version}</version>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>${org.apache.commons.logging.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Test -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -353,65 +328,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <!-- JPA metamodel generation -->
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <version>2.0.5</version>
-                <executions>
-                    <execution>
-                        <id>jpa-generate-metamodel</id>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                        <configuration>
-                            <outputDirectory>target/generated-sources/jpamodel</outputDirectory>
-                            <processors>
-                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-                            </processors>
-                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -ApersistenceXml=/configuration/jpa/persistence.xml.meta</compilerArguments>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate-jpamodelgen</artifactId>
-                        <version>1.1.1.Final</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>jpa-generate-ddl</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.2.1</version>
-                        <configuration>
-                            <mainClass>org.qzerver.system.db.ddl.DdlGenerator</mainClass>
-                            <classpathScope>test</classpathScope>
-                            <arguments>
-                                <argument>${project.build.directory}/sql/qzerver</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
