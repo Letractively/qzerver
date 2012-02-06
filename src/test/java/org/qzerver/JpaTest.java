@@ -18,6 +18,7 @@ public class JpaTest extends AbstractContextTest {
         SchedulerJob job = new SchedulerJob();
         job.setName("qwrgqwrgwrg");
         job.setDescription("wrgqwrqwgqwrgrqw");
+        job.setCron("0 0 * * * ?");
         entityManager.persist(job);
 
         Assert.assertNotNull(job.getId());

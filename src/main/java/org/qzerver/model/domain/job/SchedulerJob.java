@@ -11,6 +11,8 @@ public class SchedulerJob extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_DESCRIPTION_LENGTH = 512;
 
+    public static final int MAX_CRON_LENGTH = 64;
+
     private Long id;
 
     @NotBlank
@@ -19,6 +21,10 @@ public class SchedulerJob extends AbstractBusinessEntity<Long> {
 
     @Length(min = 1, max = MAX_DESCRIPTION_LENGTH)
     private String description;
+
+    @NotBlank
+    @Length(max = MAX_CRON_LENGTH)
+    private String cron;
 
     public SchedulerJob() {
         super(BusinessModel.VERSION);
@@ -47,5 +53,13 @@ public class SchedulerJob extends AbstractBusinessEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 }

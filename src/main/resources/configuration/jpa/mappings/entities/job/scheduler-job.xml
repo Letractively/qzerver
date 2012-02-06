@@ -18,6 +18,9 @@
             <basic name="description">
                 <column name="description" length="512" nullable="true"/>
             </basic>
+            <basic name="cron">
+                <column name="cron" length="64" nullable="false"/>
+            </basic>
             <version name="version"/>
         </attributes>
     </entity>
