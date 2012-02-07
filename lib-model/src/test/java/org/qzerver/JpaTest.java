@@ -2,13 +2,13 @@ package org.qzerver;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.qzerver.base.AbstractContextTest;
+import org.qzerver.base.AbstractModelTest;
 import org.qzerver.model.domain.job.SchedulerJob;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-public class JpaTest extends AbstractContextTest {
+public class JpaTest extends AbstractModelTest {
 
     @PersistenceContext
     private EntityManager entityManager;
