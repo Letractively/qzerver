@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <entity name="ScheduleExecutionNode" class="org.qzerver.model.domain.job.ScheduleExecutionNode">
+        <table name="qzerver_schedule_execution_node"/>
+        <attributes>
+            <id name="id">
+                <column name="id" nullable="false"/>
+            </id>
+            <basic name="domain">
+                <column name="domain" nullable="false" length="128"/>
+            </basic>
+            <basic name="localhost">
+                <column name="localhost" nullable="false"/>
+            </basic>
+            <many-to-one name="execution" fetch="LAZY" optional="false">
+                <join-column name="scheduler_execution_id" referenced-column-name="id" nullable="false"/>
+            </many-to-one>
+            <one-to-one name="result" fetch="LAZY" mapped-by="node"/>
+        </attributes>
+
+    </entity>
+
+</entity-mappings>

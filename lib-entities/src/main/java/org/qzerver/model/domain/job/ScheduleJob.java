@@ -3,9 +3,12 @@ package org.qzerver.model.domain.job;
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.qzerver.model.domain.action.ScheduleAction;
 import org.qzerver.model.domain.business.BusinessModel;
 
-public class SchedulerJob extends AbstractBusinessEntity<Long> {
+import javax.validation.constraints.NotNull;
+
+public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_NAME_LENGTH = 128;
 
@@ -26,7 +29,17 @@ public class SchedulerJob extends AbstractBusinessEntity<Long> {
     @Length(max = MAX_CRON_LENGTH)
     private String cron;
 
-    public SchedulerJob() {
+    private boolean enabled;
+
+    private boolean standby;
+
+    @NotNull
+    private ScheduleAction action;
+
+    @NotNull
+    private ScheduleGroup group;
+
+    public ScheduleJob() {
         super(BusinessModel.VERSION);
     }
 
@@ -61,5 +74,37 @@ public class SchedulerJob extends AbstractBusinessEntity<Long> {
 
     public void setCron(String cron) {
         this.cron = cron;
+    }
+
+    public ScheduleAction getAction() {
+        return action;
+    }
+
+    public void setAction(ScheduleAction action) {
+        this.action = action;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isStandby() {
+        return standby;
+    }
+
+    public void setStandby(boolean standby) {
+        this.standby = standby;
+    }
+
+    public ScheduleGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(ScheduleGroup group) {
+        this.group = group;
     }
 }

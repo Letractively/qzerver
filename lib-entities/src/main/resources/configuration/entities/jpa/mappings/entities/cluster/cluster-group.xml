@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <entity name="ClusterGroup" class="org.qzerver.model.domain.cluster.ClusterGroup">
+        <table name="qzerver_cluster_group"/>
+        <attributes>
+            <id name="id">
+                <column name="id" nullable="false"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="name">
+                <column name="name" nullable="false" length="256"/>
+            </basic>
+            <basic name="index">
+                <column name="index" nullable="false"/>
+            </basic>
+            <basic name="strategy">
+                <column name="strategy" nullable="false"/>
+                <enumerated>ORDINAL</enumerated>
+            </basic>
+            <version name="version"/>
+            <one-to-many name="nodes" fetch="LAZY" orphan-removal="true" mapped-by="group"/>
+        </attributes>
+    </entity>
+
+</entity-mappings>

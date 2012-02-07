@@ -3,7 +3,7 @@ package org.qzerver.model.domain.action;
 import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;
 
-public enum ActionType implements Coded {
+public enum ScheduleActionType implements Coded {
 
     EXEC(0),
 
@@ -15,7 +15,7 @@ public enum ActionType implements Coded {
 
     SSHEXEC(4);
 
-    ActionType(int ordinal) {
+    ScheduleActionType(int ordinal) {
         Preconditions.checkState(ordinal == this.ordinal());
     }
 

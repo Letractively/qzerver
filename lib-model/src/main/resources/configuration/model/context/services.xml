@@ -3,8 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="quartzService" class="org.qzerver.model.service.quartz.impl.QuartzServiceImpl">
-        <property name="scheduler" ref="quartzScheduler"/>
+    <bean name="quartzManagementService" class="org.qzerver.model.service.quartz.management.impl.QuartzManagementServiceImpl">
+        <constructor-arg index="0" ref="quartzScheduler"/>
+    </bean>
+
+    <bean id="quartzExecutorService" class="org.qzerver.model.service.quartz.executor.impl.QuartzExecutorServiceImpl">
     </bean>
 
 </beans>

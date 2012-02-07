@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
-    <entity name="SchedulerJob" class="org.qzerver.model.domain.job.SchedulerJob">
-        <table name="qzerver_scheduler_job"/>
+    <entity name="SchedulerJob" class="org.qzerver.model.domain.job.ScheduleJob">
+        <table name="qzerver_schedule_job"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>
@@ -21,7 +21,17 @@
             <basic name="cron">
                 <column name="cron" length="64" nullable="false"/>
             </basic>
+            <basic name="enabled">
+                <column name="enabled" nullable="false"/>
+            </basic>
+            <basic name="standby">
+                <column name="standby" nullable="false"/>
+            </basic>
             <version name="version"/>
+            <many-to-one name="group" fetch="LAZY" optional="false">
+                <join-column name="schedule_group_id" referenced-column-name="id" nullable="false"/>
+            </many-to-one>
+            <one-to-one name="action" fetch="LAZY" mapped-by="job" orphan-removal="true"/>
         </attributes>
     </entity>
 

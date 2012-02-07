@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <entity name="ScheduleExecution" class="org.qzerver.model.domain.job.ScheduleExecution">
+        <table name="qzerver_schedule_execution"/>
+        <attributes>
+            <id name="id">
+                <column name="id" nullable="false"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="cron">
+                <column name="cron" nullable="false" length="64"/>
+            </basic>
+            <basic name="index">
+                <column name="index" nullable="false"/>
+            </basic>
+            <basic name="created">
+                <column name="created" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <version name="version"/>
+            <many-to-one name="job" fetch="LAZY" optional="false">
+                <join-column name="schedule_job_id" referenced-column-name="id" nullable="false"/>
+            </many-to-one>
+            <one-to-many name="nodes" fetch="LAZY" mapped-by="execution" orphan-removal="true"/>
+            <one-to-many name="results" fetch="LAZY" mapped-by="execution" orphan-removal="true"/>
+        </attributes>
+    </entity>
+
+</entity-mappings>
