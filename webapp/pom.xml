@@ -322,18 +322,6 @@
             <version>${org.springframework.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${org.junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>${org.easymock.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

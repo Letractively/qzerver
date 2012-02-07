@@ -37,6 +37,7 @@
             <artifactId>quartz</artifactId>
             <version>${org.quartz.version}</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!-- Apache Commons -->
         <dependency>
@@ -99,18 +100,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${org.log4j.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${org.junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymock</artifactId>
-            <version>${org.easymock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
