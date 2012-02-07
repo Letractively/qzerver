@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.job;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.qzerver.model.domain.business.BusinessModel;
@@ -19,7 +19,11 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
     private boolean succeed;
 
     @NotNull
-    private Date created;
+    private Date started;
+
+    private Date finished;
+
+    private String payload;
 
     public ScheduleExecutionResult() {
         super(BusinessModel.VERSION);
@@ -58,11 +62,27 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
         this.succeed = succeed;
     }
 
-    public Date getCreated() {
-        return created;
+    public Date getStarted() {
+        return started;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setStarted(Date created) {
+        this.started = created;
+    }
+
+    public Date getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Date finished) {
+        this.finished = finished;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 }

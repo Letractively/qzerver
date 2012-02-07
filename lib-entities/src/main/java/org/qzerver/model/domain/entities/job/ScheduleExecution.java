@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.job;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
@@ -31,7 +31,10 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private int index;
 
     @NotNull
-    private Date created;
+    private Date scheduled;
+
+    @NotNull
+    private Date fired;
 
     public ScheduleExecution() {
         super(BusinessModel.VERSION);
@@ -92,11 +95,19 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.results = results;
     }
 
-    public Date getCreated() {
-        return created;
+    public Date getFired() {
+        return fired;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setFired(Date fired) {
+        this.fired = fired;
+    }
+
+    public Date getScheduled() {
+        return scheduled;
+    }
+
+    public void setScheduled(Date scheduled) {
+        this.scheduled = scheduled;
     }
 }

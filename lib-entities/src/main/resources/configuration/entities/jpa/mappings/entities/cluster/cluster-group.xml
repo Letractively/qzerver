@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
-    <entity name="ClusterGroup" class="org.qzerver.model.domain.cluster.ClusterGroup">
+    <entity name="ClusterGroup" class="org.qzerver.model.domain.entities.cluster.ClusterGroup">
         <table name="qzerver_cluster_group"/>
         <attributes>
             <id name="id">

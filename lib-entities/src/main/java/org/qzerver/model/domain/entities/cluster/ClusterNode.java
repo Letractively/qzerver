@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.cluster;
+package org.qzerver.model.domain.entities.cluster;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
@@ -28,6 +28,8 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     @Min(0)
     private int index;
+
+    private boolean active;
 
     public ClusterNode() {
         super(BusinessModel.VERSION);
@@ -72,5 +74,13 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     public void setGroup(ClusterGroup group) {
         this.group = group;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

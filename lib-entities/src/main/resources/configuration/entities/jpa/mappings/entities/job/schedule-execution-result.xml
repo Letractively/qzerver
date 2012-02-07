@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
-    <entity name="ScheduleExecutionResult" class="org.qzerver.model.domain.job.ScheduleExecutionResult">
+    <entity name="ScheduleExecutionResult" class="org.qzerver.model.domain.entities.job.ScheduleExecutionResult">
         <table name="qzerver_schedule_execution_result"/>
         <attributes>
             <id name="id">
@@ -14,8 +14,17 @@
             <basic name="succeed">
                 <column name="succeed" nullable="false"/>
             </basic>
-            <basic name="created">
-                <column name="created" nullable="false"/>
+            <basic name="started">
+                <column name="started" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="finished">
+                <column name="finished" nullable="true"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="payload" fetch="LAZY">
+                <column name="payload" nullable="true"/>
+                <lob/>
             </basic>
             <version name="version"/>
             <many-to-one name="execution" fetch="LAZY" optional="false">

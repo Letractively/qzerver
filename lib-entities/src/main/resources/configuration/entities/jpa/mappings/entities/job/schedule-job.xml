@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
-    <entity name="SchedulerJob" class="org.qzerver.model.domain.job.ScheduleJob">
+    <entity name="SchedulerJob" class="org.qzerver.model.domain.entities.job.ScheduleJob">
         <table name="qzerver_schedule_job"/>
         <attributes>
             <id name="id">
@@ -27,11 +27,17 @@
             <basic name="standby">
                 <column name="standby" nullable="false"/>
             </basic>
+            <basic name="actionType">
+                <column name="action_type" nullable="false"/>
+            </basic>
+            <basic name="actionDefinition" fetch="LAZY">
+                <column name="action_definition" nullable="true"/>
+                <lob/>
+            </basic>
             <version name="version"/>
             <many-to-one name="group" fetch="LAZY" optional="false">
                 <join-column name="schedule_group_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
-            <one-to-one name="action" fetch="LAZY" mapped-by="job" orphan-removal="true"/>
         </attributes>
     </entity>
 

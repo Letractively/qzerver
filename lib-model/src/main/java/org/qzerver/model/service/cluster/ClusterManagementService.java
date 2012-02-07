@@ -1,8 +1,8 @@
 package org.qzerver.model.service.cluster;
 
 import com.gainmatrix.lib.paging.Extraction;
-import org.qzerver.model.domain.cluster.ClusterGroup;
-import org.qzerver.model.domain.cluster.ClusterNode;
+import org.qzerver.model.domain.entities.cluster.ClusterGroup;
+import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

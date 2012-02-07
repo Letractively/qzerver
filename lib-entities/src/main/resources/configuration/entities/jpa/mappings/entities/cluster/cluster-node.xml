@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
-    <entity name="ClusterNode" class="org.qzerver.model.domain.cluster.ClusterNode">
+    <entity name="ClusterNode" class="org.qzerver.model.domain.entities.cluster.ClusterNode">
         <table name="qzerver_cluster_node"/>
         <attributes>
             <id name="id">
@@ -20,6 +20,9 @@
             </basic>
             <basic name="index">
                 <column name="index" nullable="false"/>
+            </basic>
+            <basic name="active">
+                <column name="active" nullable="false"/>
             </basic>
             <version name="version"/>
             <many-to-one name="group" fetch="LAZY" optional="false">

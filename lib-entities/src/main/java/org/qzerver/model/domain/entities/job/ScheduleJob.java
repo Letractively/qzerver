@@ -1,9 +1,8 @@
-package org.qzerver.model.domain.job;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.action.ScheduleAction;
 import org.qzerver.model.domain.business.BusinessModel;
 
 import javax.validation.constraints.NotNull;
@@ -34,10 +33,12 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
     private boolean standby;
 
     @NotNull
-    private ScheduleAction action;
+    private ScheduleGroup group;
 
     @NotNull
-    private ScheduleGroup group;
+    private ScheduleActionType actionType = ScheduleActionType.NOP;
+
+    private String actionDefinition;
 
     public ScheduleJob() {
         super(BusinessModel.VERSION);
@@ -76,14 +77,6 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
         this.cron = cron;
     }
 
-    public ScheduleAction getAction() {
-        return action;
-    }
-
-    public void setAction(ScheduleAction action) {
-        this.action = action;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -106,5 +99,21 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setGroup(ScheduleGroup group) {
         this.group = group;
+    }
+
+    public ScheduleActionType getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(ScheduleActionType actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getActionDefinition() {
+        return actionDefinition;
+    }
+
+    public void setActionDefinition(String actionDefinition) {
+        this.actionDefinition = actionDefinition;
     }
 }

@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.cluster;
+package org.qzerver.model.domain.entities.cluster;
 
 import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;

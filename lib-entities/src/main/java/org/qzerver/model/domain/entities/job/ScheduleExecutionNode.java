@@ -1,10 +1,10 @@
-package org.qzerver.model.domain.job;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModel;
-import org.qzerver.model.domain.cluster.ClusterNode;
+import org.qzerver.model.domain.entities.cluster.ClusterNode;
 
 import javax.validation.constraints.NotNull;
 

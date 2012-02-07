@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.job;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;

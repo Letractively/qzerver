@@ -75,8 +75,14 @@ public class DdlGeneratorApplication {
 
             Dialect dialect = Dialect.getDialect(dialectProps);
 
-            String[] script = cfg.generateSchemaCreationScript(dialect);
-            FileUtils.writeLines(new File(targetDir, dbConfiguratorType + ".sql"), "UTF-8", Arrays.asList(script));
+            String[] script;
+            String lineEnding = ";\n";
+
+            script = cfg.generateSchemaCreationScript(dialect);
+            FileUtils.writeLines(new File(targetDir, dbConfiguratorType + "-create.sql"), "UTF-8", Arrays.asList(script), lineEnding);
+
+            script = cfg.generateDropSchemaScript(dialect);
+            FileUtils.writeLines(new File(targetDir, dbConfiguratorType + "-drop.sql"), "UTF-8", Arrays.asList(script), lineEnding);
         }
     }
 
