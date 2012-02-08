@@ -18,8 +18,8 @@
             <basic name="comment">
                 <column name="comment" nullable="true" length="128"/>
             </basic>
-            <basic name="index">
-                <column name="index" nullable="false"/>
+            <basic name="orderIndex">
+                <column name="order_index" nullable="false"/>
             </basic>
             <basic name="active">
                 <column name="active" nullable="false"/>

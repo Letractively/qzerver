@@ -3,12 +3,16 @@ package org.qzerver.model.domain.entities.job;
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.qzerver.model.domain.business.BusinessModel;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
 
     private Long id;
+
+    @Min(0)
+    private int orderIndex;
 
     @NotNull
     private ScheduleExecution execution;
@@ -23,7 +27,7 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
 
     private Date finished;
 
-    private String payload;
+    private String result;
 
     public ScheduleExecutionResult() {
         super(BusinessModel.VERSION);
@@ -78,11 +82,19 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
         this.finished = finished;
     }
 
-    public String getPayload() {
-        return payload;
+    public String getResult() {
+        return result;
     }
 
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
     }
 }

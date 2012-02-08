@@ -27,7 +27,7 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
     private ClusterStrategy strategy = ClusterStrategy.CIRCLE;
 
     @Min(0)
-    private int index;
+    private int rollingIndex;
 
     public ClusterGroup() {
         super(BusinessModel.VERSION);
@@ -61,12 +61,12 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
         this.nodes = nodes;
     }
 
-    public int getIndex() {
-        return index;
+    public int getRollingIndex() {
+        return rollingIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setRollingIndex(int rollingIndex) {
+        this.rollingIndex = rollingIndex;
     }
 
     public ClusterStrategy getStrategy() {

@@ -14,10 +14,16 @@ public class ScheduleGroup extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Visible group name
+     */
     @NotBlank
     @Length(max = MAX_NAME_LENGTH)
     private String name;
 
+    /**
+     * Jobs list (unsorted)
+     */
     private Set<ScheduleJob> jobs;
 
     public ScheduleGroup() {

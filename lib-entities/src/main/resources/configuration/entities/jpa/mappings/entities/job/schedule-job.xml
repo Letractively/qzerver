@@ -27,16 +27,18 @@
             <basic name="standby">
                 <column name="standby" nullable="false"/>
             </basic>
-            <basic name="actionType">
-                <column name="action_type" nullable="false"/>
+            <basic name="concurrent">
+                <column name="concurrent" nullable="false"/>
             </basic>
-            <basic name="actionDefinition" fetch="LAZY">
-                <column name="action_definition" nullable="true"/>
-                <lob/>
+            <basic name="disableOnFail">
+                <column name="disable_fail" nullable="false"/>
             </basic>
             <version name="version"/>
             <many-to-one name="group" fetch="LAZY" optional="false">
                 <join-column name="schedule_group_id" referenced-column-name="id" nullable="false"/>
+            </many-to-one>
+            <many-to-one name="action" fetch="LAZY" optional="false">
+                <join-column name="schedule_action_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
         </attributes>
     </entity>

@@ -33,6 +33,8 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void setActive(boolean active) {
+        LOGGER.debug("Set quartz state = {}", active);
+
         synchronized (scheduler) {
             try {
                 if (active) {

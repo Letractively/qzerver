@@ -17,28 +17,57 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Visible job name
+     */
     @NotBlank
     @Length(max = MAX_NAME_LENGTH)
     private String name;
 
+    /**
+     * Short job description
+     */
     @Length(min = 1, max = MAX_DESCRIPTION_LENGTH)
     private String description;
 
+    /**
+     * Cron expression
+     */
     @NotBlank
     @Length(max = MAX_CRON_LENGTH)
     private String cron;
 
+    /**
+     * Is job enabled
+     */
     private boolean enabled;
 
+    /**
+     * Is job current on pause
+     */
     private boolean standby;
 
+    /**
+     * Group of the job
+     */
     @NotNull
     private ScheduleGroup group;
 
+    /**
+     * Action to execute when fired
+     */
     @NotNull
-    private ScheduleActionType actionType = ScheduleActionType.NOP;
+    private ScheduleAction action;
 
-    private String actionDefinition;
+    /**
+     * Are several instances of this job allowed to execute
+     */
+    private boolean concurrent;
+
+    /**
+     * If job fails will disable it
+     */
+    private boolean disableOnFail;
 
     public ScheduleJob() {
         super(BusinessModel.VERSION);
@@ -101,19 +130,27 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
         this.group = group;
     }
 
-    public ScheduleActionType getActionType() {
-        return actionType;
+    public ScheduleAction getAction() {
+        return action;
     }
 
-    public void setActionType(ScheduleActionType actionType) {
-        this.actionType = actionType;
+    public void setAction(ScheduleAction action) {
+        this.action = action;
     }
 
-    public String getActionDefinition() {
-        return actionDefinition;
+    public boolean isConcurrent() {
+        return concurrent;
     }
 
-    public void setActionDefinition(String actionDefinition) {
-        this.actionDefinition = actionDefinition;
+    public void setConcurrent(boolean concurrent) {
+        this.concurrent = concurrent;
+    }
+
+    public boolean isDisableOnFail() {
+        return disableOnFail;
+    }
+
+    public void setDisableOnFail(boolean disableOnFail) {
+        this.disableOnFail = disableOnFail;
     }
 }

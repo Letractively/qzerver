@@ -8,6 +8,15 @@
     </bean>
 
     <bean id="quartzExecutorService" class="org.qzerver.model.service.quartz.executor.impl.QuartzExecutorServiceImpl">
+        <property name="beanValidator" ref="beanValidator"/>
+    </bean>
+
+    <bean id="clusterManagementService" class="org.qzerver.model.service.cluster.impl.ClusterManagementServiceImpl">
+        <property name="clusterGroupDao" ref="clusterGroupDao"/>
+        <property name="clusterNodeDao" ref="clusterNodeDao"/>
+    </bean>
+
+    <bean id="jobManagementService" class="org.qzerver.model.service.job.impl.JobManagementServiceImpl">
     </bean>
 
 </beans>

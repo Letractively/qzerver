@@ -15,8 +15,11 @@
             <basic name="cron">
                 <column name="cron" nullable="false" length="64"/>
             </basic>
-            <basic name="index">
-                <column name="index" nullable="false"/>
+            <basic name="clusterRollingIndex">
+                <column name="cluster_rolling_index" nullable="false"/>
+            </basic>
+            <basic name="clusterStrategy">
+                <column name="cluster_strategy" nullable="false"/>
             </basic>
             <basic name="fired">
                 <column name="fired" nullable="false"/>
@@ -25,12 +28,25 @@
             <basic name="scheduled">
                 <column name="scheduled" nullable="false"/>
             </basic>
+            <basic name="finished">
+                <column name="finished" nullable="true"/>
+            </basic>
+            <basic name="cancelled">
+                <column name="cancelled" nullable="false"/>
+            </basic>
             <version name="version"/>
             <many-to-one name="job" fetch="LAZY" optional="false">
                 <join-column name="schedule_job_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
-            <one-to-many name="nodes" fetch="LAZY" mapped-by="execution" orphan-removal="true"/>
-            <one-to-many name="results" fetch="LAZY" mapped-by="execution" orphan-removal="true"/>
+            <many-to-one name="action" fetch="LAZY" optional="false">
+                <join-column name="schedule_action_id" referenced-column-name="id" nullable="false"/>
+            </many-to-one>
+            <one-to-many name="nodes" fetch="LAZY" mapped-by="execution" orphan-removal="true">
+                <order-by>orderIndex</order-by>
+            </one-to-many>
+            <one-to-many name="results" fetch="LAZY" mapped-by="execution" orphan-removal="true">
+                <order-by>orderIndex</order-by>
+            </one-to-many>
         </attributes>
     </entity>
 

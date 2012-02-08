@@ -22,9 +22,12 @@
                 <column name="finished" nullable="true"/>
                 <temporal>TIMESTAMP</temporal>
             </basic>
-            <basic name="payload" fetch="LAZY">
-                <column name="payload" nullable="true"/>
+            <basic name="result" fetch="LAZY">
+                <column name="result" nullable="true"/>
                 <lob/>
+            </basic>
+            <basic name="orderIndex">
+                <column name="order_index" nullable="false"/>
             </basic>
             <version name="version"/>
             <many-to-one name="execution" fetch="LAZY" optional="false">

@@ -6,11 +6,15 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModel;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
 
     private Long id;
+
+    @Min(0)
+    private int orderIndex;
 
     @NotBlank
     @Length(max = ClusterNode.MAX_DOMAIN_LENGTH)
@@ -66,5 +70,13 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
 
     public void setExecution(ScheduleExecution execution) {
         this.execution = execution;
+    }
+
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
     }
 }

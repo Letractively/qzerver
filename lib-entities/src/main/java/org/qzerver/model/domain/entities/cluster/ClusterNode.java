@@ -16,6 +16,9 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    @Min(0)
+    private int orderIndex;
+
     @NotBlank
     @Length(max = MAX_DOMAIN_LENGTH)
     private String domain;
@@ -25,9 +28,6 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     @NotNull
     private ClusterGroup group;
-
-    @Min(0)
-    private int index;
 
     private boolean active;
 
@@ -60,12 +60,12 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
         this.domain = domain;
     }
 
-    public int getIndex() {
-        return index;
+    public int getOrderIndex() {
+        return orderIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
     }
 
     public ClusterGroup getGroup() {
