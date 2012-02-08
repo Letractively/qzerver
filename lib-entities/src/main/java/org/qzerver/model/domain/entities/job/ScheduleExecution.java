@@ -4,9 +4,7 @@ import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModel;
-import org.qzerver.model.domain.entities.cluster.ClusterStrategy;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,25 +30,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     /**
      * Nodes list
      */
-    @NotNull
     private List<ScheduleExecutionNode> nodes;
 
     /**
      * Result list
      */
     private List<ScheduleExecutionResult> results;
-
-    /**
-     * Current execution node index
-     */
-    @Min(0)
-    private int clusterRollingIndex;
-
-    /**
-     * Strategy copied from cluster definition
-     */
-    @NotNull
-    private ClusterStrategy clusterStrategy = ClusterStrategy.CIRCLE;
 
     /**
      * Moment when execution should be started
@@ -68,6 +53,11 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      * Moment when execution is finished
      */
     private Date finished;
+
+    /**
+     * Whether the execution succeed
+     */
+    private boolean succeed;
 
     /**
      * Execution is cancelled
@@ -99,14 +89,6 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public void setCron(String cron) {
         this.cron = cron;
-    }
-
-    public int getClusterRollingIndex() {
-        return clusterRollingIndex;
-    }
-
-    public void setClusterRollingIndex(int clusterRollingIndex) {
-        this.clusterRollingIndex = clusterRollingIndex;
     }
 
     public ScheduleJob getJob() {
@@ -171,14 +153,6 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.cancelled = cancelled;
     }
 
-    public ClusterStrategy getClusterStrategy() {
-        return clusterStrategy;
-    }
-
-    public void setClusterStrategy(ClusterStrategy clusterStrategy) {
-        this.clusterStrategy = clusterStrategy;
-    }
-
     public ScheduleAction getAction() {
         return action;
     }
@@ -186,4 +160,13 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     public void setAction(ScheduleAction action) {
         this.action = action;
     }
+
+    public boolean isSucceed() {
+        return succeed;
+    }
+
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
+    }
 }
+

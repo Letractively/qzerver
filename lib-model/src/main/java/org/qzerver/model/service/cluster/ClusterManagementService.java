@@ -19,7 +19,7 @@ public interface ClusterManagementService {
 
     ClusterGroup createGroup(String name, ClusterStrategy strategy);
 
-    ClusterGroup updateGroupIndex(long clusterGroupId);
+    int rollGroupIndex(long clusterGroupId);
 
     void deleteGroup(long clusterGroupId);
 

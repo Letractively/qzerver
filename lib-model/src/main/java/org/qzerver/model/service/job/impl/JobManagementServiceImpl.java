@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(propagation = Propagation.NEVER)
+@Transactional(propagation = Propagation.REQUIRED)
 public class JobManagementServiceImpl implements JobManagementService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobManagementServiceImpl.class);

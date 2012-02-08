@@ -28,7 +28,7 @@ public class QzerverJob implements Job {
             long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
 
             QuartzExecutionParameters parameters = new QuartzExecutionParameters();
-            parameters.setId(scheduleJobId);
+            parameters.setScheduleJobId(scheduleJobId);
             parameters.setFired(context.getFireTime());
             parameters.setScheduled(context.getScheduledFireTime());
 

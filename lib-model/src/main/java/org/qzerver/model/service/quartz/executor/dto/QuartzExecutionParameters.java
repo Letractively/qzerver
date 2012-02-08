@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class QuartzExecutionParameters implements Serializable {
 
-    private long id;
+    private long scheduleJobId;
 
     @NotNull
     private Date scheduled;
@@ -30,11 +30,11 @@ public class QuartzExecutionParameters implements Serializable {
         this.scheduled = scheduled;
     }
 
-    public long getId() {
-        return id;
+    public long getScheduleJobId() {
+        return scheduleJobId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setScheduleJobId(long scheduleJobId) {
+        this.scheduleJobId = scheduleJobId;
     }
 }

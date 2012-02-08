@@ -15,12 +15,6 @@
             <basic name="cron">
                 <column name="cron" nullable="false" length="64"/>
             </basic>
-            <basic name="clusterRollingIndex">
-                <column name="cluster_rolling_index" nullable="false"/>
-            </basic>
-            <basic name="clusterStrategy">
-                <column name="cluster_strategy" nullable="false"/>
-            </basic>
             <basic name="fired">
                 <column name="fired" nullable="false"/>
                 <temporal>TIMESTAMP</temporal>
@@ -33,6 +27,9 @@
             </basic>
             <basic name="cancelled">
                 <column name="cancelled" nullable="false"/>
+            </basic>
+            <basic name="succeed">
+                <column name="succeed" nullable="false"/>
             </basic>
             <version name="version"/>
             <many-to-one name="job" fetch="LAZY" optional="false">

@@ -12,4 +12,8 @@
 
     <bean id="clusterNodeDao" class="org.qzerver.model.dao.cluster.impl.ClusterNodeJpaDao" parent="abstractEntityJpaDao"/>
 
+    <bean id="scheduleJobDao" class="org.qzerver.model.dao.job.impl.ScheduleJobJpaDao" parent="abstractEntityJpaDao"/>
+
+    <bean id="scheduleExecutionDao" class="org.qzerver.model.dao.job.impl.ScheduleExecutionJpaDao" parent="abstractEntityJpaDao"/>
+
 </beans>

@@ -71,29 +71,32 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    public ClusterGroup updateGroupIndex(long clusterGroupId) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public int rollGroupIndex(long clusterGroupId) {
         ClusterGroup clusterGroup = clusterGroupDao.lockById(clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
         }
 
-        for (int i=clusterGroup.getRollingIndex() + 1, limit=clusterGroup.getNodes().size(); i < limit; i++) {
+        int currentIndex = clusterGroup.getRollingIndex();
+
+        for (int i=currentIndex + 1, size=clusterGroup.getNodes().size(); i < size; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
             if (clusterNode.isActive()) {
                 clusterGroup.setRollingIndex(i);
-                return clusterGroup;
+                return i;
             }
         }
 
-        for (int i=0, limit=clusterGroup.getRollingIndex(); i < limit; i++) {
+        for (int i=0; i < currentIndex; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
             if (clusterNode.isActive()) {
                 clusterGroup.setRollingIndex(i);
-                return clusterGroup;
+                return i;
             }
         }
 
-        return null;
+        return currentIndex;
     }
 
     @Override
