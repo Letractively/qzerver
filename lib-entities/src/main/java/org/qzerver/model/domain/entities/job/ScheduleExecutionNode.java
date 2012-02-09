@@ -13,18 +13,33 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Order of the node in the execution list
+     */
     @Min(0)
     private int orderIndex;
 
+    /**
+     * Domain (FQDN)
+     */
     @NotBlank
     @Length(max = ClusterNode.MAX_DOMAIN_LENGTH)
     private String domain;
 
+    /**
+     * Parent execution
+     */
     @NotNull
     private ScheduleExecution execution;
 
+    /**
+     * Execution result
+     */
     private ScheduleExecutionResult result;
 
+    /**
+     * Is node localhost
+     */
     private boolean localhost;
 
     public ScheduleExecutionNode() {

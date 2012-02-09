@@ -5,15 +5,12 @@
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-    <bean id="abstractEntityJpaDao" abstract="true">
-    </bean>
+    <bean id="businessEntityDao" class="org.qzerver.model.dao.business.BusinessEntityJpaDao"/>
 
-    <bean id="clusterGroupDao" class="org.qzerver.model.dao.cluster.impl.ClusterGroupJpaDao" parent="abstractEntityJpaDao"/>
+    <bean id="clusterGroupDao" class="org.qzerver.model.dao.cluster.impl.ClusterGroupJpaDao"/>
 
-    <bean id="clusterNodeDao" class="org.qzerver.model.dao.cluster.impl.ClusterNodeJpaDao" parent="abstractEntityJpaDao"/>
+    <bean id="scheduleJobDao" class="org.qzerver.model.dao.job.impl.ScheduleJobJpaDao"/>
 
-    <bean id="scheduleJobDao" class="org.qzerver.model.dao.job.impl.ScheduleJobJpaDao" parent="abstractEntityJpaDao"/>
-
-    <bean id="scheduleExecutionDao" class="org.qzerver.model.dao.job.impl.ScheduleExecutionJpaDao" parent="abstractEntityJpaDao"/>
+    <bean id="scheduleExecutionDao" class="org.qzerver.model.dao.job.impl.ScheduleExecutionJpaDao"/>
 
 </beans>

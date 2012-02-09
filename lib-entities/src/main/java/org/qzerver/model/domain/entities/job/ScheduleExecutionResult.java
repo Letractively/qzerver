@@ -11,22 +11,43 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Order of result in execution list
+     */
     @Min(0)
     private int orderIndex;
 
+    /**
+     * Parent execution entity
+     */
     @NotNull
     private ScheduleExecution execution;
 
+    /**
+     * Assotiated node
+     */
     @NotNull
     private ScheduleExecutionNode node;
 
+    /**
+     * Is result succeed
+     */
     private boolean succeed;
 
+    /**
+     * Moment when node execution is started
+     */
     @NotNull
     private Date started;
 
+    /**
+     * Moment when node execution is finished
+     */
     private Date finished;
 
+    /**
+     * Result description (XML or JSON)
+     */
     private String result;
 
     public ScheduleExecutionResult() {

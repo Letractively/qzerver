@@ -5,6 +5,29 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
+    <named-query name="ScheduleExecution.deleteExpired">
+        <query>
+        <![CDATA[
+
+                DELETE FROM ScheduleExecution se
+                    WHERE se.fired < :expiration
+
+        ]]>
+        </query>
+    </named-query>
+    
+    <named-query name="ScheduleExecution.detachJob">
+        <query>
+        <![CDATA[
+
+                UPDATE ScheduleExecution se
+                    SET se.job = null
+                    WHERE se.job.id = :scheduleJobId
+
+        ]]>
+        </query>
+    </named-query>
+
     <entity name="ScheduleExecution" class="org.qzerver.model.domain.entities.job.ScheduleExecution">
         <table name="qzerver_schedule_execution"/>
         <attributes>
@@ -12,6 +35,9 @@
                 <column name="id" nullable="false"/>
                 <generated-value strategy="AUTO"/>
             </id>
+            <basic name="name">
+                <column name="name" nullable="false" length="128"/>
+            </basic>
             <basic name="cron">
                 <column name="cron" nullable="false" length="64"/>
             </basic>
@@ -31,21 +57,27 @@
             <basic name="succeed">
                 <column name="succeed" nullable="false"/>
             </basic>
-            <basic name="node">
-                <column name="node" nullable="false" length="128"/>
+            <basic name="hostname">
+                <column name="hostname" nullable="false" length="128"/>
             </basic>
             <version name="version"/>
-            <many-to-one name="job" fetch="LAZY" optional="false">
-                <join-column name="schedule_job_id" referenced-column-name="id" nullable="false"/>
+            <many-to-one name="job" fetch="LAZY" optional="true">
+                <join-column name="schedule_job_id" referenced-column-name="id" nullable="true"/>
             </many-to-one>
             <many-to-one name="action" fetch="LAZY" optional="false">
                 <join-column name="schedule_action_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
             <one-to-many name="nodes" fetch="LAZY" mapped-by="execution" orphan-removal="true">
                 <order-by>orderIndex</order-by>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
             </one-to-many>
             <one-to-many name="results" fetch="LAZY" mapped-by="execution" orphan-removal="true">
                 <order-by>orderIndex</order-by>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
             </one-to-many>
         </attributes>
     </entity>

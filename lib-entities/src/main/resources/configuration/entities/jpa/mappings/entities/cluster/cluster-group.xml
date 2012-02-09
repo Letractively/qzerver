@@ -23,8 +23,11 @@
                 <enumerated>ORDINAL</enumerated>
             </basic>
             <version name="version"/>
-            <one-to-many name="nodes" fetch="LAZY" orphan-removal="true" mapped-by="group">
+            <one-to-many name="nodes" fetch="LAZY" mapped-by="group" orphan-removal="true">
                 <order-by>orderIndex</order-by>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
             </one-to-many>
         </attributes>
     </entity>

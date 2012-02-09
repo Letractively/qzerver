@@ -16,16 +16,28 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Group name
+     */
     @NotBlank
     @Length(max = MAX_NAME_LENGTH)
     private String name;
 
+    /**
+     * List of group nodes
+     */
     @NotNull
     private List<ClusterNode> nodes;
 
+    /**
+     * Node selection strategy
+     */
     @NotNull
     private ClusterStrategy strategy = ClusterStrategy.CIRCLE;
 
+    /**
+     * Rolling node index for ClusterStrategy.CIRCLE strategy
+     */
     @Min(0)
     private int rollingIndex;
 

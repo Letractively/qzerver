@@ -17,5 +17,4 @@ public interface QuartzManagementService {
      */
     void setActive(boolean active);
 
-
 }

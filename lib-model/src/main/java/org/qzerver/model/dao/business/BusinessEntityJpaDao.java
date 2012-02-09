@@ -1,9 +1,12 @@
 package org.qzerver.model.dao.business;
 
-import com.gainmatrix.lib.business.AbstractBusinessEntity;
+import com.gainmatrix.lib.business.BusinessEntity;
 import com.gainmatrix.lib.business.BusinessEntityDao;
 import com.gainmatrix.lib.business.BusinessId;
 import com.gainmatrix.lib.business.BusinessId_;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -11,7 +14,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.*;
 
-public abstract class AbstractBusinessEntityDao<T extends AbstractBusinessEntity<I>,I> implements BusinessEntityDao<T,I> {
+@Repository
+@Transactional(propagation = Propagation.MANDATORY)
+public class BusinessEntityJpaDao implements BusinessEntityDao {
 
     private static final String ENTITY_ID = "id";
 
@@ -19,27 +24,20 @@ public abstract class AbstractBusinessEntityDao<T extends AbstractBusinessEntity
 
     private EntityManager entityManager;
 
-    private Class<T> entityClass;
-
-    public AbstractBusinessEntityDao(Class<T> entityClass) {
-        this.entityClass = entityClass;
+    @Override
+    public <T extends BusinessEntity<I>, I> T findById(Class<T> clazz, I id) {
+        return entityManager.find(clazz, id, LockModeType.NONE);
     }
 
     @Override
-    public T findById(I id) {
-        return getEntityManager().find(entityClass, id, LockModeType.NONE);
-    }
-
-    @Override
-    public Set<T> findByIds(Collection<I> ids) {
+    public <T extends BusinessEntity<I>, I> Set<T> findByIds(Class<T> clazz, Collection<I> ids) {
         if ((ids == null) || (ids.isEmpty())) {
             return Collections.emptySet();
         }
 
-        EntityManager entityManager = getEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-        Root<T> root = criteriaQuery.from(entityClass);
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
+        Root<T> root = criteriaQuery.from(clazz);
 
         criteriaQuery.where(
                 root.get(ENTITY_ID).in(ids)
@@ -54,11 +52,10 @@ public abstract class AbstractBusinessEntityDao<T extends AbstractBusinessEntity
     }
 
     @Override
-    public T findByBusinessId(BusinessId businessId) {
-        EntityManager entityManager = getEntityManager();
+    public <T extends BusinessEntity<I>, I> T findByBusinessId(Class<T> clazz, BusinessId businessId) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-        Root<T> root = criteriaQuery.from(entityClass);
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
+        Root<T> root = criteriaQuery.from(clazz);
 
         criteriaQuery.where(
                 criteriaBuilder.and(
@@ -77,22 +74,25 @@ public abstract class AbstractBusinessEntityDao<T extends AbstractBusinessEntity
     }
 
     @Override
-    public T lockById(I id) {
-        return getEntityManager().find(entityClass, id, LockModeType.PESSIMISTIC_WRITE);
+    public <T extends BusinessEntity<I>, I> T lockById(Class<T> clazz, I id) {
+        return entityManager.find(clazz, id, LockModeType.PESSIMISTIC_WRITE);
     }
 
     @Override
-    public void save(T entity) {
-        EntityManager entityManager = getEntityManager();
+    public <T extends BusinessEntity<I>, I> void lock(T entity) {
+        entityManager.lock(entity, LockModeType.PESSIMISTIC_WRITE);
+    }
 
+    @Override
+    public <T extends BusinessEntity<I>, I> void save(T entity) {
         if (! entityManager.contains(entity)) {
             entityManager.persist(entity);
         }
     }
 
     @Override
-    public void deleteById(I id) {
-        T entity = findById(id);
+    public <T extends BusinessEntity<I>, I> void deleteById(Class<T> clazz, I id) {
+        T entity = findById(clazz, id);
 
         if (entity != null) {
             delete(entity);
@@ -100,17 +100,13 @@ public abstract class AbstractBusinessEntityDao<T extends AbstractBusinessEntity
     }
 
     @Override
-    public void delete(T entity) {
-        getEntityManager().remove(entity);
+    public <T extends BusinessEntity<I>, I> void delete(T entity) {
+        entityManager.remove(entity);
     }
 
     @Override
     public void flush() {
-        getEntityManager().flush();
-    }
-
-    protected EntityManager getEntityManager() {
-        return entityManager;
+        entityManager.flush();
     }
 
     @PersistenceContext

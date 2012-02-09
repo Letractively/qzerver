@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 
 import javax.validation.constraints.NotNull;
 
@@ -68,6 +69,11 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
      * If job fails will disable it
      */
     private boolean disableOnFail;
+
+    /**
+     * Cluster group to execute. If null then action is executed on localhost
+     */
+    private ClusterGroup clusterGroup;
 
     public ScheduleJob() {
         super(BusinessModel.VERSION);
@@ -152,5 +158,13 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setDisableOnFail(boolean disableOnFail) {
         this.disableOnFail = disableOnFail;
+    }
+
+    public ClusterGroup getClusterGroup() {
+        return clusterGroup;
+    }
+
+    public void setClusterGroup(ClusterGroup clusterGroup) {
+        this.clusterGroup = clusterGroup;
     }
 }

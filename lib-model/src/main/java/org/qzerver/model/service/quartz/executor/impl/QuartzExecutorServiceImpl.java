@@ -5,7 +5,8 @@ import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
-import org.qzerver.model.service.job.ScheduleExecutionManagementService;
+import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
+import org.qzerver.model.service.job.execution.dto.StartJobExecutionParameters;
 import org.qzerver.model.service.quartz.executor.QuartzExecutorService;
 import org.qzerver.model.service.quartz.executor.dto.QuartzExecutionParameters;
 import org.slf4j.Logger;
@@ -32,11 +33,12 @@ public class QuartzExecutorServiceImpl implements QuartzExecutorService {
         LOGGER.debug("Job [id={}] is about to execute", parameters.getScheduleJobId());
 
         // Compose execution
-        ScheduleExecution scheduleExecution = executionManagementService.startExecution(
-                parameters.getScheduleJobId(),
-                parameters.getScheduled(),
-                parameters.getFired()
-        );
+        StartJobExecutionParameters executionParameters = new StartJobExecutionParameters();
+        executionParameters.setScheduleJobId(parameters.getScheduleJobId());
+        executionParameters.setScheduled(parameters.getScheduled());
+        executionParameters.setFired(parameters.getFired());
+
+        ScheduleExecution scheduleExecution = executionManagementService.startExecution(executionParameters);
 
         // Pessimistic about execution
         boolean succeed = false;

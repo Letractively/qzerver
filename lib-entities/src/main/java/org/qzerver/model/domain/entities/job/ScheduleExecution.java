@@ -17,13 +17,19 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private Long id;
 
     /**
-     * Job definition
+     * Job reference
      */
-    @NotNull
     private ScheduleJob job;
 
     /**
-     * Cron expression copied from schedule job
+     * Job name (copied from schedule job)
+     */
+    @NotBlank
+    @Length(max = ScheduleJob.MAX_NAME_LENGTH)
+    private String name;
+
+    /**
+     * Cron expression (copied from schedule job)
      */
     @NotBlank
     @Length(max = ScheduleJob.MAX_CRON_LENGTH)
@@ -67,17 +73,17 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private boolean cancelled;
 
     /**
-     * Action to execute - copied from schedule job
+     * Action to execute (copied from schedule job)
      */
     @NotNull
     private ScheduleAction action;
 
     /**
-     * Name of node where the execution happened
+     * Name of host where the execution happened
      */
     @NotBlank
     @Length(max = MAX_NODE_LENGTH)
-    private String node;
+    private String hostname;
 
     public ScheduleExecution() {
         super(BusinessModel.VERSION);
@@ -178,12 +184,20 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.succeed = succeed;
     }
 
-    public String getNode() {
-        return node;
+    public String getHostname() {
+        return hostname;
     }
 
-    public void setNode(String node) {
-        this.node = node;
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 

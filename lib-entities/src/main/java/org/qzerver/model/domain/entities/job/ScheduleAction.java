@@ -2,7 +2,6 @@ package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.qzerver.model.domain.business.BusinessModel;
-import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -15,7 +14,7 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
      * Action type
      */
     @NotNull
-    private ScheduleActionType type = ScheduleActionType.NOP;
+    private ScheduleActionType type = ScheduleActionType.LOCAL_COMMAND;
 
     /**
      * Action configuration (XML or JSON)
@@ -23,15 +22,13 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
     private String definition;
 
     /**
-     * Cluster group to execute. If null then action is executed on localhost
-     */
-    private ClusterGroup clusterGroup;
-
-    /**
-     * Whether the action is referenced by schedule job
+     * Whether the action is not referenced by any schedule job
      */
     private boolean archived;
 
+    /**
+     * When the action was created
+     */
     @NotNull
     private Date created;
 
@@ -46,14 +43,6 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ClusterGroup getClusterGroup() {
-        return clusterGroup;
-    }
-
-    public void setClusterGroup(ClusterGroup clusterGroup) {
-        this.clusterGroup = clusterGroup;
     }
 
     public String getDefinition() {

@@ -1,6 +1,5 @@
 package org.qzerver.model.dao.cluster;
 
-import com.gainmatrix.lib.business.BusinessEntityDao;
 import com.gainmatrix.lib.paging.Extraction;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.springframework.stereotype.Repository;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClusterGroupDao extends BusinessEntityDao<ClusterGroup, Long> {
+public interface ClusterGroupDao {
 
     /**
      * Load all group sorted by name
@@ -16,6 +15,5 @@ public interface ClusterGroupDao extends BusinessEntityDao<ClusterGroup, Long> {
      * @return Group list
      */
     List<ClusterGroup> findAllGroups(Extraction extraction);
-
 
 }

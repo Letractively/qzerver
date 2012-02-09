@@ -23,10 +23,9 @@ public class JpaTest extends AbstractModelTest {
         group.setName("test");
 
         ScheduleAction action = new ScheduleAction();
-        action.setType(ScheduleActionType.NOP);
+        action.setType(ScheduleActionType.LOCAL_COMMAND);
         action.setArchived(false);
         action.setDefinition("<xml/>");
-        action.setClusterGroup(null);
         action.setCreated(new Date(1213232323L));
 
         ScheduleJob job = new ScheduleJob();
@@ -35,6 +34,7 @@ public class JpaTest extends AbstractModelTest {
         job.setCron("0 0 * * * ?");
         job.setEnabled(true);
         job.setStandby(false);
+        job.setClusterGroup(null);
         job.setAction(action);
 
         group.getJobs().add(job);

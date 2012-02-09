@@ -34,12 +34,18 @@
                 <column name="disable_fail" nullable="false"/>
             </basic>
             <version name="version"/>
+            <many-to-one name="clusterGroup" fetch="LAZY" optional="true">
+                <join-column name="cluster_group_id" referenced-column-name="id" nullable="true"/>
+            </many-to-one>
             <many-to-one name="group" fetch="LAZY" optional="false">
                 <join-column name="schedule_group_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
-            <many-to-one name="action" fetch="LAZY" optional="false">
+            <one-to-one name="action" fetch="LAZY" optional="false" orphan-removal="false">
                 <join-column name="schedule_action_id" referenced-column-name="id" nullable="false"/>
-            </many-to-one>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
         </attributes>
     </entity>
 

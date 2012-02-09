@@ -24,7 +24,7 @@
 
     <properties>
         <!-- Dependencies -->
-        <com.gainmatrix.lib-beans.version>1.4</com.gainmatrix.lib-beans.version>
+        <com.gainmatrix.lib-beans.version>1.5-SNAPSHOT</com.gainmatrix.lib-beans.version>
         <com.gainmatrix.lib-spring.version>1.4</com.gainmatrix.lib-spring.version>
         <com.gainmatrix.lib-web.version>1.4</com.gainmatrix.lib-web.version>
         <com.gainmatrix.lib-log4j.version>1.0</com.gainmatrix.lib-log4j.version>

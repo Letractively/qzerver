@@ -6,41 +6,43 @@ import com.google.common.base.Preconditions;
 public enum ScheduleActionType implements Coded {
 
     /**
-     * Nothing to do
-     */
-    NOP(0),
-
-    /**
      * Execute local command
      */
-    LOCAL_COMMAND(1),
+    LOCAL_COMMAND(0, true),
 
     /**
      * Execute remote command on cluster
      */
-    SSH_COMMAND(2),
+    SSH_COMMAND(1, false),
 
     /**
      * HTTP request on cluster
      */
-    HTTP(3),
+    HTTP(2, false),
 
     /**
      * JMX call on cluster
      */
-    JMX(4),
+    JMX(3, false),
 
     /**
      * Socket request on cluster
      */
-    SOCKET(5);
+    SOCKET(4, false);
 
-    ScheduleActionType(int ordinal) {
+    private boolean local;
+
+    ScheduleActionType(int ordinal, boolean local) {
         Preconditions.checkState(ordinal == this.ordinal());
+        this.local = local;
     }
 
     @Override
     public int getCode() {
         return ordinal();
+    }
+
+    public boolean isLocal() {
+        return local;
     }
 }

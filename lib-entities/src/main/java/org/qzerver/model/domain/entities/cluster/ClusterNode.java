@@ -16,19 +16,34 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     private Long id;
 
+    /**
+     * Order of the node in the group list
+     */
     @Min(0)
     private int orderIndex;
 
+    /**
+     * Domain (FQDN)
+     */
     @NotBlank
     @Length(max = MAX_DOMAIN_LENGTH)
     private String domain;
 
+    /**
+     * Node comment
+     */
     @Length(max = MAX_COMMENT_LENGTH)
     private String comment;
 
+    /**
+     * Owner group
+     */
     @NotNull
     private ClusterGroup group;
 
+    /**
+     * Is the node active
+     */
     private boolean active;
 
     public ClusterNode() {

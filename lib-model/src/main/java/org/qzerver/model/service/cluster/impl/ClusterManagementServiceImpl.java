@@ -1,14 +1,18 @@
 package org.qzerver.model.service.cluster.impl;
 
+import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;
 import com.google.common.base.Preconditions;
 import org.qzerver.model.dao.cluster.ClusterGroupDao;
-import org.qzerver.model.dao.cluster.ClusterNodeDao;
+import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.cluster.ClusterStrategy;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
+import org.qzerver.model.service.cluster.exception.ClusterGroupUsed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -24,9 +28,12 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     private ClusterGroupDao clusterGroupDao;
 
-    private ClusterNodeDao clusterNodeDao;
+    private ScheduleJobDao scheduleJobDao;
+
+    protected BusinessEntityDao businessEntityDao;
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClusterGroup> getAllGroups(Extraction extraction) {
         return clusterGroupDao.findAllGroups(extraction);
     }
@@ -41,14 +48,14 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         clusterGroup.setStrategy(strategy);
         clusterGroup.setRollingIndex(0);
 
-        clusterGroupDao.save(clusterGroup);
+        businessEntityDao.save(clusterGroup);
 
         return clusterGroup;
     }
 
     @Override
     public ClusterGroup modifyGroup(long clusterGroupId, String name, ClusterStrategy strategy) {
-        ClusterGroup clusterGroup = clusterGroupDao.lockById(clusterGroupId);
+        ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
         }
@@ -61,19 +68,27 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    public void deleteGroup(long clusterGroupId) {
-        clusterGroupDao.deleteById(clusterGroupId);
+    public void deleteGroup(long clusterGroupId) throws AbstractServiceException {
+        List<ScheduleJob> jobs = scheduleJobDao.findAllByClusterGroup(clusterGroupId);
+        if ((jobs != null) && (jobs.size() > 0)) {
+            throw new ClusterGroupUsed();
+        }
+
+        businessEntityDao.deleteById(ScheduleJob.class, clusterGroupId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ClusterGroup getGroup(long clusterGroupId) {
-        return clusterGroupDao.findById(clusterGroupId);
+        ClusterGroup clusterGroup = businessEntityDao.findById(ClusterGroup.class, clusterGroupId);
+        clusterGroup.getNodes().size();
+        return clusterGroup;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int rollGroupIndex(long clusterGroupId) {
-        ClusterGroup clusterGroup = clusterGroupDao.lockById(clusterGroupId);
+        ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
         }
@@ -101,7 +116,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     @Override
     public ClusterNode createNode(long clusterGroupId, String domain, String comment, boolean activity) {
-        ClusterGroup clusterGroup = clusterGroupDao.lockById(clusterGroupId);
+        ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
         }
@@ -119,23 +134,25 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     @Override
     public void deleteNode(long clusterNodeId) {
-        ClusterNode clusterNode = clusterNodeDao.findById(clusterNodeId);
+        ClusterNode clusterNode = businessEntityDao.findById(ClusterNode.class, clusterNodeId);
         if (clusterNode == null) {
             throw new MissingEntityException(ClusterNode.class, clusterNodeId);
         }
 
-        ClusterGroup clusterGroup = clusterGroupDao.lockById(clusterNode.getGroup().getId());
+        ClusterGroup clusterGroup = clusterNode.getGroup();
+        businessEntityDao.lock(clusterGroup);
 
         if (clusterGroup.getRollingIndex() > clusterNode.getOrderIndex()) {
             clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
         }
 
         clusterGroup.getNodes().remove(clusterNode);
+        businessEntityDao.delete(clusterNode);
     }
 
     @Override
     public ClusterNode modifyNode(long clusterNodeId, String domain, String comment, boolean activity) {
-        ClusterNode clusterNode = clusterNodeDao.lockById(clusterNodeId);
+        ClusterNode clusterNode = businessEntityDao.lockById(ClusterNode.class, clusterNodeId);
         if (clusterNode == null) {
             throw new MissingEntityException(ClusterNode.class, clusterNodeId);
         }
@@ -153,7 +170,12 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Required
-    public void setClusterNodeDao(ClusterNodeDao clusterNodeDao) {
-        this.clusterNodeDao = clusterNodeDao;
+    public void setScheduleJobDao(ScheduleJobDao scheduleJobDao) {
+        this.scheduleJobDao = scheduleJobDao;
+    }
+
+    @Required
+    public void setBusinessEntityDao(BusinessEntityDao businessEntityDao) {
+        this.businessEntityDao = businessEntityDao;
     }
 }
