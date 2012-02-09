@@ -186,7 +186,11 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     @Override
     @Transactional(readOnly = true)
     public ScheduleExecution getExecution(long scheduleExecutionId) {
-        return businessEntityDao.findById(ScheduleExecution.class, scheduleExecutionId);
+        ScheduleExecution scheduleExecution = businessEntityDao.findById(ScheduleExecution.class, scheduleExecutionId);
+        scheduleExecution.getResults().size();
+        scheduleExecution.getNodes().size();
+        scheduleExecution.getAction().getVersion();
+        return scheduleExecution;
     }
 
     @Override

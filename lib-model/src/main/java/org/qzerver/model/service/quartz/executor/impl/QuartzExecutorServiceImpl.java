@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
-
 @Transactional(propagation = Propagation.NEVER)
 public class QuartzExecutorServiceImpl implements QuartzExecutorService {
 
