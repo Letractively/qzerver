@@ -2,6 +2,7 @@ package org.qzerver.model.service.job.impl;
 
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.time.Chronometer;
+import org.apache.commons.lang.StringUtils;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.action.ActionResult;
@@ -12,7 +13,7 @@ import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
-import org.qzerver.model.service.job.ExecutionManagementService;
+import org.qzerver.model.service.job.ScheduleExecutionManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,9 +26,9 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
-public class ExecutionManagementServiceImpl implements ExecutionManagementService {
+public class ScheduleExecutionManagementServiceImpl implements ScheduleExecutionManagementService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutionManagementServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleExecutionManagementServiceImpl.class);
 
     private ScheduleJobDao scheduleJobDao;
 
@@ -37,8 +38,12 @@ public class ExecutionManagementServiceImpl implements ExecutionManagementServic
 
     private ClusterManagementService clusterManagementService;
 
+    private String node;
+
     @Override
     public ScheduleExecution startExecution(long scheduleJobId, Date scheduled, Date fired) {
+        LOGGER.debug("Start execution of job [id={}]", scheduleJobId);
+
         ScheduleJob scheduleJob = scheduleJobDao.lockById(scheduleJobId);
         if (scheduleJob == null) {
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
@@ -53,6 +58,7 @@ public class ExecutionManagementServiceImpl implements ExecutionManagementServic
         scheduleExecution.setCancelled(false);
         scheduleExecution.setFinished(null);
         scheduleExecution.setSucceed(false);
+        scheduleExecution.setNode(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
 
         ClusterGroup clusterGroup = scheduleJob.getAction().getClusterGroup();
         if (clusterGroup != null) {
@@ -149,33 +155,28 @@ public class ExecutionManagementServiceImpl implements ExecutionManagementServic
     }
 
     @Required
-    public ScheduleJobDao getScheduleJobDao() {
-        return scheduleJobDao;
-    }
-
-    @Required
     public void setScheduleJobDao(ScheduleJobDao scheduleJobDao) {
         this.scheduleJobDao = scheduleJobDao;
     }
 
     @Required
-    public ScheduleExecutionDao getScheduleExecutionDao() {
-        return scheduleExecutionDao;
-    }
-
     public void setScheduleExecutionDao(ScheduleExecutionDao scheduleExecutionDao) {
         this.scheduleExecutionDao = scheduleExecutionDao;
     }
 
-    public Chronometer getChronometer() {
-        return chronometer;
-    }
-
+    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
+    @Required
     public void setClusterManagementService(ClusterManagementService clusterManagementService) {
         this.clusterManagementService = clusterManagementService;
     }
+
+    @Required
+    public void setNode(String node) {
+        this.node = node;
+    }
+
 }

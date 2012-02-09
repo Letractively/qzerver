@@ -144,7 +144,7 @@
          <property name="attributePublishers">
              <list value-type="com.gainmatrix.lib.web.attribute.AttributePublisher">
                  <bean class="org.qzerver.web.attribute.render.RenderContextAttributePublisher">
-                     <property name="domain" value="${app.domain}"/>
+                     <property name="web" value="${app.web}"/>
                      <property name="chronometer" ref="chronometer"/>
                      <property name="clientI18nResolver" ref="clientI18nResolver"/>
                  </bean>

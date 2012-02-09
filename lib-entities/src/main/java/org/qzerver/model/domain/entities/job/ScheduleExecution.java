@@ -12,6 +12,8 @@ import java.util.List;
 
 public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
+    public static final int MAX_NODE_LENGTH = 128;
+
     private Long id;
 
     /**
@@ -69,6 +71,13 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      */
     @NotNull
     private ScheduleAction action;
+
+    /**
+     * Name of node where the execution happened
+     */
+    @NotBlank
+    @Length(max = MAX_NODE_LENGTH)
+    private String node;
 
     public ScheduleExecution() {
         super(BusinessModel.VERSION);
@@ -167,6 +176,14 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public void setSucceed(boolean succeed) {
         this.succeed = succeed;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 }
 

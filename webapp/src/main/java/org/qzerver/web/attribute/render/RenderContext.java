@@ -15,7 +15,7 @@ public class RenderContext implements Serializable {
 
     private Date now;
 
-    private String domain;
+    private String web;
 
     public int getRevision() {
         return revision;
@@ -49,11 +49,11 @@ public class RenderContext implements Serializable {
         this.now = now;
     }
 
-    public String getDomain() {
-        return domain;
+    public String getWeb() {
+        return web;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setWeb(String web) {
+        this.web = web;
     }
 }

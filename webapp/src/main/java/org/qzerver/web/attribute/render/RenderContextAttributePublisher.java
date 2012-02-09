@@ -12,7 +12,7 @@ public class RenderContextAttributePublisher implements AttributePublisher {
 
     public static final String ATTRIBUTE_NAME = "renderContext";
 
-    private String domain;
+    private String web;
 
     private Chronometer chronometer;
 
@@ -22,9 +22,8 @@ public class RenderContextAttributePublisher implements AttributePublisher {
     public void publish(HttpServletRequest request) {
         RenderContext renderContext = new RenderContext();
         renderContext.setNow(chronometer.getCurrentMoment());
-        renderContext.setDomain(domain);
+        renderContext.setWeb(web);
         renderContext.setRevision(BusinessModel.VERSION);
-
         renderContext.setLocale(clientI18nResolver.getLocale());
         renderContext.setTimezone(clientI18nResolver.getTimeZone());
 
@@ -42,7 +41,7 @@ public class RenderContextAttributePublisher implements AttributePublisher {
     }
 
     @Required
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setWeb(String web) {
+        this.web = web;
     }
 }

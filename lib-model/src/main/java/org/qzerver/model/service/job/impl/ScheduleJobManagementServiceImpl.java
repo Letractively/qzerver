@@ -1,13 +1,13 @@
 package org.qzerver.model.service.job.impl;
 
-import org.qzerver.model.service.job.JobManagementService;
+import org.qzerver.model.service.job.ScheduleJobManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(propagation = Propagation.REQUIRED)
-public class JobManagementServiceImpl implements JobManagementService {
+public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JobManagementServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleJobManagementServiceImpl.class);
 }

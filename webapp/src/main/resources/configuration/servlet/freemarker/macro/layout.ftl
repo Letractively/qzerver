@@ -29,7 +29,7 @@
 [#macro head titleCode="" cssIncludes=[] jsIncludes=[]]
 <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-    <link rel="author" href="http://${renderContext.domain}" />
+    <link rel="author" href="http://${renderContext.web}" />
     <link rel="shortcut icon" href="[@system.resource "/favicon.ico"/]" type="image/x-icon" />
     <link href="[@system.resource "/css/common.css"/]" rel="stylesheet" type="text/css" media="all"/>
     [#list cssIncludes as cssInclude]

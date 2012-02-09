@@ -98,6 +98,37 @@ public class DbConfigurator {
     }
 
     /**
+     * Get test SQL query
+     * @return SQL query text
+     */
+    public String getTestSQLQuery() {
+        switch (type) {
+            case HSQLDB:
+                return "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS";
+            case MYSQLINNO:
+                return "SELECT 1";
+            case POSTGRES:
+                return "SELECT 1";
+            case FIREBIRD:
+                return "SELECT 1";
+            case INTERBASE:
+                return "SELECT 1";
+            case ORACLE8I:
+                return "SELECT 1 FROM DUAL";
+            case ORACLE9I:
+                return "SELECT 1 FROM DUAL";
+            case ORACLE10G:
+                return "SELECT 1 FROM DUAL";
+            case MSSQL2005:
+                return "SELECT 1";
+            case MSSQL2008  :
+                return "SELECT 1";
+            default:
+                throw new IllegalStateException("DB type is not supported: " + type);
+        }
+    }
+
+    /**
      * Type of generator
      * @return Is new generator type used
      */

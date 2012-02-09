@@ -5,7 +5,7 @@ import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
-import org.qzerver.model.service.job.ExecutionManagementService;
+import org.qzerver.model.service.job.ScheduleExecutionManagementService;
 import org.qzerver.model.service.quartz.executor.QuartzExecutorService;
 import org.qzerver.model.service.quartz.executor.dto.QuartzExecutionParameters;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class QuartzExecutorServiceImpl implements QuartzExecutorService {
 
     private Validator beanValidator;
 
-    private ExecutionManagementService executionManagementService;
+    private ScheduleExecutionManagementService executionManagementService;
 
     @Override
     public void executeJob(QuartzExecutionParameters parameters) {
@@ -80,7 +80,7 @@ public class QuartzExecutorServiceImpl implements QuartzExecutorService {
     }
 
     @Required
-    public void setExecutionManagementService(ExecutionManagementService executionManagementService) {
+    public void setExecutionManagementService(ScheduleExecutionManagementService executionManagementService) {
         this.executionManagementService = executionManagementService;
     }
 }

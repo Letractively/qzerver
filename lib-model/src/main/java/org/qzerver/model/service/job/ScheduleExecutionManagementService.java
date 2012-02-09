@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public interface ExecutionManagementService {
+public interface ScheduleExecutionManagementService {
 
     ScheduleExecution startExecution(long scheduleJobId, Date scheduled, Date fired);
 
