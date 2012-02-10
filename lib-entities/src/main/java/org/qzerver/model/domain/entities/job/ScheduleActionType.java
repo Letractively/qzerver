@@ -8,33 +8,33 @@ public enum ScheduleActionType implements Coded {
     /**
      * Execute local command
      */
-    LOCAL_COMMAND(0, true),
+    LOCAL_COMMAND(0, false),
 
     /**
      * Execute remote command on cluster
      */
-    SSH_COMMAND(1, false),
+    SSH_COMMAND(1, true),
 
     /**
      * HTTP request on cluster
      */
-    HTTP(2, false),
+    HTTP(2, true),
 
     /**
      * JMX call on cluster
      */
-    JMX(3, false),
+    JMX(3, true),
 
     /**
      * Socket request on cluster
      */
-    SOCKET(4, false);
+    SOCKET(4, true);
 
-    private boolean local;
+    private boolean clustered;
 
-    ScheduleActionType(int ordinal, boolean local) {
+    ScheduleActionType(int ordinal, boolean clustered) {
         Preconditions.checkState(ordinal == this.ordinal());
-        this.local = local;
+        this.clustered = clustered;
     }
 
     @Override
@@ -42,7 +42,7 @@ public enum ScheduleActionType implements Coded {
         return ordinal();
     }
 
-    public boolean isLocal() {
-        return local;
+    public boolean isClustered() {
+        return clustered;
     }
 }

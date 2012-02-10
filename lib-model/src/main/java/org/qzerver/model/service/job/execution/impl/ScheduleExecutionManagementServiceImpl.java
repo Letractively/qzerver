@@ -9,10 +9,7 @@ import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.job.ScheduleExecution;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
-import org.qzerver.model.domain.entities.job.ScheduleJob;
+import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartJobExecutionParameters;
@@ -25,6 +22,7 @@ import org.springframework.validation.Validator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
@@ -55,6 +53,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
             throw new MissingEntityException(ScheduleJob.class, parameters.getScheduleJobId());
         }
 
+        Date now = chronometer.getCurrentMoment();
+
         ScheduleExecution scheduleExecution = new ScheduleExecution();
         scheduleExecution.setJob(scheduleJob);
         scheduleExecution.setAction(scheduleJob.getAction());
@@ -62,13 +62,17 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setName(scheduleJob.getName());
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
-        scheduleExecution.setCancelled(false);
+        scheduleExecution.setManual(parameters.isManual());
+        scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCESS);
+        scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
-        scheduleExecution.setSucceed(false);
         scheduleExecution.setHostname(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
 
         ClusterGroup clusterGroup = scheduleJob.getClusterGroup();
-        if ((clusterGroup != null) && (! scheduleJob.getAction().getType().isLocal())) {
+        if ((clusterGroup != null) && (scheduleJob.getAction().getType().isClustered())) {
+            scheduleExecution.setNodesTotalNumber(clusterGroup.getNodes().size());
+            scheduleExecution.setTimeoutMs(clusterGroup.getLimitDurationMs());
+
             List<ClusterNode> clusterNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
             switch (clusterGroup.getStrategy()) {
@@ -110,6 +114,12 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                     break;
             }
 
+            if (clusterGroup.getLimitTrials() > 0) {
+                if (clusterGroup.getLimitTrials() < clusterNodes.size()) {
+                    clusterNodes = clusterNodes.subList(0, clusterGroup.getLimitTrials());
+                }
+            }
+
             for (ClusterNode clusterNode : clusterNodes) {
                 ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
                 executionNode.setLocalhost(false);
@@ -118,6 +128,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                 scheduleExecution.getNodes().add(executionNode);
             }
         } else {
+            scheduleExecution.setNodesTotalNumber(1);
+            scheduleExecution.setTimeoutMs(0);
+
             ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
             executionNode.setLocalhost(true);
             executionNode.setDomain("localhost");
@@ -171,14 +184,14 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public ScheduleExecution finishExecution(long scheduleExecutionId, boolean succeed) {
+    public ScheduleExecution finishExecution(long scheduleExecutionId, ScheduleExecutionStatus status) {
         ScheduleExecution scheduleExecution = businessEntityDao.lockById(ScheduleExecution.class, scheduleExecutionId);
         if (scheduleExecution == null) {
             throw new MissingEntityException(ScheduleExecution.class, scheduleExecutionId);
         }
 
         scheduleExecution.setFinished(chronometer.getCurrentMoment());
-        scheduleExecution.setSucceed(succeed);
+        scheduleExecution.setStatus(status);
 
         return scheduleExecution;
     }

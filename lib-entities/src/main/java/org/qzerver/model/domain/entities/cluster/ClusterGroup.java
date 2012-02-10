@@ -41,6 +41,18 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
     @Min(0)
     private int rollingIndex;
 
+    /**
+     * Limit the number of all trials. Value 0 means no limit
+     */
+    @Min(0)
+    private int limitTrials;
+
+    /**
+     * Limit the duration of all trials in milliseconds. Value 0 means no limit
+     */
+    @Min(0)
+    private int limitDurationMs;
+
     public ClusterGroup() {
         super(BusinessModel.VERSION);
     }
@@ -87,5 +99,21 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
 
     public void setStrategy(ClusterStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public int getLimitTrials() {
+        return limitTrials;
+    }
+
+    public void setLimitTrials(int limitTrials) {
+        this.limitTrials = limitTrials;
+    }
+
+    public int getLimitDurationMs() {
+        return limitDurationMs;
+    }
+
+    public void setLimitDurationMs(int limitDurationMs) {
+        this.limitDurationMs = limitDurationMs;
     }
 }

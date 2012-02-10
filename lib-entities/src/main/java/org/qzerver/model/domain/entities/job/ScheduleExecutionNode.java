@@ -20,7 +20,7 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
     private int orderIndex;
 
     /**
-     * Domain (FQDN)
+     * Domain
      */
     @NotBlank
     @Length(max = ClusterNode.MAX_DOMAIN_LENGTH)

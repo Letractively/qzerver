@@ -23,7 +23,7 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
     private int orderIndex;
 
     /**
-     * Domain (FQDN)
+     * Domain
      */
     @NotBlank
     @Length(max = MAX_DOMAIN_LENGTH)

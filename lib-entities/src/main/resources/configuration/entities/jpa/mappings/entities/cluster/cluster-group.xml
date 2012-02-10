@@ -22,6 +22,12 @@
                 <column name="strategy" nullable="false"/>
                 <enumerated>ORDINAL</enumerated>
             </basic>
+            <basic name="limitTrials">
+                <column name="limit_trials" nullable="false"/>
+            </basic>
+            <basic name="limitDurationMs">
+                <column name="limit_duration" nullable="false"/>
+            </basic>
             <version name="version"/>
             <one-to-many name="nodes" fetch="LAZY" mapped-by="group" orphan-removal="true">
                 <order-by>orderIndex</order-by>

@@ -14,6 +14,8 @@ public class StartJobExecutionParameters implements Serializable {
     @NotNull
     private Date fired;
 
+    private boolean manual;
+
     public Date getFired() {
         return fired;
     }
@@ -36,5 +38,13 @@ public class StartJobExecutionParameters implements Serializable {
 
     public void setScheduleJobId(long scheduleJobId) {
         this.scheduleJobId = scheduleJobId;
+    }
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    public void setManual(boolean manual) {
+        this.manual = manual;
     }
 }

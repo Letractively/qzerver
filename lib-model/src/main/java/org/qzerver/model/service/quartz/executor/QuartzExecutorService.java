@@ -7,9 +7,15 @@ import org.springframework.stereotype.Service;
 public interface QuartzExecutorService {
 
     /**
-     * Execute Quartz job with the specified parameters
+     * Execute schedule job (initiated by Quartz trigger)
      * @param parameters Execution parameters
      */
-    void executeJob(QuartzExecutionParameters parameters);
+    void executeAutomaticJob(QuartzExecutionParameters parameters);
+
+    /**
+     * Execute schedule job (inititated manually)
+      * @param scheduleJobId Schedule job identifier
+     */
+    void executeManualJob(long scheduleJobId);
 
 }

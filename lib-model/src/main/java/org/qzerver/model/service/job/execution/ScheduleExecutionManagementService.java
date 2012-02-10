@@ -3,6 +3,7 @@ package org.qzerver.model.service.job.execution;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
 import org.qzerver.model.service.job.execution.dto.StartJobExecutionParameters;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +35,10 @@ public interface ScheduleExecutionManagementService {
     /**
      * Register finish of the whole execution
      * @param scheduleExecutionId Schedule execution identifier
-     * @param succeed Whether execution succeed
+     * @param status Status of execution
      * @return Schedule execution entity
      */
-    ScheduleExecution finishExecution(long scheduleExecutionId, boolean succeed);
+    ScheduleExecution finishExecution(long scheduleExecutionId, ScheduleExecutionStatus status);
 
     /**
      * Request execution entity

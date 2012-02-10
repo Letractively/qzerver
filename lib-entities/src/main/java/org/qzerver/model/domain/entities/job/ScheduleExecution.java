@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModel;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,16 +47,27 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private List<ScheduleExecutionResult> results;
 
     /**
-     * Moment when execution should be started
+     * Moment when execution should be started (from Quartz)
      */
     @NotNull
     private Date scheduled;
 
     /**
-     * Moment when execution has been actually started
+     * Moment when execution has been actually started (from Quartz)
      */
     @NotNull
     private Date fired;
+
+    /**
+     * Moment when execution is registered
+     */
+    @NotNull
+    private Date started;
+
+    /**
+     * Whether the execution was started manually
+     */
+    private boolean manual;
 
     /**
      * Moment when execution is finished
@@ -63,12 +75,25 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private Date finished;
 
     /**
-     * Whether the execution succeed
+     * Timeout for execution in milliseconds (copied from cluster). Value 0 means no timeout
      */
-    private boolean succeed;
+    @Min(0)
+    private long timeoutMs;
 
     /**
-     * Execution is cancelled
+     * Number of all nodes in the cluster when execution started (nodes collection is limited)
+     */
+    @Min(0)
+    private long nodesTotalNumber;
+
+    /**
+     * Status of finished execution
+     */
+    @NotNull
+    private ScheduleExecutionStatus status = ScheduleExecutionStatus.SUCCESS;
+
+    /**
+     * Flag indicates that execution must cancel all other pending nodes
      */
     private boolean cancelled;
 
@@ -160,12 +185,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.finished = finished;
     }
 
-    public boolean isCancelled() {
-        return cancelled;
+    public ScheduleExecutionStatus getStatus() {
+        return status;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setStatus(ScheduleExecutionStatus status) {
+        this.status = status;
     }
 
     public ScheduleAction getAction() {
@@ -174,14 +199,6 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public void setAction(ScheduleAction action) {
         this.action = action;
-    }
-
-    public boolean isSucceed() {
-        return succeed;
-    }
-
-    public void setSucceed(boolean succeed) {
-        this.succeed = succeed;
     }
 
     public String getHostname() {
@@ -198,6 +215,46 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getStarted() {
+        return started;
+    }
+
+    public void setStarted(Date started) {
+        this.started = started;
+    }
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    public void setManual(boolean manual) {
+        this.manual = manual;
+    }
+
+    public long getTimeoutMs() {
+        return timeoutMs;
+    }
+
+    public void setTimeoutMs(long timeoutMs) {
+        this.timeoutMs = timeoutMs;
+    }
+
+    public long getNodesTotalNumber() {
+        return nodesTotalNumber;
+    }
+
+    public void setNodesTotalNumber(long nodesTotalNumber) {
+        this.nodesTotalNumber = nodesTotalNumber;
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
 

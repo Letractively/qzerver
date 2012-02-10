@@ -10,6 +10,7 @@
     <bean id="quartzExecutorService" class="org.qzerver.model.service.quartz.executor.impl.QuartzExecutorServiceImpl">
         <property name="beanValidator" ref="beanValidator"/>
         <property name="executionManagementService" ref="scheduleExecutionManagementService"/>
+        <property name="chronometer" ref="chronometer"/>
     </bean>
 
     <bean id="clusterManagementService" class="org.qzerver.model.service.cluster.impl.ClusterManagementServiceImpl">

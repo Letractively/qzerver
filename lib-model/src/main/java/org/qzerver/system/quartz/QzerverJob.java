@@ -33,7 +33,7 @@ public class QzerverJob implements Job {
             parameters.setScheduled(context.getScheduledFireTime());
 
             try {
-                executor.executeJob(parameters);
+                executor.executeAutomaticJob(parameters);
             } catch (Exception e) {
                 LOGGER.error("Fail to execute job with id : " + scheduleJobId, e);
             }
