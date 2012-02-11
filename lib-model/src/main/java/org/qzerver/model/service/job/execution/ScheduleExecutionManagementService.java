@@ -4,7 +4,7 @@ import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
-import org.qzerver.model.service.job.execution.dto.StartJobExecutionParameters;
+import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +15,7 @@ public interface ScheduleExecutionManagementService {
      * @param parameters Execution parameters
      * @return Schedule job entity
      */
-    ScheduleExecution startExecution(StartJobExecutionParameters parameters);
+    ScheduleExecution startExecution(StartExecutionParameters parameters);
 
     /**
      * Register start of node execution

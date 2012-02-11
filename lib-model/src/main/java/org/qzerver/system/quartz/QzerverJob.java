@@ -2,8 +2,8 @@ package org.qzerver.system.quartz;
 
 import com.google.common.base.Preconditions;
 import org.quartz.*;
-import org.qzerver.model.service.quartz.executor.QuartzExecutorService;
-import org.qzerver.model.service.quartz.executor.dto.QuartzExecutionParameters;
+import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
+import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -23,17 +23,17 @@ public class QzerverJob implements Job {
             ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
             Preconditions.checkNotNull(applicationContext, "Application context is not set");
 
-            QuartzExecutorService executor = applicationContext.getBean(QuartzExecutorService.class);
+            ScheduleJobExecutorService executorService = applicationContext.getBean(ScheduleJobExecutorService.class);
 
             long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
 
-            QuartzExecutionParameters parameters = new QuartzExecutionParameters();
+            AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
             parameters.setScheduleJobId(scheduleJobId);
             parameters.setFired(context.getFireTime());
             parameters.setScheduled(context.getScheduledFireTime());
 
             try {
-                executor.executeAutomaticJob(parameters);
+                executorService.executeAutomaticJob(parameters);
             } catch (Exception e) {
                 LOGGER.error("Fail to execute job with id : " + scheduleJobId, e);
             }

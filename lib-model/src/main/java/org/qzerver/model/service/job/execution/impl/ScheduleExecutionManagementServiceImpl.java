@@ -12,7 +12,7 @@ import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
-import org.qzerver.model.service.job.execution.dto.StartJobExecutionParameters;
+import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -43,7 +43,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     private Validator beanValidator;
 
     @Override
-    public ScheduleExecution startExecution(StartJobExecutionParameters parameters) {
+    public ScheduleExecution startExecution(StartExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
         LOGGER.debug("Start execution of job [id={}]", parameters.getScheduleJobId());
@@ -63,15 +63,15 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
         scheduleExecution.setManual(parameters.isManual());
-        scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCESS);
+        scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCEED);
         scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
         scheduleExecution.setHostname(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
 
         ClusterGroup clusterGroup = scheduleJob.getClusterGroup();
-        if ((clusterGroup != null) && (scheduleJob.getAction().getType().isClustered())) {
-            scheduleExecution.setNodesTotalNumber(clusterGroup.getNodes().size());
-            scheduleExecution.setTimeoutMs(clusterGroup.getLimitDurationMs());
+        if (clusterGroup != null) {
+            scheduleExecution.setTimeout(clusterGroup.getTimeout());
+            scheduleExecution.setAllNodes(clusterGroup.isAllNodes());
 
             List<ClusterNode> clusterNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
@@ -114,9 +114,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                     break;
             }
 
-            if (clusterGroup.getLimitTrials() > 0) {
-                if (clusterGroup.getLimitTrials() < clusterNodes.size()) {
-                    clusterNodes = clusterNodes.subList(0, clusterGroup.getLimitTrials());
+            if (clusterGroup.getTrials() > 0) {
+                if (clusterGroup.getTrials() < clusterNodes.size()) {
+                    clusterNodes = clusterNodes.subList(0, clusterGroup.getTrials());
                 }
             }
 
@@ -128,8 +128,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                 scheduleExecution.getNodes().add(executionNode);
             }
         } else {
-            scheduleExecution.setNodesTotalNumber(1);
-            scheduleExecution.setTimeoutMs(0);
+            scheduleExecution.setTimeout(0);
+            scheduleExecution.setAllNodes(false);
 
             ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
             executionNode.setLocalhost(true);
@@ -177,8 +177,14 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         }
 
         result.setFinished(chronometer.getCurrentMoment());
-        result.setSucceed(actionResult.isSucceed());
-        result.setResult("<xml></xml>");
+
+        if (actionResult != null) {
+            result.setSucceed(actionResult.isSucceed());
+            result.setResult("<xml></xml>");
+        } else {
+            result.setSucceed(false);
+            result.setResult(null);
+        }
 
         return result;
     }
@@ -192,6 +198,11 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         scheduleExecution.setFinished(chronometer.getCurrentMoment());
         scheduleExecution.setStatus(status);
+
+        scheduleExecution.getResults().size();
+        scheduleExecution.getNodes().size();
+        scheduleExecution.getJob().getVersion();
+        scheduleExecution.getAction().getVersion();
 
         return scheduleExecution;
     }

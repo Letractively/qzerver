@@ -7,16 +7,17 @@
         <constructor-arg index="0" ref="quartzScheduler"/>
     </bean>
 
-    <bean id="quartzExecutorService" class="org.qzerver.model.service.quartz.executor.impl.QuartzExecutorServiceImpl">
-        <property name="beanValidator" ref="beanValidator"/>
-        <property name="executionManagementService" ref="scheduleExecutionManagementService"/>
-        <property name="chronometer" ref="chronometer"/>
-    </bean>
-
     <bean id="clusterManagementService" class="org.qzerver.model.service.cluster.impl.ClusterManagementServiceImpl">
         <property name="clusterGroupDao" ref="clusterGroupDao"/>
         <property name="scheduleJobDao" ref="scheduleJobDao"/>
         <property name="businessEntityDao" ref="businessEntityDao"/>
+    </bean>
+
+    <bean id="scheduleJobExecutorService" class="org.qzerver.model.service.job.executor.impl.ScheduleJobExecutorServiceImpl">
+        <property name="beanValidator" ref="beanValidator"/>
+        <property name="executionManagementService" ref="scheduleExecutionManagementService"/>
+        <property name="chronometer" ref="chronometer"/>
+        <property name="actionAgent" ref="actionAgent"/>
     </bean>
 
     <bean id="scheduleJobManagementService" class="org.qzerver.model.service.job.management.impl.ScheduleJobManagementServiceImpl">
@@ -33,6 +34,10 @@
         <property name="businessEntityDao" ref="businessEntityDao"/>
         <property name="clusterManagementService" ref="clusterManagementService"/>
         <property name="node" value="${app.host}"/>
+    </bean>
+
+    <bean name="actionAgent" class="org.qzerver.model.agent.action.impl.ActionAgentImpl">
+
     </bean>
 
 </beans>

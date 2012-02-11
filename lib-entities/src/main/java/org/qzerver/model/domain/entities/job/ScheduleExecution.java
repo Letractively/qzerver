@@ -78,24 +78,23 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      * Timeout for execution in milliseconds (copied from cluster). Value 0 means no timeout
      */
     @Min(0)
-    private long timeoutMs;
-
-    /**
-     * Number of all nodes in the cluster when execution started (nodes collection is limited)
-     */
-    @Min(0)
-    private long nodesTotalNumber;
+    private long timeout;
 
     /**
      * Status of finished execution
      */
     @NotNull
-    private ScheduleExecutionStatus status = ScheduleExecutionStatus.SUCCESS;
+    private ScheduleExecutionStatus status = ScheduleExecutionStatus.SUCCEED;
 
     /**
      * Flag indicates that execution must cancel all other pending nodes
      */
     private boolean cancelled;
+
+    /**
+     * Execute action on all nodes
+     */
+    private boolean allNodes;
 
     /**
      * Action to execute (copied from schedule job)
@@ -233,20 +232,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.manual = manual;
     }
 
-    public long getTimeoutMs() {
-        return timeoutMs;
+    public long getTimeout() {
+        return timeout;
     }
 
-    public void setTimeoutMs(long timeoutMs) {
-        this.timeoutMs = timeoutMs;
-    }
-
-    public long getNodesTotalNumber() {
-        return nodesTotalNumber;
-    }
-
-    public void setNodesTotalNumber(long nodesTotalNumber) {
-        this.nodesTotalNumber = nodesTotalNumber;
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 
     public boolean isCancelled() {
@@ -256,5 +247,15 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
+    public boolean isAllNodes() {
+        return allNodes;
+    }
+
+    public void setAllNodes(boolean allNodes) {
+        this.allNodes = allNodes;
+    }
 }
+
+
 

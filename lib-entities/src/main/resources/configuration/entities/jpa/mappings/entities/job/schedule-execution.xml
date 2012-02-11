@@ -64,14 +64,14 @@
                 <column name="status" nullable="false"/>
                 <enumerated>ORDINAL</enumerated>
             </basic>
-            <basic name="timeoutMs">
+            <basic name="timeout">
                 <column name="timeout" nullable="false"/>
-            </basic>
-            <basic name="nodesTotalNumber">
-                <column name="nodes_total_number" nullable="false"/>
             </basic>
             <basic name="cancelled">
                 <column name="cancelled" nullable="false"/>
+            </basic>
+            <basic name="allNodes">
+                <column name="all_nodes" nullable="false"/>
             </basic>
             <basic name="hostname">
                 <column name="hostname" nullable="false" length="128"/>

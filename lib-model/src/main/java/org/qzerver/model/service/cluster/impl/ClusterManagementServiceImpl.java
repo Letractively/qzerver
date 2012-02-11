@@ -86,7 +86,6 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public int rollGroupIndex(long clusterGroupId) {
         ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {

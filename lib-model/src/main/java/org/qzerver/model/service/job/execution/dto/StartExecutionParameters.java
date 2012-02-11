@@ -1,10 +1,10 @@
-package org.qzerver.model.service.quartz.executor.dto;
+package org.qzerver.model.service.job.execution.dto;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class QuartzExecutionParameters implements Serializable {
+public class StartExecutionParameters implements Serializable {
 
     private long scheduleJobId;
 
@@ -13,6 +13,8 @@ public class QuartzExecutionParameters implements Serializable {
 
     @NotNull
     private Date fired;
+
+    private boolean manual;
 
     public Date getFired() {
         return fired;
@@ -36,5 +38,13 @@ public class QuartzExecutionParameters implements Serializable {
 
     public void setScheduleJobId(long scheduleJobId) {
         this.scheduleJobId = scheduleJobId;
+    }
+
+    public boolean isManual() {
+        return manual;
+    }
+
+    public void setManual(boolean manual) {
+        this.manual = manual;
     }
 }
