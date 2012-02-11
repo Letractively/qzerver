@@ -1,14 +1,14 @@
-package org.qzerver.model.domain.entities.cluster;
+package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;
 
-public enum ClusterStrategy implements Coded {
+public enum ScheduleExecutionStrategy implements Coded {
 
     /**
      * Circle strategy moves the rolling node index with each execution
      */
-    CIRCLE(0),
+    CIRCULAR(0),
 
     /**
      * Select nodes in random order
@@ -18,9 +18,9 @@ public enum ClusterStrategy implements Coded {
     /**
      * Always start with the first active node
      */
-    LINE(2);
+    INDEXED(2);
 
-    ClusterStrategy(int ordinal) {
+    ScheduleExecutionStrategy(int ordinal) {
         Preconditions.checkState(this.ordinal() == ordinal);
     }
 

@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.action.ActionResult;
@@ -60,6 +61,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setAction(scheduleJob.getAction());
         scheduleExecution.setCron(scheduleJob.getCron());
         scheduleExecution.setName(scheduleJob.getName());
+        scheduleExecution.setStrategy(scheduleJob.getStrategy());
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
         scheduleExecution.setManual(parameters.isManual());
@@ -68,16 +70,16 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setFinished(null);
         scheduleExecution.setHostname(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
 
-        ClusterGroup clusterGroup = scheduleJob.getClusterGroup();
+        ClusterGroup clusterGroup = scheduleJob.getCluster();
         if (clusterGroup != null) {
-            scheduleExecution.setTimeout(clusterGroup.getTimeout());
-            scheduleExecution.setAllNodes(clusterGroup.isAllNodes());
+            scheduleExecution.setTimeout(scheduleJob.getTimeout());
+            scheduleExecution.setAllNodes(scheduleJob.isAllNodes());
 
             List<ClusterNode> clusterNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
-            switch (clusterGroup.getStrategy()) {
+            switch (scheduleExecution.getStrategy()) {
                 // "line" strategy - always start from the first active node
-                case LINE:
+                case INDEXED:
                     for (ClusterNode clusterNode : clusterGroup.getNodes()) {
                         if (clusterNode.isActive()) {
                             clusterNodes.add(clusterNode);
@@ -94,7 +96,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                     Collections.shuffle(clusterNodes);
                     break;
                 // "circle" strategy - step index in cluster and get all active nodes
-                case CIRCLE:
+                case CIRCULAR:
                     int rolledIndex = clusterManagementService.rollGroupIndex(clusterGroup.getId());
                     for (int i=rolledIndex, size=clusterGroup.getNodes().size(); i < size; i++) {
                         ClusterNode clusterNode = clusterGroup.getNodes().get(i);
@@ -114,9 +116,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                     break;
             }
 
-            if (clusterGroup.getTrials() > 0) {
-                if (clusterGroup.getTrials() < clusterNodes.size()) {
-                    clusterNodes = clusterNodes.subList(0, clusterGroup.getTrials());
+            if (scheduleJob.getTrials() > 0) {
+                if (scheduleJob.getTrials() < clusterNodes.size()) {
+                    clusterNodes = clusterNodes.subList(0, scheduleJob.getTrials());
                 }
             }
 
@@ -191,6 +193,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
     @Override
     public ScheduleExecution finishExecution(long scheduleExecutionId, ScheduleExecutionStatus status) {
+        Preconditions.checkNotNull(status);
+
         ScheduleExecution scheduleExecution = businessEntityDao.lockById(ScheduleExecution.class, scheduleExecutionId);
         if (scheduleExecution == null) {
             throw new MissingEntityException(ScheduleExecution.class, scheduleExecutionId);

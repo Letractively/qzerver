@@ -73,6 +73,10 @@
             <basic name="allNodes">
                 <column name="all_nodes" nullable="false"/>
             </basic>
+            <basic name="strategy">
+                <column name="strategy" nullable="false"/>
+                <enumerated>ORDINAL</enumerated>
+            </basic>
             <basic name="hostname">
                 <column name="hostname" nullable="false" length="128"/>
             </basic>

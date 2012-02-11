@@ -30,33 +30,10 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
     private List<ClusterNode> nodes;
 
     /**
-     * Node selection strategy
-     */
-    @NotNull
-    private ClusterStrategy strategy = ClusterStrategy.CIRCLE;
-
-    /**
      * Rolling node index for ClusterStrategy.CIRCLE strategy
      */
     @Min(0)
     private int rollingIndex;
-
-    /**
-     * Limit the number of all trials. Value 0 means no limit
-     */
-    @Min(0)
-    private int trials;
-
-    /**
-     * Limit the duration of all trials in milliseconds. Value 0 means no limit
-     */
-    @Min(0)
-    private int timeout;
-
-    /**
-     * Execute action on all nodes
-     */
-    private boolean allNodes;
 
     public ClusterGroup() {
         super(BusinessModel.VERSION);
@@ -98,35 +75,4 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
         this.rollingIndex = rollingIndex;
     }
 
-    public ClusterStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(ClusterStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public int getTrials() {
-        return trials;
-    }
-
-    public void setTrials(int trials) {
-        this.trials = trials;
-    }
-
-    public int getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
-    }
-
-    public boolean isAllNodes() {
-        return allNodes;
-    }
-
-    public void setAllNodes(boolean allNodes) {
-        this.allNodes = allNodes;
-    }
 }

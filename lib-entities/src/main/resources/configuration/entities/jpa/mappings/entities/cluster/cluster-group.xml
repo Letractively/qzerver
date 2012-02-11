@@ -18,19 +18,6 @@
             <basic name="rollingIndex">
                 <column name="rolling_index" nullable="false"/>
             </basic>
-            <basic name="strategy">
-                <column name="strategy" nullable="false"/>
-                <enumerated>ORDINAL</enumerated>
-            </basic>
-            <basic name="trials">
-                <column name="limit_trials" nullable="false"/>
-            </basic>
-            <basic name="timeout">
-                <column name="limit_duration" nullable="false"/>
-            </basic>
-            <basic name="allNodes">
-                <column name="all_nodes" nullable="false"/>
-            </basic>
             <version name="version"/>
             <one-to-many name="nodes" fetch="LAZY" mapped-by="group" orphan-removal="true">
                 <order-by>orderIndex</order-by>

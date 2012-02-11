@@ -30,11 +30,20 @@
             <basic name="concurrent">
                 <column name="concurrent" nullable="false"/>
             </basic>
-            <basic name="disableOnFail">
-                <column name="disable_fail" nullable="false"/>
+            <basic name="trials">
+                <column name="limit_trials" nullable="false"/>
+            </basic>
+            <basic name="timeout">
+                <column name="limit_duration" nullable="false"/>
+            </basic>
+            <basic name="allNodes">
+                <column name="all_nodes" nullable="false"/>
+            </basic>
+            <basic name="strategy">
+                <column name="strategy" nullable="false"/>
             </basic>
             <version name="version"/>
-            <many-to-one name="clusterGroup" fetch="LAZY" optional="true">
+            <many-to-one name="cluster" fetch="LAZY" optional="true">
                 <join-column name="cluster_group_id" referenced-column-name="id" nullable="true"/>
             </many-to-one>
             <many-to-one name="group" fetch="LAZY" optional="false">

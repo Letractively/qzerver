@@ -34,7 +34,7 @@ public class JpaTest extends AbstractModelTest {
         job.setCron("0 0 * * * ?");
         job.setEnabled(true);
         job.setStandby(false);
-        job.setClusterGroup(null);
+        job.setCluster(null);
         job.setAction(action);
 
         group.getJobs().add(job);

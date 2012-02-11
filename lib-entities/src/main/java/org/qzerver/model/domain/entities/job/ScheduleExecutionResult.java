@@ -30,7 +30,7 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
     private ScheduleExecutionNode node;
 
     /**
-     * Is result succeed
+     * Is result successful
      */
     private boolean succeed;
 

@@ -4,7 +4,6 @@ import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.paging.Extraction;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.cluster.ClusterStrategy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,21 +26,19 @@ public interface ClusterManagementService {
     ClusterGroup getGroup(long clusterGroupId);
 
     /**
+     * Create new cluster group
+     * @param name Name
+     * @return Cluster group
+     */
+    ClusterGroup createGroup(String name);
+
+    /**
      * Modify group
      * @param clusterGroupId Cluster group identifier
      * @param name Name
-     * @param strategy Node selection strategy
      * @return Cluster group
      */
-    ClusterGroup modifyGroup(long clusterGroupId, String name, ClusterStrategy strategy);
-
-    /**
-     * Create new cluster group
-     * @param name Name
-     * @param strategy Node selection strategy
-     * @return Cluster group
-     */
-    ClusterGroup createGroup(String name, ClusterStrategy strategy);
+    ClusterGroup modifyGroup(long clusterGroupId, String name);
 
     /**
      * Roll cluster node index

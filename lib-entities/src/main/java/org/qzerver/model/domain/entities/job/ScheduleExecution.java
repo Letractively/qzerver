@@ -65,14 +65,14 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private Date started;
 
     /**
-     * Whether the execution was started manually
-     */
-    private boolean manual;
-
-    /**
      * Moment when execution is finished
      */
     private Date finished;
+
+    /**
+     * Whether the execution was started manually
+     */
+    private boolean manual;
 
     /**
      * Timeout for execution in milliseconds (copied from cluster). Value 0 means no timeout
@@ -101,6 +101,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      */
     @NotNull
     private ScheduleAction action;
+
+    /**
+     * Strategy which was used to select nodes from cluster
+     */
+    @NotNull
+    private ScheduleExecutionStrategy strategy;
 
     /**
      * Name of host where the execution happened
@@ -255,6 +261,15 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     public void setAllNodes(boolean allNodes) {
         this.allNodes = allNodes;
     }
+
+    public ScheduleExecutionStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(ScheduleExecutionStrategy strategy) {
+        this.strategy = strategy;
+    }
+
 }
 
 

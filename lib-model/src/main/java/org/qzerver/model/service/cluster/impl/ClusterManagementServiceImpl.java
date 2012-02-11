@@ -9,7 +9,6 @@ import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.cluster.ClusterStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.cluster.exception.ClusterGroupUsed;
@@ -39,13 +38,11 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    public ClusterGroup createGroup(String name, ClusterStrategy strategy) {
+    public ClusterGroup createGroup(String name) {
         Preconditions.checkNotNull(name);
-        Preconditions.checkNotNull(strategy);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName(name);
-        clusterGroup.setStrategy(strategy);
         clusterGroup.setRollingIndex(0);
 
         businessEntityDao.save(clusterGroup);
@@ -54,15 +51,15 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    public ClusterGroup modifyGroup(long clusterGroupId, String name, ClusterStrategy strategy) {
+    public ClusterGroup modifyGroup(long clusterGroupId, String name) {
+        Preconditions.checkNotNull(name);
+
         ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
         }
 
         clusterGroup.setName(name);
-        clusterGroup.setStrategy(strategy);
-        clusterGroup.setRollingIndex(0);
 
         return clusterGroup;
     }
