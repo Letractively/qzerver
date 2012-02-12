@@ -48,7 +48,7 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
     /**
      * Result description (XML or JSON)
      */
-    private String result;
+    private String payload;
 
     public ScheduleExecutionResult() {
         super(BusinessModel.VERSION);
@@ -103,12 +103,12 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
         this.finished = finished;
     }
 
-    public String getResult() {
-        return result;
+    public String getPayload() {
+        return payload;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setPayload(String payload) {
+        this.payload = payload;
     }
 
     public int getOrderIndex() {

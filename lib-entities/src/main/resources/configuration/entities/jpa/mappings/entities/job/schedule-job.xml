@@ -34,7 +34,7 @@
                 <column name="limit_trials" nullable="false"/>
             </basic>
             <basic name="timeout">
-                <column name="limit_duration" nullable="false"/>
+                <column name="limit_timeout" nullable="false"/>
             </basic>
             <basic name="allNodes">
                 <column name="all_nodes" nullable="false"/>

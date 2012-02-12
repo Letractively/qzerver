@@ -15,14 +15,24 @@
         <property name="defaultAutoCommit" value="false"/>
         <property name="defaultReadOnly" value="false"/>
         <property name="defaultTransactionIsolation" value="READ_COMMITTED"/>
+        <property name="partitionCount" value="${app.database.pool.partition.count}"/>
         <property name="maxConnectionsPerPartition" value="${app.database.pool.partition.max}"/>
         <property name="minConnectionsPerPartition" value="${app.database.pool.partition.min}"/>
-        <property name="partitionCount" value="${app.database.pool.partition.count}"/>
+        <property name="maxConnectionAgeInSeconds" value="${app.database.pool.connection.age}"/>
+        <property name="connectionTimeoutInMs" value="${app.database.pool.connection.timeout}"/>
         <property name="acquireIncrement" value="1"/>
         <property name="statementsCacheSize" value="100"/>
-        <property name="releaseHelperThreads" value="3"/>
+        <property name="releaseHelperThreads" value="1"/>
+        <property name="lazyInit" value="false"/>
         <property name="connectionTestStatement" value="${app.database.pool.sql.probe}"/>
     </bean>
+
+    <bean id="liquibase" class="liquibase.spring.LiquibaseInitializer">
+        <property name="dataSource" ref="dataSource" />
+        <property name="changeLog" value="classpath:configuration/entities/liquibase/changelog.xml"/>
+        <property name="enabled" value="${app.database.autoupdate}"/>
+        <property name="dropFirst" value="${app.database.autodrop}"/>
+     </bean>
 
     <bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>

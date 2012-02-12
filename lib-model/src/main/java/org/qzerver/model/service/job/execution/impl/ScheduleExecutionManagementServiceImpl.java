@@ -182,10 +182,10 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         if (actionResult != null) {
             result.setSucceed(actionResult.isSucceed());
-            result.setResult("<xml></xml>");
+            result.setPayload("<xml></xml>");
         } else {
             result.setSucceed(false);
-            result.setResult(null);
+            result.setPayload(null);
         }
 
         return result;

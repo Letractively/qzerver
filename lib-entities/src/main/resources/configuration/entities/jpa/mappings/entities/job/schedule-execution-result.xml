@@ -22,8 +22,8 @@
                 <column name="finished" nullable="true"/>
                 <temporal>TIMESTAMP</temporal>
             </basic>
-            <basic name="result" fetch="LAZY">
-                <column name="result" nullable="true"/>
+            <basic name="payload" fetch="LAZY">
+                <column name="payload" nullable="true"/>
                 <lob/>
             </basic>
             <basic name="orderIndex">
@@ -31,10 +31,10 @@
             </basic>
             <version name="version"/>
             <many-to-one name="execution" fetch="LAZY" optional="false">
-                <join-column name="scheduler_execution_id" referenced-column-name="id" nullable="false"/>
+                <join-column name="schedule_execution_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>
             <one-to-one name="node" fetch="LAZY" optional="false">
-                <join-column name="scheduler_node_id" referenced-column-name="id" nullable="false"/>
+                <join-column name="schedule_execution_node_id" referenced-column-name="id" nullable="false"/>
             </one-to-one>
         </attributes>
     </entity>
