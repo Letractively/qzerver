@@ -54,7 +54,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         Date now = chronometer.getCurrentMoment();
 
         ScheduleAction scheduleAction = new ScheduleAction();
-        scheduleAction.setDefinition("<xml></xml>");
+        scheduleAction.setDefinition("<xml></xml>".getBytes());
         scheduleAction.setType(parameters.getActionType());
         scheduleAction.setCreated(now);
         scheduleAction.setArchived(false);

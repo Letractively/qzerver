@@ -5,9 +5,12 @@ import org.qzerver.model.domain.business.BusinessModel;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
+
+    public static final int MAX_PAYLOAD_LENGTH = 8 * 1024 * 1024;
 
     private Long id;
 
@@ -48,7 +51,8 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
     /**
      * Result description (XML or JSON)
      */
-    private String payload;
+    @Size(max = MAX_PAYLOAD_LENGTH)
+    private byte[] payload;
 
     public ScheduleExecutionResult() {
         super(BusinessModel.VERSION);
@@ -103,11 +107,11 @@ public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
         this.finished = finished;
     }
 
-    public String getPayload() {
+    public byte[] getPayload() {
         return payload;
     }
 
-    public void setPayload(String payload) {
+    public void setPayload(byte[] payload) {
         this.payload = payload;
     }
 

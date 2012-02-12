@@ -34,7 +34,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(new Date(300000000000L));
         scheduleAction.setType(ScheduleActionType.HTTP);
-        scheduleAction.setDefinition("<xml></xml>");
+        scheduleAction.setDefinition("<xml></xml>".getBytes());
 
         BusinessEntityJpaDaoChecker.checkBusinessEntityDao(entityManager, businessEntityDao,
                 ScheduleAction.class, scheduleAction);
@@ -50,7 +50,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(new Date(300000000000L));
         scheduleAction.setType(ScheduleActionType.HTTP);
-        scheduleAction.setDefinition("<xml></xml>");
+        scheduleAction.setDefinition("<xml></xml>".getBytes());
         businessEntityDao.save(scheduleAction);
 
         ScheduleJob scheduleJob = new ScheduleJob();
@@ -82,7 +82,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(ChronometerUtils.parseMoment("2011-01-01 12:00:00.000 UTC"));
         scheduleAction.setType(ScheduleActionType.HTTP);
-        scheduleAction.setDefinition("<xml></xml>");
+        scheduleAction.setDefinition("<xml></xml>".getBytes());
         businessEntityDao.save(scheduleAction);
 
         ScheduleJob scheduleJob = new ScheduleJob();

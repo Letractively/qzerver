@@ -19,7 +19,7 @@
     <include file="quartz-2-1-3/tables_informix.sql" relativeToChangelogFile="true"/>
 
     <!-- Qzerver tables -->
-    <changeSet id="2" author="qzerver">
+    <changeSet id="ddl_qzerver_tables" author="qzerver">
         <createTable tableName="qzerver_cluster_group">
             <column name="id" autoIncrement="true" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_cluster_group"/>
@@ -173,7 +173,7 @@
             <column name="archived" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="definition" type="LONGVARCHAR">
+            <column name="definition" type="LONGBLOB">
                 <constraints nullable="true"/>
             </column>
             <column name="created" type="TIMESTAMP">
@@ -299,7 +299,7 @@
             <column name="order_index" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="payload" type="LONGVARCHAR">
+            <column name="payload" type="LONGBLOB">
                 <constraints nullable="true"/>
             </column>
             <column name="schedule_execution_id" type="BIGINT">
@@ -314,7 +314,7 @@
         </modifySql>
     </changeSet>
 
-    <changeSet id="3" author="qzerver">
+    <changeSet id="ddl_qzerver_constraints" author="qzerver">
         <addForeignKeyConstraint constraintName="fk_qzerver_cluster_ref_node"
                 baseTableName="qzerver_cluster_node" baseColumnNames="cluster_group_id"
                 referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
@@ -353,7 +353,7 @@
                 deleteCascade="true"/>
     </changeSet>
     
-    <changeSet id="4" author="qzerver">
+    <changeSet id="ddl_qzerver_indexes" author="qzerver">
         <createIndex tableName="qzerver_schedule_execution" indexName="idx_qzerver_schedule_execution_started">
             <column name="started"/>
         </createIndex>

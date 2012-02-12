@@ -30,6 +30,7 @@
     <bean id="liquibase" class="liquibase.spring.LiquibaseInitializer">
         <property name="dataSource" ref="dataSource" />
         <property name="changeLog" value="classpath:configuration/entities/liquibase/changelog.xml"/>
+        <property name="defaultSchema" value="${app.database.schema}"/>
         <property name="enabled" value="${app.database.autoupdate}"/>
         <property name="dropFirst" value="${app.database.autodrop}"/>
      </bean>

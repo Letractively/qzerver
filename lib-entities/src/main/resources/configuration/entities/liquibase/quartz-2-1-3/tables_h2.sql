@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset qzerver:1 dbms:h2
+--changeset qzerver:ddl_quartz dbms:h2
 
 -- Thanks to Amir Kibbar and Peter Rietzler for contributing the schema for H2 database,
 -- and verifying that it works with Quartz's StdJDBCDelegate

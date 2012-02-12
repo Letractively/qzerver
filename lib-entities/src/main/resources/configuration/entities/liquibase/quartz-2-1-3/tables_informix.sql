@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset qzerver:1 dbms:informix
+--changeset qzerver:ddl_quartz dbms:informix
 
 { }
 { Thanks to Keith Chew for submitting this. }

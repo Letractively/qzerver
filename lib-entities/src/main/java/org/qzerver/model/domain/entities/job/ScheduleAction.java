@@ -4,9 +4,12 @@ import com.gainmatrix.lib.business.AbstractBusinessEntity;
 import org.qzerver.model.domain.business.BusinessModel;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class ScheduleAction extends AbstractBusinessEntity<Long> {
+
+    public static final int MAX_DEFINITION_LENGTH = 8 * 1024 * 1024;
 
     private Long id;
 
@@ -19,7 +22,8 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
     /**
      * Action configuration (XML or JSON)
      */
-    private String definition;
+    @Size(max = MAX_DEFINITION_LENGTH)
+    private byte[] definition;
 
     /**
      * Whether the action is not referenced by any schedule job
@@ -45,11 +49,11 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
         this.id = id;
     }
 
-    public String getDefinition() {
+    public byte[] getDefinition() {
         return definition;
     }
 
-    public void setDefinition(String definition) {
+    public void setDefinition(byte[] definition) {
         this.definition = definition;
     }
 

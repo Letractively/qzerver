@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset qzerver:1 dbms:derby
+--changeset qzerver:ddl_quartz dbms:derby
 
 --
 -- Apache Derby scripts by Steve Stewart, updated by Ronald Pomeroy

@@ -10,6 +10,7 @@ import org.qzerver.model.domain.entities.job.ScheduleJob;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
 import java.util.Date;
 
 public class JpaTest extends AbstractModelTest {
@@ -25,7 +26,7 @@ public class JpaTest extends AbstractModelTest {
         ScheduleAction action = new ScheduleAction();
         action.setType(ScheduleActionType.LOCAL_COMMAND);
         action.setArchived(false);
-        action.setDefinition("<xml/>");
+        action.setDefinition("<xml></xml>".getBytes());
         action.setCreated(new Date(1213232323L));
 
         ScheduleJob job = new ScheduleJob();
@@ -52,6 +53,6 @@ public class JpaTest extends AbstractModelTest {
 
         action = jobLoaded.getAction();
         action.getVersion();
-        Assert.assertEquals("<xml/>", action.getDefinition());
+        Assert.assertTrue(Arrays.equals("<xml></xml>".getBytes(), action.getDefinition()));
     }
 }
