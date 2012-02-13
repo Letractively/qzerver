@@ -315,7 +315,7 @@
     </changeSet>
 
     <changeSet id="ddl_qzerver_constraints" author="qzerver">
-        <addForeignKeyConstraint constraintName="fk_qzerver_cluster_ref_node"
+        <addForeignKeyConstraint constraintName="fk_qzerver_cluster_node_ref_group"
                 baseTableName="qzerver_cluster_node" baseColumnNames="cluster_group_id"
                 referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
                 deleteCascade="true"/>
