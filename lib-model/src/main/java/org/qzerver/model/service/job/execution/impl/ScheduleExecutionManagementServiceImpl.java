@@ -2,6 +2,7 @@ package org.qzerver.model.service.job.execution.impl;
 
 import com.gainmatrix.lib.business.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
+import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
@@ -229,6 +230,26 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         }
 
         scheduleExecution.setCancelled(true);
+    }
+
+    @Override
+    public List<ScheduleExecution> getAll(Extraction extraction) {
+        return scheduleExecutionDao.findAll(extraction);
+    }
+
+    @Override
+    public List<ScheduleExecution> getByJob(long scheduleJobId, Extraction extraction) {
+        return scheduleExecutionDao.findByJob(scheduleJobId, extraction);
+    }
+
+    @Override
+    public List<ScheduleExecution> getEngaged(Extraction extraction) {
+        return scheduleExecutionDao.findEngaged(extraction);
+    }
+
+    @Override
+    public List<ScheduleExecution> getFinished(Extraction extraction) {
+        return scheduleExecutionDao.findFinished(extraction);
     }
 
     @Required
