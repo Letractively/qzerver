@@ -13,8 +13,8 @@
             <props>
                 <prop key="mail.transport.protocol">${app.mail.transport.protocol}</prop>
                 <prop key="mail.smtp.auth">${app.mail.smtp.auth}</prop>
-                <prop key="mail.smtp.connectiontimeout">${app.mail.smtp.connectiontimeout}</prop>
-                <prop key="mail.smtp.timeout">${app.mail.smtp.timeout}</prop>
+                <prop key="mail.smtp.connectiontimeout">${app.mail.smtp.connectiontimeout.ms}</prop>
+                <prop key="mail.smtp.timeout">${app.mail.smtp.timeout.ms}</prop>
                 <prop key="mail.smtp.starttls.enable">${app.mail.smtp.starttls.enable}</prop>
             </props>
         </property>

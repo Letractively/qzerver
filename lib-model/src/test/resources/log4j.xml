@@ -13,6 +13,10 @@
     </logger>
 
     <logger name="org.hibernate.SQL">
+        <level value="INFO" />
+    </logger>
+
+    <logger name="com.jolbox.bonecp">
         <level value="DEBUG" />
     </logger>
 

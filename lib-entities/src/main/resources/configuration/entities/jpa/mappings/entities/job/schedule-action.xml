@@ -20,7 +20,7 @@
                 <column name="archived" nullable="false"/>
             </basic>
             <basic name="definition" fetch="LAZY" optional="true">
-                <column name="definition" nullable="true" length="8388608"/>
+                <column name="definition" nullable="true" length="16777216"/>
             </basic>
             <basic name="created">
                 <column name="created" nullable="false"/>
