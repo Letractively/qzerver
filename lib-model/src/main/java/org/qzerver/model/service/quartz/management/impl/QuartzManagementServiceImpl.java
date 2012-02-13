@@ -6,6 +6,7 @@ import org.quartz.SchedulerException;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,20 +15,14 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzManagementServiceImpl.class);
 
-    private final Scheduler scheduler;
-
-    public QuartzManagementServiceImpl(Scheduler scheduler) {
-        this.scheduler = scheduler;
-    }
+    private Scheduler scheduler;
 
     @Override
     public boolean isActive() {
-        synchronized (scheduler) {
-            try {
-                return ! scheduler.isInStandbyMode();
-            } catch (SchedulerException e) {
-                throw new SystemIntegrityException("Fail to check quartz activity", e);
-            }
+        try {
+            return ! scheduler.isInStandbyMode();
+        } catch (SchedulerException e) {
+            throw new SystemIntegrityException("Fail to check quartz activity", e);
         }
     }
 
@@ -35,21 +30,23 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
     public void setActive(boolean active) {
         LOGGER.debug("Set quartz state = {}", active);
 
-        synchronized (scheduler) {
-            try {
-                if (active) {
-                    if (scheduler.isInStandbyMode()) {
-                        scheduler.start();
-                    }
-                } else {
-                    if (! scheduler.isInStandbyMode()) {
-                        scheduler.standby();
-                    }
+        try {
+            if (active) {
+                if (scheduler.isInStandbyMode()) {
+                    scheduler.start();
                 }
-            } catch (SchedulerException e) {
-                throw new SystemIntegrityException("Fail to toggle quartz activity", e);
+            } else {
+                if (! scheduler.isInStandbyMode()) {
+                    scheduler.standby();
+                }
             }
+        } catch (SchedulerException e) {
+            throw new SystemIntegrityException("Fail to toggle quartz activity", e);
         }
     }
 
+    @Required
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 }

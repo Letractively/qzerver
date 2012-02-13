@@ -18,10 +18,14 @@ public class ScheduleJobCreateParameters implements Serializable {
     @Length(max = ScheduleJob.MAX_DESCRIPTION_LENGTH)
     private String description;
 
-    @NotNull
+    @NotBlank
     @Cron
     @Length(max = ScheduleJob.MAX_CRON_LENGTH)
     private String cron;
+
+    @NotBlank
+    @Length(max = ScheduleJob.MAX_TIMEZONE_LENGTH)
+    private String timezone;
 
     @NotNull
     private ScheduleActionType actionType;
@@ -31,6 +35,8 @@ public class ScheduleJobCreateParameters implements Serializable {
     private long schedulerGroupId;
 
     private boolean concurrent;
+
+    private boolean enabled;
 
     public ScheduleActionType getActionType() {
         return actionType;
@@ -86,6 +92,22 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setSchedulerGroupId(long schedulerGroupId) {
         this.schedulerGroupId = schedulerGroupId;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 }
 

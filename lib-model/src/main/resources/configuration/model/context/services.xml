@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean name="quartzManagementService" class="org.qzerver.model.service.quartz.management.impl.QuartzManagementServiceImpl">
-        <constructor-arg index="0" ref="quartzScheduler"/>
+        <property name="scheduler" ref="quartzScheduler"/>
     </bean>
 
     <bean id="clusterManagementService" class="org.qzerver.model.service.cluster.impl.ClusterManagementServiceImpl">
@@ -24,7 +24,9 @@
         <property name="beanValidator" ref="beanValidator"/>
         <property name="businessEntityDao" ref="businessEntityDao"/>
         <property name="scheduleJobDao" ref="scheduleJobDao"/>
+        <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
         <property name="chronometer" ref="chronometer"/>
+        <property name="scheduler" ref="quartzScheduler"/>
     </bean>
 
     <bean id="scheduleExecutionManagementService" class="org.qzerver.model.service.job.execution.impl.ScheduleExecutionManagementServiceImpl">

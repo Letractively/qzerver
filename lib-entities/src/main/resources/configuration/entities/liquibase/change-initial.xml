@@ -97,7 +97,10 @@
             <column name="description" type="VARCHAR(512)">
                 <constraints nullable="true"/>
             </column>
-            <column name="cron" type="VARCHAR(64)">
+            <column name="cron" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timezone" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="enabled" type="BOOLEAN">
@@ -236,7 +239,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="schedule_job_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="schedule_action_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -318,39 +321,39 @@
         <addForeignKeyConstraint constraintName="fk_qzerver_cluster_node_ref_group"
                 baseTableName="qzerver_cluster_node" baseColumnNames="cluster_group_id"
                 referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_cluster"
                 baseTableName="qzerver_schedule_job" baseColumnNames="cluster_group_id"
                 referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_group"
                 baseTableName="qzerver_schedule_job" baseColumnNames="schedule_group_id"
                 referencedTableName="qzerver_schedule_group" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_action"
                 baseTableName="qzerver_schedule_job" baseColumnNames="schedule_action_id"
                 referencedTableName="qzerver_schedule_action" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_execution_ref_job"
                 baseTableName="qzerver_schedule_execution" baseColumnNames="schedule_job_id"
                 referencedTableName="qzerver_schedule_job" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="SET NULL"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_execution_ref_action"
                 baseTableName="qzerver_schedule_execution" baseColumnNames="schedule_action_id"
                 referencedTableName="qzerver_schedule_action" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_execution_node_ref_execution"
                 baseTableName="qzerver_schedule_execution_node" baseColumnNames="schedule_execution_id"
                 referencedTableName="qzerver_schedule_execution" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_execution_result_ref_execution"
                 baseTableName="qzerver_schedule_execution_result" baseColumnNames="schedule_execution_id"
                 referencedTableName="qzerver_schedule_execution" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qzerver_execution_result_ref_node"
                 baseTableName="qzerver_schedule_execution_result" baseColumnNames="schedule_execution_node_id"
                 referencedTableName="qzerver_schedule_execution_node" referencedColumnNames="id"
-                deleteCascade="true"/>
+                onDelete="CASCADE"/>
     </changeSet>
     
     <changeSet id="ddl_qzerver_indexes" author="qzerver">

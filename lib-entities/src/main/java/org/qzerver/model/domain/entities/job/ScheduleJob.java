@@ -15,7 +15,9 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_DESCRIPTION_LENGTH = 512;
 
-    public static final int MAX_CRON_LENGTH = 64;
+    public static final int MAX_CRON_LENGTH = 128;
+
+    public static final int MAX_TIMEZONE_LENGTH = 128;
 
     private Long id;
 
@@ -38,6 +40,10 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
     @NotBlank
     @Length(max = MAX_CRON_LENGTH)
     private String cron;
+
+    @NotBlank
+    @Length(max = MAX_TIMEZONE_LENGTH)
+    private String timezone;
 
     /**
      * Is job enabled
@@ -209,5 +215,13 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setStrategy(ScheduleExecutionStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 }

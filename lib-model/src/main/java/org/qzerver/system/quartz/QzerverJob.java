@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+@PersistJobDataAfterExecution
+@DisallowConcurrentExecution
 public class QzerverJob implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QzerverJob.class);
@@ -19,7 +21,7 @@ public class QzerverJob implements Job {
 
         LOGGER.debug("Quartz job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
 
-        if (QzerverJobUtils.QZERVER_JOB_GROUP.equals(jobKey.getGroup())) {
+        if (QzerverJobUtils.QZERVER_GROUP.equals(jobKey.getGroup())) {
             ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
             Preconditions.checkNotNull(applicationContext, "Application context is not set");
 

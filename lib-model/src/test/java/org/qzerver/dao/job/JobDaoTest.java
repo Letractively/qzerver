@@ -57,6 +57,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleJob.setName("dgfsrgw");
         scheduleJob.setDescription("wgwrgwg");
         scheduleJob.setCron("0 * * * * ?");
+        scheduleJob.setTimezone("UTC");
         scheduleJob.setEnabled(true);
         scheduleJob.setStandby(false);
         scheduleJob.setConcurrent(false);
@@ -89,6 +90,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleJob.setName("dgfsrgw");
         scheduleJob.setDescription("wgwrgwg");
         scheduleJob.setCron("0 * * * * ?");
+        scheduleJob.setTimezone("UTC");
         scheduleJob.setEnabled(true);
         scheduleJob.setStandby(false);
         scheduleJob.setConcurrent(false);
