@@ -1,12 +1,14 @@
 --liquibase formatted sql
 --changeset qzerver:ddl_quartz dbms:informix
 
+/*
 { }
 { Thanks to Keith Chew for submitting this. }
 { }
 { use the StdJDBCDelegate with Informix. }
 { }
 { note that Informix has a 18 cahracter limit on the table name, so the prefix had to be shortened to "q" instread of "qrtz_" }
+*/
 
 CREATE TABLE qblob_triggers (
 SCHED_NAME VARCHAR(120) NOT NULL,

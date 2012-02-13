@@ -1,10 +1,26 @@
 --liquibase formatted sql
 --changeset qzerver:ddl_quartz dbms:postgresql
 
+/*
 -- Thanks to Patrick Lightbody for submitting this...
 --
 -- In your Quartz properties file, you'll need to set 
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+*/
+
+/*
+drop table qrtz_fired_triggers;
+DROP TABLE QRTZ_PAUSED_TRIGGER_GRPS;
+DROP TABLE QRTZ_SCHEDULER_STATE;
+DROP TABLE QRTZ_LOCKS;
+drop table qrtz_simple_triggers;
+drop table qrtz_cron_triggers;
+drop table qrtz_simprop_triggers;
+DROP TABLE QRTZ_BLOB_TRIGGERS;
+drop table qrtz_triggers;
+drop table qrtz_job_details;
+drop table qrtz_calendars;
+*/
 
 CREATE TABLE qrtz_job_details
   (
@@ -173,5 +189,6 @@ create index idx_qrtz_ft_jg on qrtz_fired_triggers(SCHED_NAME,JOB_GROUP);
 create index idx_qrtz_ft_t_g on qrtz_fired_triggers(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
 create index idx_qrtz_ft_tg on qrtz_fired_triggers(SCHED_NAME,TRIGGER_GROUP);
 
-
+/*
 commit;
+*/

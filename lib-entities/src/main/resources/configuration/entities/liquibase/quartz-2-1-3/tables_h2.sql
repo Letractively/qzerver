@@ -1,6 +1,7 @@
 --liquibase formatted sql
 --changeset qzerver:ddl_quartz dbms:h2
 
+/*
 -- Thanks to Amir Kibbar and Peter Rietzler for contributing the schema for H2 database,
 -- and verifying that it works with Quartz's StdJDBCDelegate
 --
@@ -10,6 +11,7 @@
 --
 -- In your Quartz properties file, you'll need to set 
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+*/
 
 CREATE TABLE QRTZ_CALENDARS (
   SCHED_NAME VARCHAR(120) NOT NULL,
@@ -247,5 +249,7 @@ ALTER TABLE QRTZ_TRIGGERS ADD
     JOB_NAME,
     JOB_GROUP
   );
-  
+
+/*
 COMMIT;
+*/

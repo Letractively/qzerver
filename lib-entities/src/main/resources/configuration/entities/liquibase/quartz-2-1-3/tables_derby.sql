@@ -1,6 +1,7 @@
 --liquibase formatted sql
 --changeset qzerver:ddl_quartz dbms:derby
 
+/*
 --
 -- Apache Derby scripts by Steve Stewart, updated by Ronald Pomeroy
 -- Based on Srinivas Venkatarangaiah's file for Cloudscape
@@ -41,6 +42,7 @@
 -- drop table qrtz_triggers;
 -- drop table qrtz_job_details;
 -- drop table qrtz_calendars;
+*/
 
 create table qrtz_job_details (
 sched_name varchar(120) not null,
