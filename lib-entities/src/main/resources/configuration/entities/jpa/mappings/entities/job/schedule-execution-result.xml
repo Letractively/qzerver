@@ -6,7 +6,7 @@
         version="2.0">
 
     <entity name="ScheduleExecutionResult" class="org.qzerver.model.domain.entities.job.ScheduleExecutionResult">
-        <table name="qzerver_schedule_execution_result"/>
+        <table name="qz_execution_result"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>

@@ -6,7 +6,7 @@
         version="2.0">
 
     <entity name="ClusterNode" class="org.qzerver.model.domain.entities.cluster.ClusterNode">
-        <table name="qzerver_cluster_node"/>
+        <table name="qz_cluster_node"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>

@@ -5,6 +5,11 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
+    <!--
+       * Keep identifiers less than 30 symbols long - that's default length constraint in ORACLE
+       * Don't use reserved words. The word "comment" is reserved in ORACLE
+       -->
+
     <!-- Quartz tables -->
     <include file="quartz-2-1-3/tables_hsqldb_blob.sql" relativeToChangelogFile="true"/>
     <include file="quartz-2-1-3/tables_postgres.sql" relativeToChangelogFile="true"/>
@@ -20,9 +25,9 @@
 
     <!-- Qzerver tables -->
     <changeSet id="ddl_qzerver_tables" author="qzerver">
-        <createTable tableName="qzerver_cluster_group">
+        <createTable tableName="qz_cluster_group">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_cluster_group"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_cluster_group"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -43,9 +48,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_cluster_node">
+        <createTable tableName="qz_cluster_node">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_cluster_node"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_cluster_node"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -75,9 +80,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_job">
+        <createTable tableName="qz_job">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_job"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_job"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -134,9 +139,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_group">
+        <createTable tableName="qz_job_group">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_group"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_job_group"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -154,9 +159,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_action">
+        <createTable tableName="qz_action">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_action"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_action"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -183,9 +188,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_execution">
+        <createTable tableName="qz_execution">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_execution"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -245,9 +250,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_execution_node">
+        <createTable tableName="qz_execution_node">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_execution_node"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution_node"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -274,9 +279,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="qzerver_schedule_execution_result">
+        <createTable tableName="qz_execution_result">
             <column name="id" autoIncrement="true" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qzerver_schedule_execution_result"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution_result"/>
             </column>
             <column name="business_model" type="INTEGER">
                 <constraints nullable="false"/>
@@ -318,46 +323,46 @@
     </changeSet>
 
     <changeSet id="ddl_qzerver_constraints" author="qzerver">
-        <addForeignKeyConstraint constraintName="fk_qzerver_cluster_node_ref_group"
-                baseTableName="qzerver_cluster_node" baseColumnNames="cluster_group_id"
-                referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_cluster_node_ref_group"
+                baseTableName="qz_cluster_node" baseColumnNames="cluster_group_id"
+                referencedTableName="qz_cluster_group" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_cluster"
-                baseTableName="qzerver_schedule_job" baseColumnNames="cluster_group_id"
-                referencedTableName="qzerver_cluster_group" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_job_ref_cluster"
+                baseTableName="qz_job" baseColumnNames="cluster_group_id"
+                referencedTableName="qz_cluster_group" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_group"
-                baseTableName="qzerver_schedule_job" baseColumnNames="schedule_group_id"
-                referencedTableName="qzerver_schedule_group" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_job_ref_group"
+                baseTableName="qz_job" baseColumnNames="schedule_group_id"
+                referencedTableName="qz_job_group" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_job_ref_action"
-                baseTableName="qzerver_schedule_job" baseColumnNames="schedule_action_id"
-                referencedTableName="qzerver_schedule_action" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_job_ref_action"
+                baseTableName="qz_job" baseColumnNames="schedule_action_id"
+                referencedTableName="qz_action" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_execution_ref_job"
-                baseTableName="qzerver_schedule_execution" baseColumnNames="schedule_job_id"
-                referencedTableName="qzerver_schedule_job" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_exec_ref_job"
+                baseTableName="qz_execution" baseColumnNames="schedule_job_id"
+                referencedTableName="qz_job" referencedColumnNames="id"
                 onDelete="SET NULL"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_execution_ref_action"
-                baseTableName="qzerver_schedule_execution" baseColumnNames="schedule_action_id"
-                referencedTableName="qzerver_schedule_action" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_exec_ref_action"
+                baseTableName="qz_execution" baseColumnNames="schedule_action_id"
+                referencedTableName="qz_action" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_execution_node_ref_execution"
-                baseTableName="qzerver_schedule_execution_node" baseColumnNames="schedule_execution_id"
-                referencedTableName="qzerver_schedule_execution" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_exec_node_ref_exec"
+                baseTableName="qz_execution_node" baseColumnNames="schedule_execution_id"
+                referencedTableName="qz_execution" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_execution_result_ref_execution"
-                baseTableName="qzerver_schedule_execution_result" baseColumnNames="schedule_execution_id"
-                referencedTableName="qzerver_schedule_execution" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_exec_result_ref_exec"
+                baseTableName="qz_execution_result" baseColumnNames="schedule_execution_id"
+                referencedTableName="qz_execution" referencedColumnNames="id"
                 onDelete="CASCADE"/>
-        <addForeignKeyConstraint constraintName="fk_qzerver_execution_result_ref_node"
-                baseTableName="qzerver_schedule_execution_result" baseColumnNames="schedule_execution_node_id"
-                referencedTableName="qzerver_schedule_execution_node" referencedColumnNames="id"
+        <addForeignKeyConstraint constraintName="fk_qz_exec_result_ref_node"
+                baseTableName="qz_execution_result" baseColumnNames="schedule_execution_node_id"
+                referencedTableName="qz_execution_node" referencedColumnNames="id"
                 onDelete="CASCADE"/>
     </changeSet>
     
     <changeSet id="ddl_qzerver_indexes" author="qzerver">
-        <createIndex tableName="qzerver_schedule_execution" indexName="idx_qzerver_schedule_execution_started">
+        <createIndex tableName="qz_execution" indexName="idx_qz_execution_started">
             <column name="started"/>
         </createIndex>
     </changeSet>

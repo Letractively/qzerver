@@ -29,7 +29,7 @@
     </named-query>
 
     <entity name="ScheduleExecution" class="org.qzerver.model.domain.entities.job.ScheduleExecution">
-        <table name="qzerver_schedule_execution"/>
+        <table name="qz_execution"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>

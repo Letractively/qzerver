@@ -6,7 +6,7 @@
         version="2.0">
 
     <entity name="ScheduleAction" class="org.qzerver.model.domain.entities.job.ScheduleAction">
-        <table name="qzerver_schedule_action"/>
+        <table name="qz_action"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>

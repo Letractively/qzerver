@@ -6,7 +6,7 @@
         version="2.0">
 
     <entity name="SchedulerJob" class="org.qzerver.model.domain.entities.job.ScheduleJob">
-        <table name="qzerver_schedule_job"/>
+        <table name="qz_job"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>

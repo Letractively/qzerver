@@ -6,7 +6,7 @@
         version="2.0">
 
     <entity name="ScheduleGroup" class="org.qzerver.model.domain.entities.job.ScheduleGroup">
-        <table name="qzerver_schedule_group"/>
+        <table name="qz_job_group"/>
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>
