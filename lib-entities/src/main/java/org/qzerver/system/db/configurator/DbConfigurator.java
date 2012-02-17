@@ -85,9 +85,9 @@ public class DbConfigurator {
             case ORACLE8I:
                 return "oracle.jdbc.driver.OracleDriver";
             case ORACLE9I:
-                return "oracle.jdbc.driver.OracleDriver";
+                return "oracle.jdbc.OracleDriver";
             case ORACLE10G:
-                return "oracle.jdbc.driver.OracleDriver";
+                return "oracle.jdbc.OracleDriver";
             case MSSQL2005:
                 return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
             case MSSQL2008  :
