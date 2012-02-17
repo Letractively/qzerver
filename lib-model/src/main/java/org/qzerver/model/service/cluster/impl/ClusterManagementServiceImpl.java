@@ -120,7 +120,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setActive(activity);
         clusterNode.setDomain(domain);
-        clusterNode.setComment(comment);
+        clusterNode.setDescription(comment);
 
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
@@ -154,7 +154,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         }
 
         clusterNode.setDomain(domain);
-        clusterNode.setComment(comment);
+        clusterNode.setDescription(comment);
         clusterNode.setActive(activity);
 
         return clusterNode;

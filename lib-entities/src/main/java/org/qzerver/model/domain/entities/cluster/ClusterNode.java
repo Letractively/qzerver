@@ -12,7 +12,7 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_DOMAIN_LENGTH = 128;
 
-    public static final int MAX_COMMENT_LENGTH = 256;
+    public static final int MAX_DESCRIPTION_LENGTH = 256;
 
     private Long id;
 
@@ -32,8 +32,8 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
     /**
      * Node comment
      */
-    @Length(max = MAX_COMMENT_LENGTH)
-    private String comment;
+    @Length(max = MAX_DESCRIPTION_LENGTH)
+    private String description;
 
     /**
      * Owner group
@@ -59,12 +59,12 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
         this.id = id;
     }
 
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDomain() {

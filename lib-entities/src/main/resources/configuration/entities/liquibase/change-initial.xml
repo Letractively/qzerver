@@ -62,7 +62,7 @@
             <column name="domain" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="comment" type="VARCHAR(128)">
+            <column name="description" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
             <column name="order_index" type="INTEGER">

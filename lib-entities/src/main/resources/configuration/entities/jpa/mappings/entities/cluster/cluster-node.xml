@@ -15,8 +15,8 @@
             <basic name="domain">
                 <column name="domain" nullable="false" length="128"/>
             </basic>
-            <basic name="comment">
-                <column name="comment" nullable="true" length="128"/>
+            <basic name="description">
+                <column name="description" nullable="true" length="128"/>
             </basic>
             <basic name="orderIndex">
                 <column name="order_index" nullable="false"/>
