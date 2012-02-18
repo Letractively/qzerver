@@ -12,8 +12,8 @@
                 <column name="id" nullable="false"/>
                 <generated-value strategy="AUTO"/>
             </id>
-            <basic name="domain">
-                <column name="domain" nullable="false" length="128"/>
+            <basic name="address">
+                <column name="address" nullable="false" length="128"/>
             </basic>
             <basic name="description">
                 <column name="description" nullable="true" length="128"/>
@@ -21,8 +21,8 @@
             <basic name="orderIndex">
                 <column name="order_index" nullable="false"/>
             </basic>
-            <basic name="active">
-                <column name="active" nullable="false"/>
+            <basic name="enabled">
+                <column name="enabled" nullable="false"/>
             </basic>
             <version name="version"/>
             <many-to-one name="group" fetch="LAZY" optional="false">

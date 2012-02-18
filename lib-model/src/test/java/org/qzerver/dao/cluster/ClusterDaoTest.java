@@ -37,8 +37,8 @@ public class ClusterDaoTest extends AbstractModelTest {
         businessEntityDao.save(clusterGroup);
 
         ClusterNode clusterNode = new ClusterNode();
-        clusterNode.setDomain("www.example.org");
-        clusterNode.setActive(false);
+        clusterNode.setAddress("www.example.org");
+        clusterNode.setEnabled(false);
         clusterNode.setDescription("rwgwrgwr");
         clusterNode.setOrderIndex(2);
 

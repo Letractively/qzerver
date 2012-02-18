@@ -23,8 +23,8 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
      * Domain
      */
     @NotBlank
-    @Length(max = ClusterNode.MAX_DOMAIN_LENGTH)
-    private String domain;
+    @Length(max = ClusterNode.MAX_ADDRESS_LENGTH)
+    private String address;
 
     /**
      * Parent execution
@@ -55,12 +55,12 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
         this.id = id;
     }
 
-    public String getDomain() {
-        return domain;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public ScheduleExecutionResult getResult() {

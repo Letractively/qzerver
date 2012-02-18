@@ -11,8 +11,8 @@
             <id name="id">
                 <column name="id" nullable="false"/>
             </id>
-            <basic name="domain">
-                <column name="domain" nullable="false" length="128"/>
+            <basic name="address">
+                <column name="address" nullable="false" length="128"/>
             </basic>
             <basic name="localhost">
                 <column name="localhost" nullable="false"/>

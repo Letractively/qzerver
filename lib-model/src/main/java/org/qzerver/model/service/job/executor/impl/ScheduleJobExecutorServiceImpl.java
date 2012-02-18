@@ -92,7 +92,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 // Current node
                 ScheduleExecutionNode node = nodeIterator.next();
 
-                LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getDomain());
+                LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
 
                 // Register node execution start, execute and register finish
                 ScheduleExecutionResult scheduleExecutionResult = executionManagementService.startExecutionResult(node.getId());
@@ -106,14 +106,14 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
                 // If last action succeedes break the node loop
                 if (actionResult != null && actionResult.isSucceed()) {
-                    LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getDomain());
+                    LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
                     succeedNodes++;
                     if (! scheduleExecution.isAllNodes()) {
                         status = ScheduleExecutionStatus.SUCCEED;
                         break;
                     }
                 } else {
-                    LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getDomain());
+                    LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
                 }
 
                 // Are there any other pending nodes?

@@ -65,7 +65,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setStrategy(scheduleJob.getStrategy());
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
-        scheduleExecution.setManual(parameters.isManual());
+        scheduleExecution.setForced(parameters.isManual());
         scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCEED);
         scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
@@ -82,7 +82,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                 // "line" strategy - always start from the first active node
                 case INDEXED:
                     for (ClusterNode clusterNode : clusterGroup.getNodes()) {
-                        if (clusterNode.isActive()) {
+                        if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
                         }
                     }
@@ -90,7 +90,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                 // "random" strategy - choose active nodes in random order
                 case RANDOM:
                     for (ClusterNode clusterNode : clusterGroup.getNodes()) {
-                        if (clusterNode.isActive()) {
+                        if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
                         }
                     }
@@ -101,13 +101,13 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                     int rolledIndex = clusterManagementService.rollGroupIndex(clusterGroup.getId());
                     for (int i=rolledIndex, size=clusterGroup.getNodes().size(); i < size; i++) {
                         ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-                        if (clusterNode.isActive()) {
+                        if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
                         }
                     }
                     for (int i=0; i < rolledIndex; i++) {
                         ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-                        if (clusterNode.isActive()) {
+                        if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
                         }
                     }
@@ -126,7 +126,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
             for (ClusterNode clusterNode : clusterNodes) {
                 ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
                 executionNode.setLocalhost(false);
-                executionNode.setDomain(clusterNode.getDomain());
+                executionNode.setAddress(clusterNode.getAddress());
                 executionNode.setExecution(scheduleExecution);
                 scheduleExecution.getNodes().add(executionNode);
             }
@@ -136,7 +136,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
             ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
             executionNode.setLocalhost(true);
-            executionNode.setDomain("localhost");
+            executionNode.setAddress("localhost");
             executionNode.setExecution(scheduleExecution);
             scheduleExecution.getNodes().add(executionNode);
         }

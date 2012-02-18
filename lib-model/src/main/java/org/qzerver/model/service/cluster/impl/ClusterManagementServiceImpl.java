@@ -93,7 +93,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
         for (int i=currentIndex + 1, size=clusterGroup.getNodes().size(); i < size; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-            if (clusterNode.isActive()) {
+            if (clusterNode.isEnabled()) {
                 clusterGroup.setRollingIndex(i);
                 return i;
             }
@@ -101,7 +101,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
         for (int i=0; i < currentIndex; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-            if (clusterNode.isActive()) {
+            if (clusterNode.isEnabled()) {
                 clusterGroup.setRollingIndex(i);
                 return i;
             }
@@ -118,8 +118,8 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         }
 
         ClusterNode clusterNode = new ClusterNode();
-        clusterNode.setActive(activity);
-        clusterNode.setDomain(domain);
+        clusterNode.setEnabled(activity);
+        clusterNode.setAddress(domain);
         clusterNode.setDescription(comment);
 
         clusterNode.setGroup(clusterGroup);
@@ -153,9 +153,9 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
             throw new MissingEntityException(ClusterNode.class, clusterNodeId);
         }
 
-        clusterNode.setDomain(domain);
+        clusterNode.setAddress(domain);
         clusterNode.setDescription(comment);
-        clusterNode.setActive(activity);
+        clusterNode.setEnabled(activity);
 
         return clusterNode;
     }

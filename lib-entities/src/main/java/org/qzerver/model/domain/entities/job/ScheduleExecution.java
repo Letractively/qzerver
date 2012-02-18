@@ -72,7 +72,7 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     /**
      * Whether the execution was started manually
      */
-    private boolean manual;
+    private boolean forced;
 
     /**
      * Timeout for execution in milliseconds (copied from cluster). Value 0 means no timeout
@@ -230,12 +230,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.started = started;
     }
 
-    public boolean isManual() {
-        return manual;
+    public boolean isForced() {
+        return forced;
     }
 
-    public void setManual(boolean manual) {
-        this.manual = manual;
+    public void setForced(boolean forced) {
+        this.forced = forced;
     }
 
     public long getTimeout() {

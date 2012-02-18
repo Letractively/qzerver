@@ -107,7 +107,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleExecution.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
         scheduleExecution.setName("rgwrgr");
         scheduleExecution.setCron("0 * * * * ?");
-        scheduleExecution.setManual(true);
+        scheduleExecution.setForced(true);
         scheduleExecution.setHostname("rgwrgwr");
         scheduleExecution.setFired(ChronometerUtils.parseMoment("2011-01-01 12:00:01.000 UTC"));
         scheduleExecution.setScheduled(ChronometerUtils.parseMoment("2011-01-01 12:00:00.000 UTC"));

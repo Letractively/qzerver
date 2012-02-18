@@ -41,8 +41,8 @@
             <basic name="cron">
                 <column name="cron" nullable="false" length="64"/>
             </basic>
-            <basic name="manual">
-                <column name="manual" nullable="false"/>
+            <basic name="forced">
+                <column name="forced" nullable="false"/>
             </basic>
             <basic name="fired">
                 <column name="fired" nullable="false"/>

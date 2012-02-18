@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 public class ClusterNode extends AbstractBusinessEntity<Long> {
 
-    public static final int MAX_DOMAIN_LENGTH = 128;
+    public static final int MAX_ADDRESS_LENGTH = 128;
 
     public static final int MAX_DESCRIPTION_LENGTH = 256;
 
@@ -23,11 +23,11 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
     private int orderIndex;
 
     /**
-     * Domain
+     * Domain address
      */
     @NotBlank
-    @Length(max = MAX_DOMAIN_LENGTH)
-    private String domain;
+    @Length(max = MAX_ADDRESS_LENGTH)
+    private String address;
 
     /**
      * Node comment
@@ -44,7 +44,7 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
     /**
      * Is the node active
      */
-    private boolean active;
+    private boolean enabled;
 
     public ClusterNode() {
         super(BusinessModel.VERSION);
@@ -67,12 +67,12 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
         this.description = description;
     }
 
-    public String getDomain() {
-        return domain;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public int getOrderIndex() {
@@ -91,11 +91,11 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
         this.group = group;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
