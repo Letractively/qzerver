@@ -11,6 +11,7 @@
        -->
 
     <!-- Quartz tables -->
+
     <include file="quartz-2-1-3/tables_hsqldb_blob.sql" relativeToChangelogFile="true"/>
     <include file="quartz-2-1-3/tables_postgres.sql" relativeToChangelogFile="true"/>
     <include file="quartz-2-1-3/tables_oracle.sql" relativeToChangelogFile="true"/>
@@ -24,6 +25,7 @@
     <include file="quartz-2-1-3/tables_informix.sql" relativeToChangelogFile="true"/>
 
     <!-- Qzerver tables -->
+
     <changeSet id="ddl_qzerver_tables" author="qzerver">
         <createTable tableName="qz_cluster_group">
             <column name="id" autoIncrement="true" type="BIGINT">
@@ -322,6 +324,8 @@
         </modifySql>
     </changeSet>
 
+    <!-- Constraints -->
+    
     <changeSet id="ddl_qzerver_constraints" author="qzerver">
         <addForeignKeyConstraint constraintName="fk_qz_cluster_node_ref_group"
                 baseTableName="qz_cluster_node" baseColumnNames="cluster_group_id"
@@ -360,11 +364,49 @@
                 referencedTableName="qz_execution_node" referencedColumnNames="id"
                 onDelete="CASCADE"/>
     </changeSet>
+
+    <!-- Indexes -->
     
     <changeSet id="ddl_qzerver_indexes" author="qzerver">
         <createIndex tableName="qz_execution" indexName="idx_qz_execution_started">
             <column name="started"/>
         </createIndex>
+    </changeSet>
+
+    <!-- Sequences -->
+
+    <changeSet id="ddl_qzerver_postgresql" author="qzerver" dbms="postgresql">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+
+    <changeSet id="ddl_qzerver_firebird" author="qzerver" dbms="firebird">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+
+    <changeSet id="ddl_qzerver_mysql" author="qzerver" dbms="mysql">
+        <createTable tableName="hibernate_sequence">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+        <insert tableName="hibernate_sequence">
+            <column name="next_val" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ddl_qzerver_mssql" author="qzerver" dbms="mssql">
+        <createTable tableName="hibernate_sequence">
+            <column name="next_val" type="BIGINT"/>
+        </createTable>
+        <insert tableName="hibernate_sequence">
+            <column name="next_val" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="ddl_qzerver_hsqldb" author="qzerver" dbms="hsqldb">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+
+    <changeSet id="ddl_qzerver_oracle" author="qzerver" dbms="oracle">
+        <createSequence sequenceName="hibernate_sequence"/>
     </changeSet>
 
 </databaseChangeLog>

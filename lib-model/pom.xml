@@ -132,6 +132,7 @@
             <version>${org.liquibase.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- JDBC drivers -->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
