@@ -10,20 +10,6 @@
        * Don't use reserved words. The word "comment" is reserved in ORACLE
        -->
 
-    <!-- Quartz tables -->
-
-    <include file="quartz-2-1-3/tables_hsqldb_blob.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_postgres.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_oracle.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_mysql_innodb.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_firebird.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_h2.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_sybase.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_derby.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_db2_v95.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_sqlServer.sql" relativeToChangelogFile="true"/>
-    <include file="quartz-2-1-3/tables_informix.sql" relativeToChangelogFile="true"/>
-
     <!-- Qzerver tables -->
 
     <changeSet id="ddl_qzerver_tables" author="qzerver">
