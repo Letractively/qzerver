@@ -6,7 +6,6 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
     <changeSet id="quartz-tables" author="qzerver">
-
         <!-- QRTZ_JOB_DETAILS -->
         <createTable tableName="QRTZ_JOB_DETAILS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -42,8 +41,7 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_JOB_DETAILS" columnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"
-                constraintName="QRTZ_JOB_DETAILS_PK"/>
-
+                constraintName="QRTZ_JOB_DETAILS_PKEY"/>
         <!-- QRTZ_TRIGGERS -->
         <createTable tableName="QRTZ_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -97,12 +95,11 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_TRIGGERS_PK"/>
+                constraintName="QRTZ_TRIGGERS_PKEY"/>
         <addForeignKeyConstraint
                 baseTableName="QRTZ_TRIGGERS" baseColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"
                 referencedTableName="QRTZ_JOB_DETAILS" referencedColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"
                 constraintName="QRTZ_TRIGGERS_REF_DETAILS"/>
-
         <!-- QRTZ_SIMPLE_TRIGGERS -->
         <createTable tableName="QRTZ_SIMPLE_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -126,12 +123,11 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_SIMPLE_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_SIMPLE_TRIGGERS_PK"/>
+                constraintName="QRTZ_SIMPLE_TRIGGERS_PKEY"/>
         <addForeignKeyConstraint
                 baseTableName="QRTZ_SIMPLE_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 constraintName="QRTZ_SIMPLE_REF_TRIGGERS" />
-
         <!-- QRTZ_CRON_TRIGGERS -->
         <createTable tableName="QRTZ_CRON_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -152,12 +148,11 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_CRON_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_CRON_TRIGGERS_PK"/>
+                constraintName="QRTZ_CRON_TRIGGERS_PKEY"/>
         <addForeignKeyConstraint
                 baseTableName="QRTZ_CRON_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 constraintName="QRTZ_CRON_REF_TRIGGERS"/>
-
         <!-- QRTZ_SIMPROP_TRIGGERS -->
         <createTable tableName="QRTZ_SIMPROP_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -205,12 +200,11 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_SIMPROP_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_SIMPROP_TRIGGERS_PK"/>
+                constraintName="QRTZ_SIMPROP_TRIGGERS_PKEY"/>
         <addForeignKeyConstraint
                 baseTableName="QRTZ_SIMPROP_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 constraintName="QRTZ_SIMPROP_REF_TRIGGERS"/>
-
         <!-- QRTZ_BLOB_TRIGGERS -->
         <createTable tableName="QRTZ_BLOB_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -228,12 +222,11 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_BLOB_TRIGGERS" columnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_BLOB_TRIGGERS_PK"/>
+                constraintName="QRTZ_BLOB_TRIGGERS_PKEY"/>
         <addForeignKeyConstraint
                 baseTableName="QRTZ_BLOB_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 constraintName="QRTZ_BLOB_REF_TRIGGERS" />
-
         <!-- QRTZ_CALENDARS -->
         <createTable tableName="QRTZ_CALENDARS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -248,8 +241,7 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_CALENDARS" columnNames="SCHED_NAME,CALENDAR_NAME"
-                constraintName="QRTZ_CALENDARS_PK"/>
-
+                constraintName="QRTZ_CALENDARS_PKEY"/>
         <!-- QRTZ_PAUSED_TRIGGER_GRPS -->
         <createTable tableName="QRTZ_PAUSED_TRIGGER_GRPS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -261,8 +253,7 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_PAUSED_TRIGGER_GRPS" columnNames="SCHED_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_PAUSED_TRIGGER_GRPS_PK"/>
-
+                constraintName="QRTZ_PAUSED_TRIGGER_GRPS_PKEY"/>
         <!-- QRTZ_FIRED_TRIGGERS -->
         <createTable tableName="QRTZ_FIRED_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -304,8 +295,7 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_FIRED_TRIGGERS" columnNames="SCHED_NAME,ENTRY_ID"
-                constraintName="QRTZ_FIRED_TRIGGERS_PK"/>
-
+                constraintName="QRTZ_FIRED_TRIGGERS_PKEY"/>
         <!-- QRTZ_SCHEDULER_STATE -->
         <createTable tableName="QRTZ_SCHEDULER_STATE">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -323,8 +313,7 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_SCHEDULER_STATE" columnNames="SCHED_NAME,INSTANCE_NAME"
-                constraintName="QRTZ_SCHEDULER_STATE_PK"/>
-
+                constraintName="QRTZ_SCHEDULER_STATE_PKEY"/>
         <!-- QRTZ_LOCKS -->
         <createTable tableName="QRTZ_LOCKS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -336,8 +325,104 @@
         </createTable>
         <addPrimaryKey
                 tableName="QRTZ_LOCKS" columnNames="SCHED_NAME,LOCK_NAME"
-                constraintName="QRTZ_LOCKS_PK"/>
+                constraintName="QRTZ_LOCKS_PKEY"/>
+    </changeSet>
 
+    <changeSet id="quartz-indexes" author="qzerver" dbms="oracle,postgresql,mysql">
+        <createIndex tableName="QRTZ_JOB_DETAILS" indexName="IDX_QRTZ_J_REQ_RECOVERY">
+            <column name="SCHED_NAME"/>
+            <column name="REQUESTS_RECOVERY"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_JOB_DETAILS" indexName="IDX_QRTZ_J_GRP">
+            <column name="SCHED_NAME"/>
+            <column name="JOB_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_J">
+            <column name="SCHED_NAME"/>
+            <column name="JOB_NAME"/>
+            <column name="JOB_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_JG">
+            <column name="SCHED_NAME"/>
+            <column name="JOB_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_C">
+            <column name="SCHED_NAME"/>
+            <column name="CALENDAR_NAME"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_G">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_STATE">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_STATE"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_N_STATE">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_NAME"/>
+            <column name="TRIGGER_GROUP"/>
+            <column name="TRIGGER_STATE"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_N_G_STATE">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_GROUP"/>
+            <column name="TRIGGER_STATE"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_NEXT_FIRE_TIME">
+            <column name="SCHED_NAME"/>
+            <column name="NEXT_FIRE_TIME"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_NFT_ST">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_STATE"/>
+            <column name="NEXT_FIRE_TIME"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_NFT_MISFIRE">
+            <column name="SCHED_NAME"/>
+            <column name="MISFIRE_INSTR"/>
+            <column name="NEXT_FIRE_TIME"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_NFT_ST_MISFIRE">
+            <column name="SCHED_NAME"/>
+            <column name="MISFIRE_INSTR"/>
+            <column name="NEXT_FIRE_TIME"/>
+            <column name="TRIGGER_STATE"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_TRIGGERS" indexName="IDX_QRTZ_T_NFT_ST_MISFIRE_GRP">
+            <column name="SCHED_NAME"/>
+            <column name="MISFIRE_INSTR"/>
+            <column name="NEXT_FIRE_TIME"/>
+            <column name="TRIGGER_GROUP"/>
+            <column name="TRIGGER_STATE"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_TRIG_INST_NAME">
+            <column name="SCHED_NAME"/>
+            <column name="INSTANCE_NAME"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_INST_JOB_REQ_RCVRY">
+            <column name="SCHED_NAME"/>
+            <column name="INSTANCE_NAME"/>
+            <column name="REQUESTS_RECOVERY"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_J_G">
+            <column name="SCHED_NAME"/>
+            <column name="JOB_NAME"/>
+            <column name="JOB_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_JG">
+            <column name="SCHED_NAME"/>
+            <column name="JOB_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_T_G">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_NAME"/>
+            <column name="TRIGGER_GROUP"/>
+        </createIndex>
+        <createIndex tableName="QRTZ_FIRED_TRIGGERS" indexName="IDX_QRTZ_FT_TG">
+            <column name="SCHED_NAME"/>
+            <column name="TRIGGER_GROUP"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

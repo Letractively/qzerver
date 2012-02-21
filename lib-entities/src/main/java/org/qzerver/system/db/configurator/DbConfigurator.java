@@ -56,7 +56,7 @@ public class DbConfigurator {
             case ORACLE9I:
                 return "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
             case ORACLE10G:
-                return "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
+                return "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
             case MSSQL2005:
                 return "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
             case MSSQL2008:
