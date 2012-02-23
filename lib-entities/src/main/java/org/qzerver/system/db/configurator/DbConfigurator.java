@@ -12,7 +12,7 @@ public class DbConfigurator {
         switch (type) {
             case HSQLDB:
                 return "org.hibernate.dialect.HSQLDialect";
-            case MYSQLINNO:
+            case MYSQL_INNO:
                 return "org.hibernate.dialect.MySQLInnoDBDialect";
             case POSTGRES:
                 return "org.hibernate.dialect.PostgreSQLDialect";
@@ -32,7 +32,9 @@ public class DbConfigurator {
                 return "org.hibernate.dialect.SQLServer2005Dialect";
             case MSSQL2008:
                 return "org.hibernate.dialect.SQLServer2008Dialect";
-            case DERBY:
+            case DERBY_EMBEDDED:
+                return "org.hibernate.dialect.DerbyTenSevenDialect";
+            case DERBY_CLIENT:
                 return "org.hibernate.dialect.DerbyTenSevenDialect";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
@@ -47,7 +49,7 @@ public class DbConfigurator {
         switch (type) {
             case HSQLDB:
                 return "org.quartz.impl.jdbcjobstore.HSQLDBDelegate";
-            case MYSQLINNO:
+            case MYSQL_INNO:
                 return "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
             case POSTGRES:
                 return "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate";
@@ -67,7 +69,9 @@ public class DbConfigurator {
                 return "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
             case MSSQL2008:
                 return "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
-            case DERBY:
+            case DERBY_EMBEDDED:
+                return "org.quartz.impl.jdbcjobstore.CloudscapeDelegate";
+            case DERBY_CLIENT:
                 return "org.quartz.impl.jdbcjobstore.CloudscapeDelegate";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
@@ -82,7 +86,7 @@ public class DbConfigurator {
         switch (type) {
             case HSQLDB:
                 return "org.hsqldb.jdbc.JDBCDriver";
-            case MYSQLINNO:
+            case MYSQL_INNO:
                 return "com.mysql.jdbc.Driver";
             case POSTGRES:
                 return "org.postgresql.Driver";
@@ -102,7 +106,9 @@ public class DbConfigurator {
                 return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
             case MSSQL2008  :
                 return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-            case DERBY:
+            case DERBY_EMBEDDED:
+                return "org.apache.derby.jdbc.EmbeddedDriver";
+            case DERBY_CLIENT:
                 return "org.apache.derby.jdbc.ClientDriver";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
@@ -117,7 +123,7 @@ public class DbConfigurator {
         switch (type) {
             case HSQLDB:
                 return "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS";
-            case MYSQLINNO:
+            case MYSQL_INNO:
                 return "SELECT 1";
             case POSTGRES:
                 return "SELECT 1";
@@ -137,7 +143,9 @@ public class DbConfigurator {
                 return "SELECT 1";
             case MSSQL2008  :
                 return "SELECT 1";
-            case DERBY:
+            case DERBY_EMBEDDED:
+                return "SELECT 1 FROM SYSIBM.SYSDUMMY1";
+            case DERBY_CLIENT:
                 return "SELECT 1 FROM SYSIBM.SYSDUMMY1";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
@@ -152,7 +160,7 @@ public class DbConfigurator {
         switch (type) {
             case HSQLDB:
                 return true;
-            case MYSQLINNO:
+            case MYSQL_INNO:
                 return true;
             case POSTGRES:
                 return true;
@@ -172,7 +180,9 @@ public class DbConfigurator {
                 return true;
             case MSSQL2008:
                 return true;
-            case DERBY:
+            case DERBY_EMBEDDED:
+                return true;
+            case DERBY_CLIENT:
                 return true;
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
@@ -181,6 +191,12 @@ public class DbConfigurator {
 
     public void setType(DbConfiguratorType type) {
         this.type = type;
+
+        switch (type) {
+            case DERBY_CLIENT:
+            case DERBY_EMBEDDED:
+                System.setProperty("derby.stream.error.file", "error.txt");
+        }
     }
 
 }

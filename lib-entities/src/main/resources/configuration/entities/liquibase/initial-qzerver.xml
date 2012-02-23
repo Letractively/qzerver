@@ -332,7 +332,7 @@
         <addForeignKeyConstraint constraintName="fk_qz_exec_ref_job"
                 baseTableName="qz_execution" baseColumnNames="schedule_job_id"
                 referencedTableName="qz_job" referencedColumnNames="id"
-                onDelete="SET NULL"/>
+                onDelete="CASCADE"/>
         <addForeignKeyConstraint constraintName="fk_qz_exec_ref_action"
                 baseTableName="qz_execution" baseColumnNames="schedule_action_id"
                 referencedTableName="qz_action" referencedColumnNames="id"

@@ -6,7 +6,7 @@ public enum DbConfiguratorType {
 
     HSQLDB,
 
-    MYSQLINNO,
+    MYSQL_INNO,
 
     POSTGRES,
 
@@ -26,6 +26,8 @@ public enum DbConfiguratorType {
 
     MSSQL2008,
 
-    DERBY
+    DERBY_EMBEDDED,
+
+    DERBY_CLIENT
 
 }

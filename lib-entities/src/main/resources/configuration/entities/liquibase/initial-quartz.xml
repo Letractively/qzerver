@@ -99,7 +99,7 @@
         <addForeignKeyConstraint
                 baseTableName="QRTZ_TRIGGERS" baseColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"
                 referencedTableName="QRTZ_JOB_DETAILS" referencedColumnNames="SCHED_NAME,JOB_NAME,JOB_GROUP"
-                constraintName="QRTZ_TRIGGERS_REF_DETAILS"/>
+                constraintName="QRTZ_TRIGGERS_REF_DETAILS" onDelete="CASCADE"/>
         <!-- QRTZ_SIMPLE_TRIGGERS -->
         <createTable tableName="QRTZ_SIMPLE_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -127,7 +127,7 @@
         <addForeignKeyConstraint
                 baseTableName="QRTZ_SIMPLE_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_SIMPLE_REF_TRIGGERS" />
+                constraintName="QRTZ_SIMPLE_REF_TRIGGERS" onDelete="CASCADE"/>
         <!-- QRTZ_CRON_TRIGGERS -->
         <createTable tableName="QRTZ_CRON_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -152,7 +152,7 @@
         <addForeignKeyConstraint
                 baseTableName="QRTZ_CRON_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_CRON_REF_TRIGGERS"/>
+                constraintName="QRTZ_CRON_REF_TRIGGERS" onDelete="CASCADE"/>
         <!-- QRTZ_SIMPROP_TRIGGERS -->
         <createTable tableName="QRTZ_SIMPROP_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -204,7 +204,7 @@
         <addForeignKeyConstraint
                 baseTableName="QRTZ_SIMPROP_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_SIMPROP_REF_TRIGGERS"/>
+                constraintName="QRTZ_SIMPROP_REF_TRIGGERS" onDelete="CASCADE"/>
         <!-- QRTZ_BLOB_TRIGGERS -->
         <createTable tableName="QRTZ_BLOB_TRIGGERS">
             <column name="SCHED_NAME" type="VARCHAR(120)">
@@ -226,7 +226,7 @@
         <addForeignKeyConstraint
                 baseTableName="QRTZ_BLOB_TRIGGERS" baseColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
                 referencedTableName="QRTZ_TRIGGERS" referencedColumnNames="SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP"
-                constraintName="QRTZ_BLOB_REF_TRIGGERS" />
+                constraintName="QRTZ_BLOB_REF_TRIGGERS" onDelete="CASCADE"/>
         <!-- QRTZ_CALENDARS -->
         <createTable tableName="QRTZ_CALENDARS">
             <column name="SCHED_NAME" type="VARCHAR(120)">

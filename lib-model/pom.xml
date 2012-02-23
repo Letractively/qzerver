@@ -163,6 +163,18 @@
             <version>${org.hsqldb.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+	        <groupId>org.apache.derby</groupId>
+	        <artifactId>derby</artifactId>
+	        <version>${org.derby.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+	        <groupId>org.apache.derby</groupId>
+	        <artifactId>derbyclient</artifactId>
+            <version>${org.derby.version}</version>
+            <scope>runtime</scope>
+        </dependency>
         <!-- Jackson -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
