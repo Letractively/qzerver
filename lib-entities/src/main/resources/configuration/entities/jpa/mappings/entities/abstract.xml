@@ -9,7 +9,7 @@
             name="globalTableGenerator"
             table="hibernate_sequences"
             initial-value="0"
-            allocation-size="100"
+            allocation-size="1000"
             pk-column-name="sequence_name"
             value-column-name="next_val"/>
 

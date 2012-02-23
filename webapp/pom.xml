@@ -31,118 +31,12 @@
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- GainMatrix -->
-        <dependency>
-            <groupId>com.gainmatrix</groupId>
-            <artifactId>gainmatrix-lib-beans</artifactId>
-            <version>${com.gainmatrix.lib-beans.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.gainmatrix</groupId>
-            <artifactId>gainmatrix-lib-spring</artifactId>
-            <version>${com.gainmatrix.lib-spring.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.gainmatrix</groupId>
-            <artifactId>gainmatrix-lib-web</artifactId>
-            <version>${com.gainmatrix.lib-web.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Quartz -->
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-            <version>${org.quartz.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${com.google.guava.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>${com.google.findbugs.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- Apache Commons -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>${org.apache.commons.fileupload.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${org.apache.commons.lang.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>${org.apache.commons.collections.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>${org.apache.commons.beanutils.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${org.apache.commons.io.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-digester</groupId>
-            <artifactId>commons-digester</artifactId>
-            <version>${org.apache.commons.digester.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${org.apache.commons.codec.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${org.apache.commons.httpclient.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Database -->
-        <dependency>
-            <groupId>com.jolbox</groupId>
-            <artifactId>bonecp</artifactId>
-            <version>${com.jolbox.bonecp.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${org.postgresql.jdbc.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${com.mysql.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${org.hsqldb.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <!-- Jackson -->
         <dependency>
@@ -157,117 +51,11 @@
             <version>${org.codehaus.jackson.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Hibernate -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${org.hibernate.core.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${org.hibernate.entitymanager.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${org.hibernate.validator.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>${org.hibernate.common-annotations.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- Views -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>${org.freemarker.version}</version>
-            <scope>compile</scope>
-        </dependency>
-         <!-- Jsch -->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>${com.jcraft.jsch}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- AspectJ -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.6.10</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Spring Framework (Core)-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-asm</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-oxm</artifactId>
-            <version>${org.springframework.version}</version>
             <scope>compile</scope>
         </dependency>
         <!-- Spring Framework (MVC) -->

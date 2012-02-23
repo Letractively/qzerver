@@ -195,13 +195,7 @@
             <version>${org.hibernate.validator.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>${org.hibernate.common-annotations.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Views -->
+        <!-- Templates -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
