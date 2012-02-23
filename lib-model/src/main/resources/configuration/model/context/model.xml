@@ -74,8 +74,7 @@
     <!-- Default application locale -->
 
     <bean id="defaultLocaleInitializer" class="com.gainmatrix.lib.locale.DefaultLocaleInitializer">
-        <property name="country" value="${app.default.locale.country}"/>
-        <property name="language" value="${app.default.locale.language}"/>
+        <property name="locale" value="${app.default.locale}"/>
     </bean>
 
     <!-- Default application timezone -->

@@ -10,7 +10,7 @@
         <attributes>
             <id name="id">
                 <column name="id" nullable="false"/>
-                <generated-value strategy="AUTO"/>
+                <generated-value strategy="TABLE" generator="globalTableGenerator"/>
             </id>
             <basic name="name">
                 <column name="name" nullable="false" length="256"/>

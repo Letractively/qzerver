@@ -61,7 +61,6 @@ public class DdlGeneratorApplication {
 
             // Hibernate configuration
             Configuration cfg = new Configuration();
-            cfg.setProperty("hibernate.hbm2ddl.auto", "create");
             cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(dbConfigurator.isNewGeneratorType()));
 
             // Compose configuration

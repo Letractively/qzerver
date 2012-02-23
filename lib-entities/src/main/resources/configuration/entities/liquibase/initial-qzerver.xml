@@ -14,7 +14,7 @@
 
     <changeSet id="ddl_qzerver_tables" author="qzerver">
         <createTable tableName="qz_cluster_group">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_cluster_group"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -37,7 +37,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_cluster_node">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_cluster_node"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -69,7 +69,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_job">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_job"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -128,7 +128,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_job_group">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_job_group"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -148,7 +148,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_action">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_action"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -177,7 +177,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_execution">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -239,7 +239,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_execution_node">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution_node"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -268,7 +268,7 @@
             </column>
         </createTable>
         <createTable tableName="qz_execution_result">
-            <column name="id" autoIncrement="true" type="BIGINT">
+            <column name="id" autoIncrement="false" type="BIGINT">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_qz_execution_result"/>
             </column>
             <column name="business_model" type="INTEGER">
@@ -361,38 +361,15 @@
 
     <!-- Sequences -->
 
-    <changeSet id="ddl_qzerver_postgresql" author="qzerver" dbms="postgresql">
-        <createSequence sequenceName="hibernate_sequence"/>
-    </changeSet>
-
-    <changeSet id="ddl_qzerver_firebird" author="qzerver" dbms="firebird">
-        <createSequence sequenceName="hibernate_sequence"/>
-    </changeSet>
-
-    <changeSet id="ddl_qzerver_mysql" author="qzerver" dbms="mysql">
-        <createTable tableName="hibernate_sequence">
-            <column name="next_val" type="BIGINT"/>
+    <changeSet id="ddl_qzerver_hibernate" author="qzerver">
+        <createTable tableName="hibernate_sequences">
+            <column name="sequence_name" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="next_val" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <insert tableName="hibernate_sequence">
-            <column name="next_val" value="1"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="ddl_qzerver_mssql" author="qzerver" dbms="mssql">
-        <createTable tableName="hibernate_sequence">
-            <column name="next_val" type="BIGINT"/>
-        </createTable>
-        <insert tableName="hibernate_sequence">
-            <column name="next_val" value="1"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="ddl_qzerver_hsqldb" author="qzerver" dbms="hsqldb">
-        <createSequence sequenceName="hibernate_sequence"/>
-    </changeSet>
-
-    <changeSet id="ddl_qzerver_oracle" author="qzerver" dbms="oracle">
-        <createSequence sequenceName="hibernate_sequence"/>
     </changeSet>
 
 </databaseChangeLog>
