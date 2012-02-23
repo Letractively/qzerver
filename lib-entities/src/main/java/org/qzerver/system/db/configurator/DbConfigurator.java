@@ -26,10 +26,14 @@ public class DbConfigurator {
                 return "org.hibernate.dialect.Oracle9iDialect";
             case ORACLE10G:
                 return "org.hibernate.dialect.Oracle10gDialect";
+            case ORACLE11G:
+                return "org.hibernate.dialect.Oracle10gDialect";
             case MSSQL2005:
                 return "org.hibernate.dialect.SQLServer2005Dialect";
             case MSSQL2008:
                 return "org.hibernate.dialect.SQLServer2008Dialect";
+            case DERBY:
+                return "org.hibernate.dialect.DerbyTenSevenDialect";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
         }
@@ -57,10 +61,14 @@ public class DbConfigurator {
                 return "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
             case ORACLE10G:
                 return "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
+            case ORACLE11G:
+                return "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
             case MSSQL2005:
                 return "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
             case MSSQL2008:
                 return "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
+            case DERBY:
+                return "org.quartz.impl.jdbcjobstore.CloudscapeDelegate";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
         }
@@ -88,10 +96,14 @@ public class DbConfigurator {
                 return "oracle.jdbc.OracleDriver";
             case ORACLE10G:
                 return "oracle.jdbc.OracleDriver";
+            case ORACLE11G:
+                return "oracle.jdbc.OracleDriver";
             case MSSQL2005:
                 return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
             case MSSQL2008  :
                 return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+            case DERBY:
+                return "org.apache.derby.jdbc.ClientDriver";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
         }
@@ -119,10 +131,14 @@ public class DbConfigurator {
                 return "SELECT 1 FROM DUAL";
             case ORACLE10G:
                 return "SELECT 1 FROM DUAL";
+            case ORACLE11G:
+                return "SELECT 1 FROM DUAL";
             case MSSQL2005:
                 return "SELECT 1";
             case MSSQL2008  :
                 return "SELECT 1";
+            case DERBY:
+                return "SELECT 1 FROM SYSIBM.SYSDUMMY1";
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);
         }
@@ -150,9 +166,13 @@ public class DbConfigurator {
                 return true;
             case ORACLE10G:
                 return true;
+            case ORACLE11G:
+                return true;
             case MSSQL2005:
                 return true;
-            case MSSQL2008  :
+            case MSSQL2008:
+                return true;
+            case DERBY:
                 return true;
             default:
                 throw new IllegalStateException("DB type is not supported: " + type);

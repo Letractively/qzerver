@@ -20,8 +20,12 @@ public enum DbConfiguratorType {
 
     ORACLE10G,
 
+    ORACLE11G,
+
     MSSQL2005,
 
-    MSSQL2008
+    MSSQL2008,
+
+    DERBY
 
 }

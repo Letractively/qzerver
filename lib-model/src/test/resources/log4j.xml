@@ -9,15 +9,15 @@
     </appender>
 
     <logger name="java.sql">
-        <level value="INFO" />
+        <level value="INFO"/>
     </logger>
 
     <logger name="org.hibernate.SQL">
-        <level value="INFO" />
+        <level value="INFO"/>
     </logger>
 
     <logger name="com.jolbox.bonecp">
-        <level value="DEBUG" />
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="org.hibernate.ejb.metamodel.MetadataContext">

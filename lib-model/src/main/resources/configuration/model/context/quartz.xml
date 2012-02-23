@@ -20,7 +20,7 @@
     <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="autoStartup" value="${app.quartz.start.auto}"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="transactionManager" ref="transactionManager"/>
+        <property name="transactionManager" ref="jdbcTransactionManager"/>
         <property name="exposeSchedulerInRepository" value="false"/>
         <property name="overwriteExistingJobs" value="false"/>
         <property name="waitForJobsToCompleteOnShutdown" value="${app.quartz.shutdown.wait}"/>
@@ -46,14 +46,14 @@
         <property name="jobClass" value="org.qzerver.system.quartz.QzerverJob"/>
         <property name="jobDataAsMap">
             <map>
-                <entry key="test" value="abcdef" />
+                <entry key="test" value="abcdef"/>
             </map>
         </property>
     </bean>
 
     <bean id="exampleTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="exampleJob" />
-        <property name="cronExpression" value="0 * * * * ?" />
+        <property name="cronExpression" value="0 * * * * ?"/>
     </bean>
 
 </beans>
