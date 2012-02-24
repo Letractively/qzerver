@@ -1,5 +1,11 @@
 package org.qzerver.system.db.configurator;
 
+import com.gainmatrix.lib.business.exception.SystemIntegrityException;
+import com.google.common.base.Preconditions;
+
+import java.io.File;
+import java.io.IOException;
+
 public class DbConfigurator {
 
     private DbConfiguratorType type = DbConfiguratorType.CUSTOM;
@@ -190,12 +196,30 @@ public class DbConfigurator {
     }
 
     public void setType(DbConfiguratorType type) {
+        Preconditions.checkNotNull(type, "DB type is not specified");
+
         this.type = type;
 
         switch (type) {
-            case DERBY_CLIENT:
             case DERBY_EMBEDDED:
-                System.setProperty("derby.stream.error.file", "error.txt");
+                initDerbyEmbeddedSettings();
+                break;
+        }
+    }
+
+    private void initDerbyEmbeddedSettings() {
+        final String DERBY_LOG_PARAMETER = "derby.stream.error.file";
+
+        if (System.getProperty(DERBY_LOG_PARAMETER) == null) {
+            File derbyLogFile;
+            try {
+                derbyLogFile = File.createTempFile("derby", ".log");
+                derbyLogFile.deleteOnExit();
+            } catch (IOException e) {
+                throw new SystemIntegrityException("Failed to create a temporary file", e);
+            }
+
+            System.setProperty(DERBY_LOG_PARAMETER, derbyLogFile.getAbsolutePath());
         }
     }
 

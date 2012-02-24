@@ -20,7 +20,7 @@ public class LiquibaseInitializer extends SpringLiquibase {
         try {
             super.afterPropertiesSet();
         } finally {
-            System.getProperties().remove(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
+            System.clearProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
         }
     }
 
