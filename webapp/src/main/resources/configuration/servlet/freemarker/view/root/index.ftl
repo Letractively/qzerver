@@ -9,7 +9,7 @@
 
     <p>{${helpers.getText(renderContext.now)}}</p>
 
-    [#assign propName="domain"]
+    [#assign propName="web"]
     <p>${renderContext[propName]}</p>
 
     <p>[#if helpers.isEqualText(renderContext.timezone.ID, "UTC")]YES![/#if]</p>
