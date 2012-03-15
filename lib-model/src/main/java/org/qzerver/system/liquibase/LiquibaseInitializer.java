@@ -1,4 +1,4 @@
-package liquibase.spring;
+package org.qzerver.system.liquibase;
 
 import liquibase.Liquibase;
 import liquibase.exception.LiquibaseException;

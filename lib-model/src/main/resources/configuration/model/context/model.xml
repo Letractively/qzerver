@@ -3,12 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-    <context:annotation-config/>
+    <context:annotation-config />
 
     <!-- Application settings -->
 
@@ -107,5 +108,11 @@
     <!-- Current execution thread locale&timezone resolver -->
 
     <bean id="clientI18nResolver" class="com.gainmatrix.lib.spring.i18n.impl.ClientI18nResolverImpl"/>
+
+    <!-- Task executor -->
+
+    <task:executor id="taskExecutor" pool-size="3"/>
+
+    <task:annotation-driven mode="proxy" proxy-target-class="false" executor="taskExecutor"/>
 
 </beans>

@@ -6,11 +6,11 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean id="freemarkerConfiguration" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <bean id="viewFreemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="preTemplateLoaders">
             <array>
                 <bean class="freemarker.cache.ClassTemplateLoader">
-                    <constructor-arg index="0" value="org.qzerver.system.ClassLoaderSource"/>
+                    <constructor-arg index="0" value="org.qzerver.web.ClassLoaderSource"/>
                     <constructor-arg index="1" value="/"/>
                 </bean>
             </array>
@@ -27,7 +27,10 @@
         </property>
     </bean>
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <bean id="viewFreemarkerConfiguration" factory-bean="viewFreemarkerConfigurer" factory-method="getConfiguration"/>
+
+    <bean id="viewResolver" class="org.qzerver.system.freemarker.ConfiguredFreeMarkerViewResolver">
+        <property name="configuration" ref="viewFreemarkerConfiguration"/>
         <property name="cache" value="true"/>
         <property name="prefix" value="/configuration/servlet/freemarker/view/"/>
         <property name="suffix" value=".ftl"/>

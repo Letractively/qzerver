@@ -38,6 +38,10 @@
         <property name="node" value="${app.host}"/>
     </bean>
 
+    <bean id="mailService" class="org.qzerver.model.service.mail.impl.MailServiceImpl">
+
+    </bean>
+
     <bean name="actionAgent" class="org.qzerver.model.agent.action.impl.ActionAgentImpl">
 
     </bean>
