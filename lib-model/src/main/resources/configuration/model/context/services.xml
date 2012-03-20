@@ -18,6 +18,7 @@
         <property name="executionManagementService" ref="scheduleExecutionManagementService"/>
         <property name="chronometer" ref="chronometer"/>
         <property name="actionAgent" ref="actionAgent"/>
+        <property name="mailService" ref="mailService"/>
     </bean>
 
     <bean id="scheduleJobManagementService" class="org.qzerver.model.service.job.management.impl.ScheduleJobManagementServiceImpl">
@@ -39,11 +40,16 @@
     </bean>
 
     <bean id="mailService" class="org.qzerver.model.service.mail.impl.MailServiceImpl">
-
+        <property name="mailAgent" ref="mailAgent"/>
+        <property name="templateEngine" ref="mailFreemarkerTemplateEngine"/>
+        <property name="messageSourceAccessor" ref="messageSourceAccessor"/>
+        <property name="mailTo" value="${app.mail.email.to}"/>
+        <property name="enabled" value="${app.mail.enabled}"/>
+        <property name="locale" value="${app.view.locale}"/>
+        <property name="timezone" value="${app.view.timezone}"/>
     </bean>
 
     <bean name="actionAgent" class="org.qzerver.model.agent.action.impl.ActionAgentImpl">
-
     </bean>
 
 </beans>

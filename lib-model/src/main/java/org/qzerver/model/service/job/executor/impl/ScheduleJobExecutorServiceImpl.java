@@ -12,6 +12,7 @@ import org.qzerver.model.service.job.execution.ScheduleExecutionManagementServic
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
+import org.qzerver.model.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -35,6 +36,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
     private ActionAgent actionAgent;
 
+    private MailService mailService;
+
     @Override
     public ScheduleExecution executeAutomaticJob(AutomaticJobExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
@@ -47,7 +50,13 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         executionParameters.setFired(parameters.getFired());
         executionParameters.setManual(false);
 
-        return executeJob(executionParameters);
+        ScheduleExecution execution = executeJob(executionParameters);
+
+        if (execution.getStatus() != ScheduleExecutionStatus.SUCCEED) {
+            mailService.notifyJobExecutionFailed(execution);
+        }
+
+        return execution;
     }
 
     @Override
@@ -164,5 +173,10 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     @Required
     public void setActionAgent(ActionAgent actionAgent) {
         this.actionAgent = actionAgent;
+    }
+
+    @Required
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
     }
 }

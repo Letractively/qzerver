@@ -20,6 +20,11 @@
         </property>
     </bean>
 
+    <bean id="mailAgent" class="org.qzerver.model.agent.mail.impl.MailAgentImpl">
+        <property name="javaMailSender" ref="mailSender"/>
+        <property name="emailFrom" value="${app.mail.email.from}"/>
+    </bean>
+
     <bean id="mailFreemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="preTemplateLoaders">
             <array>
@@ -39,6 +44,10 @@
                 <prop key="tag_syntax">auto_detect</prop>
             </props>
         </property>
+    </bean>
+
+    <bean id="mailFreemarkerTemplateEngine" class="org.qzerver.system.template.impl.FreemarkerTemplateEngine">
+        <property name="configuration" ref="mailFreemarkerConfiguration"/>
     </bean>
 
     <bean id="mailFreemarkerConfiguration" factory-bean="mailFreemarkerConfigurer" factory-method="getConfiguration"/>
