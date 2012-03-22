@@ -46,10 +46,10 @@
         </property>
     </bean>
 
+    <bean id="mailFreemarkerConfiguration" factory-bean="mailFreemarkerConfigurer" factory-method="getConfiguration"/>
+
     <bean id="mailFreemarkerTemplateEngine" class="org.qzerver.system.template.impl.FreemarkerTemplateEngine">
         <property name="configuration" ref="mailFreemarkerConfiguration"/>
     </bean>
-
-    <bean id="mailFreemarkerConfiguration" factory-bean="mailFreemarkerConfigurer" factory-method="getConfiguration"/>
 
 </beans>
