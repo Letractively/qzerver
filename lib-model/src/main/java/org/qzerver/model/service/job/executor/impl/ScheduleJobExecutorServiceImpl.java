@@ -5,9 +5,9 @@ import com.gainmatrix.lib.time.Chronometer;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
@@ -15,11 +15,11 @@ import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameter
 import org.qzerver.model.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -28,14 +28,19 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleJobExecutorServiceImpl.class);
 
+    @NotNull
     private Validator beanValidator;
 
+    @NotNull
     private ScheduleExecutionManagementService executionManagementService;
 
+    @NotNull
     private Chronometer chronometer;
 
+    @NotNull
     private ActionAgent actionAgent;
 
+    @NotNull
     private MailService mailService;
 
     @Override
@@ -155,28 +160,24 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return scheduleExecution;
     }
 
-    @Required
     public void setBeanValidator(Validator beanValidator) {
         this.beanValidator = beanValidator;
     }
 
-    @Required
     public void setExecutionManagementService(ScheduleExecutionManagementService executionManagementService) {
         this.executionManagementService = executionManagementService;
     }
 
-    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
-    @Required
     public void setActionAgent(ActionAgent actionAgent) {
         this.actionAgent = actionAgent;
     }
 
-    @Required
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
     }
+
 }

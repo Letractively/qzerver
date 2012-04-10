@@ -4,6 +4,9 @@ import liquibase.logging.LogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Adapter for Liquibase logging subsystem. Translates all messages to SLF4J logger
+ */
 public class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Slf4jLiquibaseLogger.class);
@@ -61,7 +64,22 @@ public class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
     }
 
     public LogLevel getLogLevel() {
-        return null;
+        if (LOGGER.isTraceEnabled()) {
+            return LogLevel.DEBUG;
+        }
+        if (LOGGER.isDebugEnabled()) {
+            return LogLevel.DEBUG;
+        }
+        if (LOGGER.isInfoEnabled()) {
+            return LogLevel.INFO;
+        }
+        if (LOGGER.isWarnEnabled()) {
+            return LogLevel.WARNING;
+        }
+        if (LOGGER.isErrorEnabled()) {
+            return LogLevel.SEVERE;
+        }
+        return LogLevel.OFF;
     }
 
 }

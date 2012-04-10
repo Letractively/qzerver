@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cluster group - describes the named and ordered collection of cluster nodes
+ */
 public class ClusterGroup extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_NAME_LENGTH = 256;

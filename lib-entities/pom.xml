@@ -19,7 +19,7 @@
 
     <description>
     <![CDATA[
-        Job scheduler server bases on Quartz scheduler library - entities
+        Entity classes and JPA mappings as a separate package
     ]]>
     </description>
 
@@ -117,7 +117,7 @@
                             <processors>
                                 <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                             </processors>
-                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -ApersistenceXml=/configuration/entities/jpa/persistence.xml.meta</compilerArguments>
+                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -AaddGenerationDate=false -AaddSuppressWarningsAnnotation=true -ApersistenceXml=/configuration/entities/jpa/persistence.xml.metagen</compilerArguments>
                         </configuration>
                     </execution>
                 </executions>
@@ -125,7 +125,7 @@
                     <dependency>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate-jpamodelgen</artifactId>
-                        <version>1.1.1.Final</version>
+                        <version>1.2.0.Final</version>
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>

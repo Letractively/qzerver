@@ -20,11 +20,11 @@ import org.qzerver.system.quartz.QzerverJob;
 import org.qzerver.system.quartz.QzerverJobUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -34,16 +34,22 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleJobManagementServiceImpl.class);
 
+    @NotNull
     private BusinessEntityDao businessEntityDao;
 
+    @NotNull
     private ScheduleJobDao scheduleJobDao;
 
+    @NotNull
     private ScheduleExecutionDao scheduleExecutionDao;
 
+    @NotNull
     private Chronometer chronometer;
 
+    @NotNull
     private Validator beanValidator;
 
+    @NotNull
     private Scheduler scheduler;
 
     @Override
@@ -247,32 +253,26 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         return scheduleJob;
     }
 
-    @Required
     public void setBusinessEntityDao(BusinessEntityDao businessEntityDao) {
         this.businessEntityDao = businessEntityDao;
     }
 
-    @Required
     public void setScheduleJobDao(ScheduleJobDao scheduleJobDao) {
         this.scheduleJobDao = scheduleJobDao;
     }
 
-    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
-    @Required
     public void setBeanValidator(Validator beanValidator) {
         this.beanValidator = beanValidator;
     }
 
-    @Required
     public void setScheduleExecutionDao(ScheduleExecutionDao scheduleExecutionDao) {
         this.scheduleExecutionDao = scheduleExecutionDao;
     }
 
-    @Required
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
     }

@@ -9,7 +9,7 @@
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
             http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <!-- Application settings -->
 
@@ -53,6 +53,8 @@
     <!-- Bean validation (via Hibernate Validation framework) -->
 
     <bean id="beanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+
+    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"/>
 
     <!-- Date&time source -->
 

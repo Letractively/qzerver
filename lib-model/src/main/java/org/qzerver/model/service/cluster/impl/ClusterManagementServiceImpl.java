@@ -14,10 +14,10 @@ import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.cluster.exception.ClusterGroupUsed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
@@ -25,10 +25,13 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClusterManagementServiceImpl.class);
 
+    @NotNull
     private ClusterGroupDao clusterGroupDao;
 
+    @NotNull
     private ScheduleJobDao scheduleJobDao;
 
+    @NotNull
     protected BusinessEntityDao businessEntityDao;
 
     @Override
@@ -160,17 +163,14 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         return clusterNode;
     }
 
-    @Required
     public void setClusterGroupDao(ClusterGroupDao clusterGroupDao) {
         this.clusterGroupDao = clusterGroupDao;
     }
 
-    @Required
     public void setScheduleJobDao(ScheduleJobDao scheduleJobDao) {
         this.scheduleJobDao = scheduleJobDao;
     }
 
-    @Required
     public void setBusinessEntityDao(BusinessEntityDao businessEntityDao) {
         this.businessEntityDao = businessEntityDao;
     }

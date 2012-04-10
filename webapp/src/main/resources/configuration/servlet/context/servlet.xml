@@ -94,6 +94,8 @@
         </property>
     </bean>
 
+    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"/>
+
     <!-- Exception handling -->
 
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

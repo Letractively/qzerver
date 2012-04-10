@@ -7,14 +7,15 @@ import org.quartz.TriggerListener;
 import org.quartz.impl.matchers.EverythingMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 
 public class QuartzInitializer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzInitializer.class);
 
+    @NotNull
     private Scheduler scheduler;
 
     private JobListener[] jobListeners;
@@ -62,8 +63,8 @@ public class QuartzInitializer {
         this.triggerListeners = triggerListeners;
     }
 
-    @Required
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
+
 }
