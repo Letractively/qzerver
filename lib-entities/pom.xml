@@ -117,7 +117,7 @@
                             <processors>
                                 <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
                             </processors>
-                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -AaddGenerationDate=false -AaddSuppressWarningsAnnotation=true -ApersistenceXml=/configuration/entities/jpa/persistence.xml.meta</compilerArguments>
+                            <compilerArguments>-Adebug=true -AfullyAnnotationConfigured=false -AaddGeneratedAnnotation=true -AaddGenerationDate=false -AaddSuppressWarningsAnnotation=true -ApersistenceXml=/configuration/entities/jpa/persistence.xml</compilerArguments>
                         </configuration>
                     </execution>
                 </executions>

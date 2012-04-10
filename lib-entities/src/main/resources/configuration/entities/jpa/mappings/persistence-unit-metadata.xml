@@ -6,6 +6,7 @@
         version="2.0">
 
     <persistence-unit-metadata>
+        <xml-mapping-metadata-complete/>
         <persistence-unit-defaults>
             <access>PROPERTY</access>
             <cascade-persist/>
