@@ -17,11 +17,11 @@ import org.qzerver.model.service.job.execution.ScheduleExecutionManagementServic
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,16 +32,22 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleExecutionManagementServiceImpl.class);
 
+    @NotNull
     private ScheduleExecutionDao scheduleExecutionDao;
 
+    @NotNull
     private Chronometer chronometer;
 
+    @NotNull
     private ClusterManagementService clusterManagementService;
 
+    @NotNull
     private BusinessEntityDao businessEntityDao;
 
+    @NotNull
     private String node;
 
+    @NotNull
     private Validator beanValidator;
 
     @Override
@@ -252,32 +258,26 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         return scheduleExecutionDao.findFinished(extraction);
     }
 
-    @Required
     public void setScheduleExecutionDao(ScheduleExecutionDao scheduleExecutionDao) {
         this.scheduleExecutionDao = scheduleExecutionDao;
     }
 
-    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
-    @Required
     public void setClusterManagementService(ClusterManagementService clusterManagementService) {
         this.clusterManagementService = clusterManagementService;
     }
 
-    @Required
     public void setNode(String node) {
         this.node = node;
     }
 
-    @Required
     public void setBusinessEntityDao(BusinessEntityDao businessEntityDao) {
         this.businessEntityDao = businessEntityDao;
     }
 
-    @Required
     public void setBeanValidator(Validator beanValidator) {
         this.beanValidator = beanValidator;
     }

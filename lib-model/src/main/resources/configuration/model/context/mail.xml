@@ -50,6 +50,8 @@
 
     <bean id="mailFreemarkerTemplateEngine" class="org.qzerver.system.template.impl.FreemarkerTemplateEngine">
         <property name="configuration" ref="mailFreemarkerConfiguration"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".ftl"/>
     </bean>
 
 </beans>

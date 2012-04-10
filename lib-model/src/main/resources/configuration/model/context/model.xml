@@ -54,6 +54,8 @@
 
     <bean id="beanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
+    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"/>
+
     <!-- Date&time source -->
 
     <bean id="chronometer" class="com.gainmatrix.lib.time.impl.SystemChronometer"/>

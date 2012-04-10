@@ -8,8 +8,9 @@ import freemarker.template.TemplateException;
 import org.apache.commons.io.IOUtils;
 import org.qzerver.system.template.TemplateEngine;
 import org.qzerver.system.template.TemplateEngineException;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Locale;
@@ -18,6 +19,15 @@ import java.util.TimeZone;
 
 public class FreemarkerTemplateEngine implements TemplateEngine {
 
+    private static final String DEFAULT_PREFIX = null;
+
+    private static final String DEFAULT_SUFFIX = ".ftl";
+
+    private String prefix = DEFAULT_PREFIX;
+
+    private String suffix = DEFAULT_SUFFIX;
+
+    @NotNull
     private Configuration configuration;
 
     @Override
@@ -37,8 +47,18 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
 
         Map<String, Object> model = modelBuilder.build();
 
+        StringBuilder templateNameBuilder = new StringBuilder();
+        if (StringUtils.hasText(prefix)) {
+            templateNameBuilder.append(prefix);
+        }
+        templateNameBuilder.append(name);
+        if (StringUtils.hasText(suffix)) {
+            templateNameBuilder.append(suffix);
+        }
+        String templateName = templateNameBuilder.toString();
+
         try {
-            template = configuration.getTemplate(name, locale);
+            template = configuration.getTemplate(templateName, locale);
         } catch (IOException e) {
             throw new TemplateEngineException("Fail to load template: " + name, e);
         }
@@ -57,8 +77,16 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
         return writer.toString();
     }
 
-    @Required
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
 }

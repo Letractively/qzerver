@@ -6,15 +6,17 @@ import org.quartz.SchedulerException;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.constraints.NotNull;
 
 @Transactional(propagation = Propagation.REQUIRED)
 public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzManagementServiceImpl.class);
 
+    @NotNull
     private Scheduler scheduler;
 
     @Override
@@ -45,8 +47,8 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         }
     }
 
-    @Required
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
+
 }
