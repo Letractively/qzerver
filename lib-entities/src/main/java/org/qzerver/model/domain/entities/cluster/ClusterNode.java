@@ -8,6 +8,9 @@ import org.qzerver.model.domain.business.BusinessModel;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Cluster node - describes single cluster node by domain address
+ */
 public class ClusterNode extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_ADDRESS_LENGTH = 128;
