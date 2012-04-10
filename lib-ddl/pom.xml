@@ -19,7 +19,7 @@
 
     <description>
     <![CDATA[
-        Job scheduler server bases on Quartz scheduler library - DDL scripts
+        Metapackage packages DDL scripts for fast database creation
     ]]>
     </description>
 

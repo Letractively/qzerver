@@ -19,7 +19,7 @@
 
     <description>
     <![CDATA[
-        Job scheduler server bases on Quartz scheduler library - web application
+        Web application implements administration access and API control
     ]]>
     </description>
 
