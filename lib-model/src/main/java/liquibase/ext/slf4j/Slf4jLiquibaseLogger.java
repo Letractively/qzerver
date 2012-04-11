@@ -64,22 +64,22 @@ public class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
     }
 
     public LogLevel getLogLevel() {
-        if (LOGGER.isTraceEnabled()) {
-            return LogLevel.DEBUG;
-        }
-        if (LOGGER.isDebugEnabled()) {
-            return LogLevel.DEBUG;
-        }
-        if (LOGGER.isInfoEnabled()) {
-            return LogLevel.INFO;
+        LogLevel logLevel = LogLevel.OFF;
+
+        if (LOGGER.isErrorEnabled()) {
+            logLevel = LogLevel.SEVERE;
         }
         if (LOGGER.isWarnEnabled()) {
-            return LogLevel.WARNING;
+            logLevel = LogLevel.WARNING;
         }
-        if (LOGGER.isErrorEnabled()) {
-            return LogLevel.SEVERE;
+        if (LOGGER.isInfoEnabled()) {
+            logLevel = LogLevel.INFO;
         }
-        return LogLevel.OFF;
+        if (LOGGER.isDebugEnabled() || LOGGER.isTraceEnabled()) {
+            logLevel = LogLevel.DEBUG;
+        }
+
+        return logLevel;
     }
 
 }

@@ -69,7 +69,8 @@ public class DdlGeneratorApplication {
 
             // Hibernate configuration
             Configuration cfg = new Configuration();
-            cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(DbConfiguratorData.HIBERNATE_NEW_GENERATORS.get(dbConfiguratorType)));
+            boolean isNewGenerator = DbConfiguratorData.HIBERNATE_NEW_GENERATORS.get(dbConfiguratorType);
+            cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(isNewGenerator));
 
             // Compose configuration
             List<String> mappings = loadMappingList();
@@ -84,14 +85,15 @@ public class DdlGeneratorApplication {
             Dialect dialect = Dialect.getDialect(dialectProps);
 
             // Generate create&drop DDL scripts
-            String[] script;
-            String lineEnding = ";\n";
+            final String lineEnding = ";\n";
 
-            script = cfg.generateSchemaCreationScript(dialect);
-            FileUtils.writeLines(new File(targetDir, dbName + "-create.sql"), "UTF-8", Arrays.asList(script), lineEnding);
+            String[] scriptCreateDdl = cfg.generateSchemaCreationScript(dialect);
+            File scriptCreateFile = new File(targetDir, dbName + "-create.sql");
+            FileUtils.writeLines(scriptCreateFile, "UTF-8", Arrays.asList(scriptCreateDdl), lineEnding);
 
-            script = cfg.generateDropSchemaScript(dialect);
-            FileUtils.writeLines(new File(targetDir, dbName + "-drop.sql"), "UTF-8", Arrays.asList(script), lineEnding);
+            String[] scriptDropDdl = cfg.generateDropSchemaScript(dialect);
+            File scriptDropFile = new File(targetDir, dbName + "-drop.sql");
+            FileUtils.writeLines(scriptDropFile, "UTF-8", Arrays.asList(scriptDropDdl), lineEnding);
         }
     }
 

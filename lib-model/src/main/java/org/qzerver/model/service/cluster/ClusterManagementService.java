@@ -50,7 +50,8 @@ public interface ClusterManagementService {
     /**
      * Delete cluster group
      * @param clusterGroupId Cluster group identifier
-     * @throws org.qzerver.model.service.cluster.exception.ClusterGroupUsed If cluster group is used and can't be deleted
+     * @throws org.qzerver.model.service.cluster.exception.ClusterGroupUsed When cluster group is used by SchedulerJob
+     * and can't be deleted
      */
     void deleteGroup(long clusterGroupId) throws AbstractServiceException;
 

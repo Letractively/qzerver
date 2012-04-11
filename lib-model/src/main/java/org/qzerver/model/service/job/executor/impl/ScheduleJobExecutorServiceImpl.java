@@ -98,7 +98,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
             // Start loop throught all execution nodes
             while (nodeIterator.hasNext()) {
                 // Get fresh copy of execution and check the cancellation flag
-                ScheduleExecution scheduleExecutionLoaded = executionManagementService.getExecution(scheduleExecution.getId());
+                ScheduleExecution scheduleExecutionLoaded =
+                        executionManagementService.getExecution(scheduleExecution.getId());
                 if (scheduleExecutionLoaded.isCancelled()) {
                     status = ScheduleExecutionStatus.CANCELED;
                     break;
@@ -116,7 +117,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 try {
                     actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
                 } finally {
-                    scheduleExecutionResult = executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
+                    scheduleExecutionResult =
+                            executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
                 }
 
                 // If last action succeedes break the node loop

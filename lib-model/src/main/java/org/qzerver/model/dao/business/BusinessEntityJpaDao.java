@@ -58,10 +58,16 @@ public class BusinessEntityJpaDao implements BusinessEntityDao {
         Root<T> root = criteriaQuery.from(clazz);
 
         criteriaQuery.where(
-                criteriaBuilder.and(
-                        criteriaBuilder.equal(root.<BusinessId>get(ENTITY_BUSINESS_ID).get(BusinessId_.hi), businessId.getHi()),
-                        criteriaBuilder.equal(root.<BusinessId>get(ENTITY_BUSINESS_ID).get(BusinessId_.lo), businessId.getLo())
+            criteriaBuilder.and(
+                criteriaBuilder.equal(
+                    root.<BusinessId>get(ENTITY_BUSINESS_ID).get(BusinessId_.hi),
+                    businessId.getHi()
+                ),
+                criteriaBuilder.equal(
+                    root.<BusinessId>get(ENTITY_BUSINESS_ID).get(BusinessId_.lo),
+                    businessId.getLo()
                 )
+            )
         );
 
         TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);

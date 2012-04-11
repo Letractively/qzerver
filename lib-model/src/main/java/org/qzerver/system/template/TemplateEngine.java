@@ -15,6 +15,7 @@ public interface TemplateEngine {
      * @return Text
      * @throws TemplateEngineException Exception on error
      */
-    String template(String name, Map<String,Object> attributes, Locale locale, TimeZone timezone) throws TemplateEngineException;
+    String template(String name, Map<String,Object> attributes, Locale locale, TimeZone timezone)
+            throws TemplateEngineException;
 
 }

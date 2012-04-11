@@ -17,7 +17,8 @@ public class RootController {
     public String handle(
         HttpServletRequest request,
         HttpServletResponse response
-    ) throws Exception {
+    ) throws Exception
+    {
         return SiteViews.INDEX;
     }
 
