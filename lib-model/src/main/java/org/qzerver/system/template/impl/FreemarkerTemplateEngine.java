@@ -8,6 +8,7 @@ import freemarker.template.TemplateException;
 import org.apache.commons.io.IOUtils;
 import org.qzerver.system.template.TemplateEngine;
 import org.qzerver.system.template.TemplateEngineException;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotNull;
@@ -77,6 +78,7 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
         return writer.toString();
     }
 
+    @Required
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }

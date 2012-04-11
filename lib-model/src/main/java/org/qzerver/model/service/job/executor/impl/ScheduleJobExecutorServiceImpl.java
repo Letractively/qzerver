@@ -15,6 +15,7 @@ import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameter
 import org.qzerver.model.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
@@ -160,22 +161,27 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return scheduleExecution;
     }
 
+    @Required
     public void setBeanValidator(Validator beanValidator) {
         this.beanValidator = beanValidator;
     }
 
+    @Required
     public void setExecutionManagementService(ScheduleExecutionManagementService executionManagementService) {
         this.executionManagementService = executionManagementService;
     }
 
+    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
+    @Required
     public void setActionAgent(ActionAgent actionAgent) {
         this.actionAgent = actionAgent;
     }
 
+    @Required
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
     }

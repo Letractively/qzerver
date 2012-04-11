@@ -1,13 +1,14 @@
 package org.qzerver.system.db.ddl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
-import org.qzerver.system.db.configurator.DbConfigurator;
+import org.qzerver.system.db.configurator.DbConfiguratorData;
 import org.qzerver.system.db.configurator.DbConfiguratorType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -24,18 +25,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class DdlGeneratorApplication {
 
     private static final String PERSISTENCE_CONFIGURATION = "configuration/entities/jpa/persistence.xml";
 
     public static void main(String[] arguments) throws Exception {
-        System.out.println("Arguments: " + ArrayUtils.toString(arguments));
-        System.out.println("Classpath: " + System.getProperty("java.class.path"));
+        System.err.println("Arguments: " + ArrayUtils.toString(arguments));
+        System.err.println("Classpath: " + System.getProperty("java.class.path"));
 
         // Resolve output directory
         File targetDir = new File(System.getProperty("user.dir"));
@@ -50,18 +48,25 @@ public class DdlGeneratorApplication {
         }
 
         // Compose mapping for each db type
-        for (DbConfiguratorType dbConfiguratorType : DbConfiguratorType.values()) {
-            if (DbConfiguratorType.CUSTOM == dbConfiguratorType) {
-                continue;
-            }
+        Set<DbConfiguratorType> dbConfiguratorTypes = ImmutableSet.of(
+                DbConfiguratorType.HSQLDB,
+                DbConfiguratorType.MYSQL_INNO,
+                DbConfiguratorType.POSTGRES,
+                DbConfiguratorType.FIREBIRD,
+                DbConfiguratorType.INTERBASE,
+                DbConfiguratorType.ORACLE8I,
+                DbConfiguratorType.ORACLE9I,
+                DbConfiguratorType.ORACLE10G,
+                DbConfiguratorType.ORACLE11G,
+                DbConfiguratorType.MSSQL2005,
+                DbConfiguratorType.MSSQL2008,
+                DbConfiguratorType.DERBY_CLIENT
+        );
 
-            // Db configuration
-            DbConfigurator dbConfigurator = new DbConfigurator();
-            dbConfigurator.setType(dbConfiguratorType);
-
+        for (DbConfiguratorType dbConfiguratorType : dbConfiguratorTypes) {
             // Hibernate configuration
             Configuration cfg = new Configuration();
-            cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(dbConfigurator.isNewGeneratorType()));
+            cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(DbConfiguratorData.HIBERNATE_NEW_GENERATORS.get(dbConfiguratorType)));
 
             // Compose configuration
             List<String> mappings = loadMappingList();
@@ -70,7 +75,7 @@ public class DdlGeneratorApplication {
             }
 
             Properties dialectProps = new Properties();
-            dialectProps.put(Environment.DIALECT, dbConfigurator.getHibernateDialect());
+            dialectProps.put(Environment.DIALECT, DbConfiguratorData.HIBERNATE_DIALECTS.get(dbConfiguratorType));
 
             Dialect dialect = Dialect.getDialect(dialectProps);
 

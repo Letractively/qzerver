@@ -11,6 +11,7 @@ import org.qzerver.system.template.TemplateEngine;
 import org.qzerver.system.template.TemplateEngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.scheduling.annotation.Async;
 
@@ -78,31 +79,39 @@ public class MailServiceImpl implements MailService {
         LOGGER.debug("Message [" + NAME_JOB_FAILED + "] is sent");
     }
 
+    @Required
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
+    @Required
     public void setMailAgent(MailAgent mailAgent) {
         this.mailAgent = mailAgent;
     }
 
+    @Required
     public void setMailTo(String mailTo) {
         this.mailTo = mailTo;
     }
 
+    @Required
     public void setTemplateEngine(TemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
+    @Required
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
 
+    @Required
     public void setTimezone(TimeZone timezone) {
         this.timezone = timezone;
     }
 
+    @Required
     public void setMessageSourceAccessor(MessageSourceAccessor messageSourceAccessor) {
         this.messageSourceAccessor = messageSourceAccessor;
     }
+
 }

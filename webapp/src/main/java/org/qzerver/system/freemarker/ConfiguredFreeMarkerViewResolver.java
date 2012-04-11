@@ -1,6 +1,7 @@
 package org.qzerver.system.freemarker;
 
 import freemarker.template.Configuration;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -22,6 +23,7 @@ public class ConfiguredFreeMarkerViewResolver extends FreeMarkerViewResolver {
         return view;
     }
 
+    @Required
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
