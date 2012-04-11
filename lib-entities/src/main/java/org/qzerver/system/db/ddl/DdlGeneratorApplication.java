@@ -1,7 +1,7 @@
 package org.qzerver.system.db.ddl;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -31,6 +31,21 @@ public class DdlGeneratorApplication {
 
     private static final String PERSISTENCE_CONFIGURATION = "configuration/entities/jpa/persistence.xml";
 
+    private static final Map<String,DbConfiguratorType> DB_TYPES = ImmutableMap.<String,DbConfiguratorType>builder()
+            .put("hsqldb", DbConfiguratorType.HSQLDB)
+            .put("mysql", DbConfiguratorType.MYSQL_INNO)
+            .put("postgresql", DbConfiguratorType.POSTGRES)
+            .put("firebird", DbConfiguratorType.FIREBIRD)
+            .put("interbase", DbConfiguratorType.INTERBASE)
+            .put("oracle8i", DbConfiguratorType.ORACLE8I)
+            .put("oracle9i", DbConfiguratorType.ORACLE9I)
+            .put("oracle10g", DbConfiguratorType.ORACLE10G)
+            .put("oracle11g", DbConfiguratorType.ORACLE11G)
+            .put("mssql2005", DbConfiguratorType.MSSQL2005)
+            .put("mssql2008", DbConfiguratorType.MSSQL2008)
+            .put("derby", DbConfiguratorType.DERBY_CLIENT)
+            .build();
+
     public static void main(String[] arguments) throws Exception {
         System.err.println("Arguments: " + ArrayUtils.toString(arguments));
         System.err.println("Classpath: " + System.getProperty("java.class.path"));
@@ -48,22 +63,10 @@ public class DdlGeneratorApplication {
         }
 
         // Compose mapping for each db type
-        Set<DbConfiguratorType> dbConfiguratorTypes = ImmutableSet.of(
-                DbConfiguratorType.HSQLDB,
-                DbConfiguratorType.MYSQL_INNO,
-                DbConfiguratorType.POSTGRES,
-                DbConfiguratorType.FIREBIRD,
-                DbConfiguratorType.INTERBASE,
-                DbConfiguratorType.ORACLE8I,
-                DbConfiguratorType.ORACLE9I,
-                DbConfiguratorType.ORACLE10G,
-                DbConfiguratorType.ORACLE11G,
-                DbConfiguratorType.MSSQL2005,
-                DbConfiguratorType.MSSQL2008,
-                DbConfiguratorType.DERBY_CLIENT
-        );
+        for (Map.Entry<String,DbConfiguratorType> dbTypeEntry : DB_TYPES.entrySet()) {
+            final String dbName = dbTypeEntry.getKey();
+            final DbConfiguratorType dbConfiguratorType = dbTypeEntry.getValue();
 
-        for (DbConfiguratorType dbConfiguratorType : dbConfiguratorTypes) {
             // Hibernate configuration
             Configuration cfg = new Configuration();
             cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(DbConfiguratorData.HIBERNATE_NEW_GENERATORS.get(dbConfiguratorType)));
@@ -74,19 +77,21 @@ public class DdlGeneratorApplication {
                 cfg.addXML(loadResourceContent(mapping));
             }
 
+            // Get dialect instance
             Properties dialectProps = new Properties();
             dialectProps.put(Environment.DIALECT, DbConfiguratorData.HIBERNATE_DIALECTS.get(dbConfiguratorType));
 
             Dialect dialect = Dialect.getDialect(dialectProps);
 
+            // Generate create&drop DDL scripts
             String[] script;
             String lineEnding = ";\n";
 
             script = cfg.generateSchemaCreationScript(dialect);
-            FileUtils.writeLines(new File(targetDir, dbConfiguratorType + "-create.sql"), "UTF-8", Arrays.asList(script), lineEnding);
+            FileUtils.writeLines(new File(targetDir, dbName + "-create.sql"), "UTF-8", Arrays.asList(script), lineEnding);
 
             script = cfg.generateDropSchemaScript(dialect);
-            FileUtils.writeLines(new File(targetDir, dbConfiguratorType + "-drop.sql"), "UTF-8", Arrays.asList(script), lineEnding);
+            FileUtils.writeLines(new File(targetDir, dbName + "-drop.sql"), "UTF-8", Arrays.asList(script), lineEnding);
         }
     }
 
