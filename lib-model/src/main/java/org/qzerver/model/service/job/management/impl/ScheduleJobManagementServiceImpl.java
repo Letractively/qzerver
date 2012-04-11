@@ -20,6 +20,7 @@ import org.qzerver.system.quartz.QzerverJob;
 import org.qzerver.system.quartz.QzerverJobUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
@@ -253,26 +254,32 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         return scheduleJob;
     }
 
+    @Required
     public void setBusinessEntityDao(BusinessEntityDao businessEntityDao) {
         this.businessEntityDao = businessEntityDao;
     }
 
+    @Required
     public void setScheduleJobDao(ScheduleJobDao scheduleJobDao) {
         this.scheduleJobDao = scheduleJobDao;
     }
 
+    @Required
     public void setChronometer(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
+    @Required
     public void setBeanValidator(Validator beanValidator) {
         this.beanValidator = beanValidator;
     }
 
+    @Required
     public void setScheduleExecutionDao(ScheduleExecutionDao scheduleExecutionDao) {
         this.scheduleExecutionDao = scheduleExecutionDao;
     }
 
+    @Required
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
     }

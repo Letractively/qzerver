@@ -8,6 +8,7 @@ import freemarker.template.TemplateException;
 import org.apache.commons.io.IOUtils;
 import org.qzerver.system.template.TemplateEngine;
 import org.qzerver.system.template.TemplateEngineException;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotNull;
@@ -31,7 +32,9 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
     private Configuration configuration;
 
     @Override
-    public String template(String name, Map<String, Object> attributes, Locale locale, TimeZone timezone) throws TemplateEngineException {
+    public String template(String name, Map<String, Object> attributes, Locale locale, TimeZone timezone)
+            throws TemplateEngineException
+    {
         Preconditions.checkNotNull(name, "Name is null");
         Preconditions.checkNotNull(locale, "Locale is not set");
         Preconditions.checkNotNull(timezone, "Time zone is not set");
@@ -77,6 +80,7 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
         return writer.toString();
     }
 
+    @Required
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }

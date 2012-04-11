@@ -64,8 +64,8 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-	        <groupId>org.quartz-scheduler</groupId>
-	        <artifactId>quartz-oracle</artifactId>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-oracle</artifactId>
             <version>${org.quartz.version}</version>
             <scope>compile</scope>
         </dependency>
@@ -152,9 +152,9 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-	        <groupId>org.firebirdsql.jdbc</groupId>
-	        <artifactId>jaybird</artifactId>
-	        <version>${org.jaybird.version}</version>
+            <groupId>org.firebirdsql.jdbc</groupId>
+            <artifactId>jaybird</artifactId>
+            <version>${org.jaybird.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -164,14 +164,14 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-	        <groupId>org.apache.derby</groupId>
-	        <artifactId>derby</artifactId>
-	        <version>${org.derby.version}</version>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${org.derby.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
-	        <groupId>org.apache.derby</groupId>
-	        <artifactId>derbyclient</artifactId>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
             <version>${org.derby.version}</version>
             <scope>runtime</scope>
         </dependency>
