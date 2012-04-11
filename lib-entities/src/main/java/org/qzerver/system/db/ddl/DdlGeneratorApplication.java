@@ -31,7 +31,7 @@ public class DdlGeneratorApplication {
 
     private static final String PERSISTENCE_CONFIGURATION = "configuration/entities/jpa/persistence.xml";
 
-    private static final Map<String,DbConfiguratorType> DB_TYPES = ImmutableMap.<String,DbConfiguratorType>builder()
+    private static final Map<String, DbConfiguratorType> DB_TYPES = ImmutableMap.<String, DbConfiguratorType>builder()
             .put("hsqldb", DbConfiguratorType.HSQLDB)
             .put("mysql", DbConfiguratorType.MYSQL_INNO)
             .put("postgresql", DbConfiguratorType.POSTGRES)
