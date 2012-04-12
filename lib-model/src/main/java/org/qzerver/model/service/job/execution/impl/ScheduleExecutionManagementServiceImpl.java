@@ -51,8 +51,10 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     @NotNull
     private Validator beanValidator;
 
+    // CHECKSTYLE-OFF: NPathComplexity|JavaNCSS|ExecutableStatementCount|CyclomaticComplexity
     @Override
     public ScheduleExecution startExecution(StartExecutionParameters parameters) {
+
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
         LOGGER.debug("Start execution of job [id={}]", parameters.getScheduleJobId());
@@ -64,6 +66,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         Date now = chronometer.getCurrentMoment();
 
+        // Create new execution
         ScheduleExecution scheduleExecution = new ScheduleExecution();
         scheduleExecution.setJob(scheduleJob);
         scheduleExecution.setAction(scheduleJob.getAction());
@@ -152,6 +155,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         return scheduleExecution;
     }
+    // CHECKSTYLE-ON: NPathComplexity|JavaNCSS|ExecutableStatementCount|CyclomaticComplexity
 
     @Override
     public ScheduleExecutionResult startExecutionResult(long scheduleExecutionNodeId) {

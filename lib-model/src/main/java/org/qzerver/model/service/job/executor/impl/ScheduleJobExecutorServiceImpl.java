@@ -102,6 +102,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return scheduleExecution;
     }
 
+    // CHECKSTYLE-OFF: CyclomaticComplexityCheck
     protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution) {
         // Pessimistic about execution
         ScheduleExecutionStatus status = ScheduleExecutionStatus.FAILED;
@@ -174,6 +175,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
         return status;
     }
+    // CHECKSTYLE-ON: CyclomaticComplexityCheck
 
     @Required
     public void setBeanValidator(Validator beanValidator) {

@@ -1,7 +1,9 @@
 package org.qzerver.web.map;
 
-public interface SiteViews {
+public final class SiteViews {
 
-    String INDEX = "root/index";
+    public static final String INDEX = "root/index";
 
+    private SiteViews() {
+    }
 }

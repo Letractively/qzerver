@@ -1,6 +1,9 @@
 package org.qzerver.web.map;
 
-public interface SiteMap {
+public final class SiteMap {
 
-    String ROOT = "/";
+    public static final String ROOT = "/";
+
+    private SiteMap() {
+    }
 }
