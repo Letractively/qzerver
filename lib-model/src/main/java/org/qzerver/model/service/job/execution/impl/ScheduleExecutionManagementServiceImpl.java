@@ -51,10 +51,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     @NotNull
     private Validator beanValidator;
 
-    // CHECKSTYLE-OFF: NPathComplexity|JavaNCSS|ExecutableStatementCount|CyclomaticComplexity
     @Override
     public ScheduleExecution startExecution(StartExecutionParameters parameters) {
-
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
         LOGGER.debug("Start execution of job [id={}]", parameters.getScheduleJobId());
@@ -81,59 +79,15 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setFinished(null);
         scheduleExecution.setHostname(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
 
+        // Check if cluster group is specified for the job
         ClusterGroup clusterGroup = scheduleJob.getCluster();
         if (clusterGroup != null) {
             scheduleExecution.setTimeout(scheduleJob.getTimeout());
             scheduleExecution.setAllNodes(scheduleJob.isAllNodes());
 
-            List<ClusterNode> clusterNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
+            List<ClusterNode> selectedNodes = selectJobExecutionNodes(scheduleJob);
 
-            switch (scheduleExecution.getStrategy()) {
-                // "line" strategy - always start from the first active node
-                case INDEXED:
-                    for (ClusterNode clusterNode : clusterGroup.getNodes()) {
-                        if (clusterNode.isEnabled()) {
-                            clusterNodes.add(clusterNode);
-                        }
-                    }
-                    break;
-                // "random" strategy - choose active nodes in random order
-                case RANDOM:
-                    for (ClusterNode clusterNode : clusterGroup.getNodes()) {
-                        if (clusterNode.isEnabled()) {
-                            clusterNodes.add(clusterNode);
-                        }
-                    }
-                    Collections.shuffle(clusterNodes);
-                    break;
-                // "circle" strategy - step index in cluster and get all active nodes
-                case CIRCULAR:
-                    int rolledIndex = clusterManagementService.rollGroupIndex(clusterGroup.getId());
-                    for (int i = rolledIndex, size = clusterGroup.getNodes().size(); i < size; i++) {
-                        ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-                        if (clusterNode.isEnabled()) {
-                            clusterNodes.add(clusterNode);
-                        }
-                    }
-                    for (int i = 0; i < rolledIndex; i++) {
-                        ClusterNode clusterNode = clusterGroup.getNodes().get(i);
-                        if (clusterNode.isEnabled()) {
-                            clusterNodes.add(clusterNode);
-                        }
-                    }
-                    break;
-                // if strategy is unknown - do nothing and no any node is added
-                default:
-                    break;
-            }
-
-            if (scheduleJob.getTrials() > 0) {
-                if (scheduleJob.getTrials() < clusterNodes.size()) {
-                    clusterNodes = clusterNodes.subList(0, scheduleJob.getTrials());
-                }
-            }
-
-            for (ClusterNode clusterNode : clusterNodes) {
+            for (ClusterNode clusterNode : selectedNodes) {
                 ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
                 executionNode.setLocalhost(false);
                 executionNode.setAddress(clusterNode.getAddress());
@@ -155,7 +109,87 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         return scheduleExecution;
     }
-    // CHECKSTYLE-ON: NPathComplexity|JavaNCSS|ExecutableStatementCount|CyclomaticComplexity
+
+    private List<ClusterNode> selectJobExecutionNodes(ScheduleJob scheduleJob) {
+        ClusterGroup clusterGroup = scheduleJob.getCluster();
+
+        List<ClusterNode> selectedNodes;
+
+        // Choose nodes depending on the selection strategy
+        switch (scheduleJob.getStrategy()) {
+            case INDEXED:
+                selectedNodes = selectIndexedNodes(clusterGroup);
+                break;
+            case RANDOM:
+                selectedNodes = selectRandomNodes(clusterGroup);
+                break;
+            case CIRCULAR:
+                selectedNodes = selectCircularNodes(clusterGroup);
+                break;
+            default:
+                throw new IllegalStateException("Unknown strategy: " + scheduleJob.getStrategy());
+        }
+
+        // Limit node count if trial count is set
+        if (scheduleJob.getTrials() > 0) {
+            if (scheduleJob.getTrials() < selectedNodes.size()) {
+                selectedNodes = selectedNodes.subList(0, scheduleJob.getTrials());
+            }
+        }
+
+        return selectedNodes;
+    }
+
+    private List<ClusterNode> selectIndexedNodes(ClusterGroup clusterGroup) {
+        List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
+
+        // "line" strategy - always start from the first active node
+        for (ClusterNode clusterNode : clusterGroup.getNodes()) {
+            if (clusterNode.isEnabled()) {
+                selectedNodes.add(clusterNode);
+            }
+        }
+
+        return selectedNodes;
+    }
+
+    private List<ClusterNode> selectRandomNodes(ClusterGroup clusterGroup) {
+        List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
+
+        // "random" strategy - choose active nodes in random order
+        for (ClusterNode clusterNode : clusterGroup.getNodes()) {
+            if (clusterNode.isEnabled()) {
+                selectedNodes.add(clusterNode);
+            }
+        }
+
+        Collections.shuffle(selectedNodes);
+
+        return selectedNodes;
+    }
+
+    private List<ClusterNode> selectCircularNodes(ClusterGroup clusterGroup) {
+        List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
+
+        // "circle" strategy - step index in cluster and get all active nodes
+        int rolledIndex = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+
+        for (int i = rolledIndex, size = clusterGroup.getNodes().size(); i < size; i++) {
+            ClusterNode clusterNode = clusterGroup.getNodes().get(i);
+            if (clusterNode.isEnabled()) {
+                selectedNodes.add(clusterNode);
+            }
+        }
+
+        for (int i = 0; i < rolledIndex; i++) {
+            ClusterNode clusterNode = clusterGroup.getNodes().get(i);
+            if (clusterNode.isEnabled()) {
+                selectedNodes.add(clusterNode);
+            }
+        }
+
+        return selectedNodes;
+    }
 
     @Override
     public ScheduleExecutionResult startExecutionResult(long scheduleExecutionNodeId) {

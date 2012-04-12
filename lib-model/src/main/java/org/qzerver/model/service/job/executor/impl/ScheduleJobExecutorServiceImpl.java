@@ -102,10 +102,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return scheduleExecution;
     }
 
-    // CHECKSTYLE-OFF: CyclomaticComplexityCheck
     protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution) {
-        // Pessimistic about execution
-        ScheduleExecutionStatus status = ScheduleExecutionStatus.FAILED;
+        // Nodes counter
         int succeedNodes = 0;
 
         // Nodes iterator
@@ -115,10 +113,9 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         while (nodeIterator.hasNext()) {
             // Get fresh copy of execution and check the cancellation flag
             ScheduleExecution scheduleExecutionLoaded =
-                executionManagementService.getExecution(scheduleExecution.getId());
+                    executionManagementService.getExecution(scheduleExecution.getId());
             if (scheduleExecutionLoaded.isCancelled()) {
-                status = ScheduleExecutionStatus.CANCELED;
-                break;
+                return ScheduleExecutionStatus.CANCELED;
             }
 
             // Current node
@@ -143,8 +140,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
                 succeedNodes++;
                 if (!scheduleExecution.isAllNodes()) {
-                    status = ScheduleExecutionStatus.SUCCEED;
-                    break;
+                    return ScheduleExecutionStatus.SUCCEED;
                 }
             } else {
                 LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
@@ -155,27 +151,24 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 // Check timeout
                 if (scheduleExecution.getTimeout() > 0) {
                     long durationMs =
-                        scheduleExecutionResult.getFinished().getTime() -
-                        scheduleExecution.getStarted().getTime();
+                        scheduleExecutionResult.getFinished().getTime() - scheduleExecution.getStarted().getTime();
 
                     if (durationMs > scheduleExecution.getTimeout()) {
                         LOGGER.debug("Time is out for execution [{}]", scheduleExecution.getName());
-                        status = ScheduleExecutionStatus.TIMEOUT;
-                        break;
+                        return ScheduleExecutionStatus.TIMEOUT;
                     }
                 }
             } else {
                 if (scheduleExecution.isAllNodes()) {
                     if (succeedNodes == scheduleExecution.getNodes().size()) {
-                        status = ScheduleExecutionStatus.SUCCEED;
+                        return ScheduleExecutionStatus.SUCCEED;
                     }
                 }
             }
         }
 
-        return status;
+        return ScheduleExecutionStatus.FAILED;
     }
-    // CHECKSTYLE-ON: CyclomaticComplexityCheck
 
     @Required
     public void setBeanValidator(Validator beanValidator) {
