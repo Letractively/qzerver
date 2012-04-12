@@ -2,6 +2,9 @@ package org.qzerver.model.agent.mail;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Abstract mail sender definition
+ */
 @Service
 public interface MailAgent {
 

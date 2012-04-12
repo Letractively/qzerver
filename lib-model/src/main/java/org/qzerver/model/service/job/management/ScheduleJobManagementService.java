@@ -6,6 +6,9 @@ import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
 import org.springframework.stereotype.Service;
 
+/**
+ * Schedule job management
+ */
 @Service
 public interface ScheduleJobManagementService {
 

@@ -2,6 +2,9 @@ package org.qzerver.model.service.quartz.management;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Quartz engine management
+ */
 @Service
 public interface QuartzManagementService {
 

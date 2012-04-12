@@ -8,9 +8,9 @@ import javax.annotation.Resource;
 
 public class QzerverJobListener extends JobListenerSupport {
 
-    private static final String LISTENER_NAME = "QZERVER job listener";
-
     protected static final String CONTEXT_NAME = "QzerverApplicationContext";
+
+    private static final String LISTENER_NAME = "QZERVER job listener";
 
     private ApplicationContext applicationContext;
 

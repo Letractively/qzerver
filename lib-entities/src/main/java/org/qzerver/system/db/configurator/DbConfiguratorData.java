@@ -6,8 +6,8 @@ import java.util.Map;
 
 public final class DbConfiguratorData {
 
-    public static final Map<DbConfiguratorType,String> HIBERNATE_DIALECTS =
-        ImmutableMap.<DbConfiguratorType,String>builder()
+    public static final Map<DbConfiguratorType, String> HIBERNATE_DIALECTS =
+        ImmutableMap.<DbConfiguratorType, String>builder()
             .put(DbConfiguratorType.HSQLDB, "org.hibernate.dialect.HSQLDialect")
             .put(DbConfiguratorType.MYSQL_INNO, "org.hibernate.dialect.MySQLInnoDBDialect")
             .put(DbConfiguratorType.POSTGRES, "org.hibernate.dialect.PostgreSQLDialect")
@@ -23,8 +23,8 @@ public final class DbConfiguratorData {
             .put(DbConfiguratorType.DERBY_CLIENT, "org.hibernate.dialect.DerbyTenSevenDialect")
             .build();
 
-    public static final Map<DbConfiguratorType,String> QUARTZ_ADAPTERS =
-        ImmutableMap.<DbConfiguratorType,String>builder()
+    public static final Map<DbConfiguratorType, String> QUARTZ_ADAPTERS =
+        ImmutableMap.<DbConfiguratorType, String>builder()
             .put(DbConfiguratorType.HSQLDB, "org.quartz.impl.jdbcjobstore.HSQLDBDelegate")
             .put(DbConfiguratorType.MYSQL_INNO, "org.quartz.impl.jdbcjobstore.StdJDBCDelegate")
             .put(DbConfiguratorType.POSTGRES, "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate")
@@ -40,8 +40,8 @@ public final class DbConfiguratorData {
             .put(DbConfiguratorType.DERBY_CLIENT, "org.quartz.impl.jdbcjobstore.CloudscapeDelegate")
             .build();
 
-    public static final Map<DbConfiguratorType,String> JDBC_DRIVERS =
-        ImmutableMap.<DbConfiguratorType,String>builder()
+    public static final Map<DbConfiguratorType, String> JDBC_DRIVERS =
+        ImmutableMap.<DbConfiguratorType, String>builder()
             .put(DbConfiguratorType.HSQLDB, "org.hsqldb.jdbc.JDBCDriver")
             .put(DbConfiguratorType.MYSQL_INNO, "com.mysql.jdbc.Driver")
             .put(DbConfiguratorType.POSTGRES, "org.postgresql.Driver")
@@ -57,8 +57,8 @@ public final class DbConfiguratorData {
             .put(DbConfiguratorType.DERBY_CLIENT, "org.apache.derby.jdbc.ClientDriver")
             .build();
 
-    public static final Map<DbConfiguratorType,String> TEST_SQL_QUERIES =
-        ImmutableMap.<DbConfiguratorType,String>builder()
+    public static final Map<DbConfiguratorType, String> TEST_SQL_QUERIES =
+        ImmutableMap.<DbConfiguratorType, String>builder()
             .put(DbConfiguratorType.HSQLDB, "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS")
             .put(DbConfiguratorType.MYSQL_INNO, "SELECT 1")
             .put(DbConfiguratorType.POSTGRES, "SELECT 1")
@@ -74,8 +74,8 @@ public final class DbConfiguratorData {
             .put(DbConfiguratorType.DERBY_CLIENT, "SELECT 1 FROM SYSIBM.SYSDUMMY1")
             .build();
 
-    public static final Map<DbConfiguratorType,Boolean> HIBERNATE_NEW_GENERATORS =
-            ImmutableMap.<DbConfiguratorType,Boolean>builder()
+    public static final Map<DbConfiguratorType, Boolean> HIBERNATE_NEW_GENERATORS =
+            ImmutableMap.<DbConfiguratorType, Boolean>builder()
             .put(DbConfiguratorType.HSQLDB, true)
             .put(DbConfiguratorType.MYSQL_INNO, true)
             .put(DbConfiguratorType.POSTGRES, true)
@@ -90,5 +90,8 @@ public final class DbConfiguratorData {
             .put(DbConfiguratorType.DERBY_EMBEDDED, true)
             .put(DbConfiguratorType.DERBY_CLIENT, true)
             .build();
+
+    private DbConfiguratorData() {
+    }
 
 }

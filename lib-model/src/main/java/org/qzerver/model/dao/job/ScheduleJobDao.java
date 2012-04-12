@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * DAO for ScheduleJob entity
+ */
 @Repository
 public interface ScheduleJobDao {
 

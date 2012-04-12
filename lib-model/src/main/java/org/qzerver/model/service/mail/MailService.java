@@ -3,6 +3,9 @@ package org.qzerver.model.service.mail;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for email notification sending
+ */
 @Service
 public interface MailService {
 

@@ -4,6 +4,9 @@ import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
 import org.springframework.stereotype.Service;
 
+/**
+ * Schedule execution outer functions
+ */
 @Service
 public interface ScheduleJobExecutorService {
 

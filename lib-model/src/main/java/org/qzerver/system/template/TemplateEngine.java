@@ -4,6 +4,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+/**
+ * Abstract template engine. Converts named template and model into a string
+ */
 public interface TemplateEngine {
 
     /**
@@ -15,7 +18,7 @@ public interface TemplateEngine {
      * @return Text
      * @throws TemplateEngineException Exception on error
      */
-    String template(String name, Map<String,Object> attributes, Locale locale, TimeZone timezone)
-            throws TemplateEngineException;
+    String template(String name, Map<String, Object> attributes, Locale locale, TimeZone timezone)
+        throws TemplateEngineException;
 
 }

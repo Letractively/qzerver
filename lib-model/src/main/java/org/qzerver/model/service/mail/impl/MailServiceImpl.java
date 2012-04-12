@@ -51,13 +51,13 @@ public class MailServiceImpl implements MailService {
     @Async
     @Override
     public void notifyJobExecutionFailed(ScheduleExecution execution) {
-        if (! enabled) {
+        if (!enabled) {
             return;
         }
 
         Preconditions.checkNotNull(execution, "Execution is null");
 
-        Map<String,Object> attributes = ImmutableMap.<String,Object>builder()
+        Map<String, Object> attributes = ImmutableMap.<String, Object>builder()
                 .put("execution", execution)
                 .build();
 

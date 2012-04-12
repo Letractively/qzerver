@@ -91,7 +91,7 @@ public class BusinessEntityJpaDao implements BusinessEntityDao {
 
     @Override
     public <T extends BusinessEntity<I>, I> void save(T entity) {
-        if (! entityManager.contains(entity)) {
+        if (!entityManager.contains(entity)) {
             entityManager.persist(entity);
         }
     }

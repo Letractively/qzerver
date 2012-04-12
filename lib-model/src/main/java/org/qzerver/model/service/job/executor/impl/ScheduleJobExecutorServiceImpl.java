@@ -80,80 +80,19 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return executeJob(executionParameters);
     }
 
-    @SuppressWarnings({"ConstantConditions"})
     protected ScheduleExecution executeJob(StartExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
         // Compose execution descriptor
         ScheduleExecution scheduleExecution = executionManagementService.startExecution(parameters);
 
-         // Pessimistic about execution
-        ScheduleExecutionStatus status = ScheduleExecutionStatus.FAILED;
-        int succeedNodes = 0;
+        // The only reason the status is not assigned is that exception occurs in executeJobNodes() call
+        ScheduleExecutionStatus status = ScheduleExecutionStatus.EXCEPTION;
 
+        // Try to execute action on a node from the cluster
         try {
-            // Nodes iterator
-            Iterator<ScheduleExecutionNode> nodeIterator = scheduleExecution.getNodes().iterator();
-
-            // Start loop throught all execution nodes
-            while (nodeIterator.hasNext()) {
-                // Get fresh copy of execution and check the cancellation flag
-                ScheduleExecution scheduleExecutionLoaded =
-                        executionManagementService.getExecution(scheduleExecution.getId());
-                if (scheduleExecutionLoaded.isCancelled()) {
-                    status = ScheduleExecutionStatus.CANCELED;
-                    break;
-                }
-
-                // Current node
-                ScheduleExecutionNode node = nodeIterator.next();
-
-                LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
-
-                // Register node execution start, execute and register finish
-                ScheduleExecutionResult scheduleExecutionResult = executionManagementService.startExecutionResult(node.getId());
-
-                ActionResult actionResult = null;
-                try {
-                    actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
-                } finally {
-                    scheduleExecutionResult =
-                            executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
-                }
-
-                // If last action succeedes break the node loop
-                if (actionResult != null && actionResult.isSucceed()) {
-                    LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
-                    succeedNodes++;
-                    if (! scheduleExecution.isAllNodes()) {
-                        status = ScheduleExecutionStatus.SUCCEED;
-                        break;
-                    }
-                } else {
-                    LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
-                }
-
-                // Are there any other pending nodes?
-                if (nodeIterator.hasNext()) {
-                    // Check timeout
-                    if (scheduleExecution.getTimeout() > 0) {
-                        long durationMs = scheduleExecutionResult.getFinished().getTime() - scheduleExecution.getStarted().getTime();
-                        if (durationMs > scheduleExecution.getTimeout()) {
-                            LOGGER.debug("Time is out for execution [{}]", scheduleExecution.getName());
-                            status = ScheduleExecutionStatus.TIMEOUT;
-                            break;
-                        }
-                    }
-                } else {
-                    if (scheduleExecution.isAllNodes()) {
-                        if (succeedNodes == scheduleExecution.getNodes().size()) {
-                            status = ScheduleExecutionStatus.SUCCEED;
-                        }
-                    }
-                }
-            }
+            status = executeJobNodes(scheduleExecution);
         } catch (Exception e) {
-            status = ScheduleExecutionStatus.EXCEPTION;
             LOGGER.error("Internal error while executing the job : " + scheduleExecution.getJob().getId(), e);
         } finally {
             // Finish execution report
@@ -161,6 +100,79 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         }
 
         return scheduleExecution;
+    }
+
+    protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution) {
+        // Pessimistic about execution
+        ScheduleExecutionStatus status = ScheduleExecutionStatus.FAILED;
+        int succeedNodes = 0;
+
+        // Nodes iterator
+        Iterator<ScheduleExecutionNode> nodeIterator = scheduleExecution.getNodes().iterator();
+
+        // Start loop throught all execution nodes
+        while (nodeIterator.hasNext()) {
+            // Get fresh copy of execution and check the cancellation flag
+            ScheduleExecution scheduleExecutionLoaded =
+                executionManagementService.getExecution(scheduleExecution.getId());
+            if (scheduleExecutionLoaded.isCancelled()) {
+                status = ScheduleExecutionStatus.CANCELED;
+                break;
+            }
+
+            // Current node
+            ScheduleExecutionNode node = nodeIterator.next();
+
+            LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+
+            // Register node execution start, execute and register finish
+            ScheduleExecutionResult scheduleExecutionResult =
+                executionManagementService.startExecutionResult(node.getId());
+
+            ActionResult actionResult = null;
+            try {
+                actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
+            } finally {
+                scheduleExecutionResult =
+                    executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
+            }
+
+            // If last action succeedes break the node loop
+            if (actionResult != null && actionResult.isSucceed()) {
+                LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+                succeedNodes++;
+                if (!scheduleExecution.isAllNodes()) {
+                    status = ScheduleExecutionStatus.SUCCEED;
+                    break;
+                }
+            } else {
+                LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+            }
+
+            // Are there any other pending nodes?
+            if (nodeIterator.hasNext()) {
+                // Check timeout
+                if (scheduleExecution.getTimeout() > 0) {
+                    long durationMs =
+                        scheduleExecutionResult.getFinished().getTime() -
+                        scheduleExecution.getStarted().getTime();
+
+                    if (durationMs > scheduleExecution.getTimeout()) {
+                        LOGGER.debug("Time is out for execution [{}]", scheduleExecution.getName());
+                        status = ScheduleExecutionStatus.TIMEOUT;
+                        break;
+                    }
+                }
+            } else {
+                if (scheduleExecution.isAllNodes()) {
+                    if (succeedNodes == scheduleExecution.getNodes().size()) {
+                        status = ScheduleExecutionStatus.SUCCEED;
+                    }
+                }
+            }
+        }
+
+        return status;
     }
 
     @Required

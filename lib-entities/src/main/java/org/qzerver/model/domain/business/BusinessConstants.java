@@ -1,5 +1,7 @@
 package org.qzerver.model.domain.business;
 
-public interface BusinessConstants {
+public final class BusinessConstants {
 
+    private BusinessConstants() {
+    }
 }

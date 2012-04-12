@@ -33,7 +33,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     private ScheduleJobDao scheduleJobDao;
 
     @NotNull
-    protected BusinessEntityDao businessEntityDao;
+    private BusinessEntityDao businessEntityDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -95,7 +95,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
         int currentIndex = clusterGroup.getRollingIndex();
 
-        for (int i=currentIndex + 1, size=clusterGroup.getNodes().size(); i < size; i++) {
+        for (int i = currentIndex + 1, size = clusterGroup.getNodes().size(); i < size; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
             if (clusterNode.isEnabled()) {
                 clusterGroup.setRollingIndex(i);
@@ -103,7 +103,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
             }
         }
 
-        for (int i=0; i < currentIndex; i++) {
+        for (int i = 0; i < currentIndex; i++) {
             ClusterNode clusterNode = clusterGroup.getNodes().get(i);
             if (clusterNode.isEnabled()) {
                 clusterGroup.setRollingIndex(i);

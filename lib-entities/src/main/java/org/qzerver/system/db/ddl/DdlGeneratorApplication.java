@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.util.*;
 
-public class DdlGeneratorApplication {
+public final class DdlGeneratorApplication {
 
     private static final String PERSISTENCE_CONFIGURATION = "configuration/entities/jpa/persistence.xml";
 
@@ -46,6 +46,9 @@ public class DdlGeneratorApplication {
             .put("derby", DbConfiguratorType.DERBY_CLIENT)
             .build();
 
+    private DdlGeneratorApplication() {
+    }
+
     public static void main(String[] arguments) throws Exception {
         System.err.println("Arguments: " + ArrayUtils.toString(arguments));
         System.err.println("Classpath: " + System.getProperty("java.class.path"));
@@ -55,15 +58,15 @@ public class DdlGeneratorApplication {
 
         if ((arguments != null) && (arguments.length > 0)) {
             targetDir = new File(arguments[0]);
-            if (! targetDir.isDirectory()) {
-                if (! targetDir.mkdirs()) {
+            if (!targetDir.isDirectory()) {
+                if (!targetDir.mkdirs()) {
                     throw new IOException("Fail to create directory: " + targetDir);
                 }
             }
         }
 
         // Compose mapping for each db type
-        for (Map.Entry<String,DbConfiguratorType> dbTypeEntry : DB_TYPES.entrySet()) {
+        for (Map.Entry<String, DbConfiguratorType> dbTypeEntry : DB_TYPES.entrySet()) {
             final String dbName = dbTypeEntry.getKey();
             final DbConfiguratorType dbConfiguratorType = dbTypeEntry.getValue();
 
@@ -112,7 +115,7 @@ public class DdlGeneratorApplication {
 
         List<String> result = new ArrayList<String>(nodes.getLength());
 
-        for (int i=0, size=nodes.getLength(); i < size; i++) {
+        for (int i = 0, size = nodes.getLength(); i < size; i++) {
             Node node = nodes.item(i);
             result.add(node.getTextContent());
         }

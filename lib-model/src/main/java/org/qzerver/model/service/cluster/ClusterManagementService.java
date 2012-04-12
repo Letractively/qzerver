@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Cluster group and node management
+ */
 @Service
 public interface ClusterManagementService {
 

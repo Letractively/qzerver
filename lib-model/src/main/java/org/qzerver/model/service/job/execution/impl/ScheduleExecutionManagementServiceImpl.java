@@ -106,13 +106,13 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
                 // "circle" strategy - step index in cluster and get all active nodes
                 case CIRCULAR:
                     int rolledIndex = clusterManagementService.rollGroupIndex(clusterGroup.getId());
-                    for (int i=rolledIndex, size=clusterGroup.getNodes().size(); i < size; i++) {
+                    for (int i = rolledIndex, size = clusterGroup.getNodes().size(); i < size; i++) {
                         ClusterNode clusterNode = clusterGroup.getNodes().get(i);
                         if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
                         }
                     }
-                    for (int i=0; i < rolledIndex; i++) {
+                    for (int i = 0; i < rolledIndex; i++) {
                         ClusterNode clusterNode = clusterGroup.getNodes().get(i);
                         if (clusterNode.isEnabled()) {
                             clusterNodes.add(clusterNode);
@@ -181,7 +181,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
     @Override
     public ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, ActionResult actionResult) {
-        ScheduleExecutionResult result = businessEntityDao.findById(ScheduleExecutionResult.class, scheduleExecutionResultId);
+        ScheduleExecutionResult result =
+            businessEntityDao.findById(ScheduleExecutionResult.class, scheduleExecutionResultId);
+
         if (result == null) {
             throw new MissingEntityException(ScheduleExecutionResult.class, scheduleExecutionResultId);
         }

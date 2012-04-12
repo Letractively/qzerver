@@ -33,7 +33,7 @@ public class FreemarkerTemplateEngine implements TemplateEngine {
 
     @Override
     public String template(String name, Map<String, Object> attributes, Locale locale, TimeZone timezone)
-            throws TemplateEngineException
+        throws TemplateEngineException
     {
         Preconditions.checkNotNull(name, "Name is null");
         Preconditions.checkNotNull(locale, "Locale is not set");

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gainmatrix</groupId>
         <artifactId>gainmatrix-maven-parent</artifactId>
-        <version>1.11-SNAPSHOT</version>
+        <version>RELEASE</version>
     </parent>
 
     <groupId>org.qzerver</groupId>

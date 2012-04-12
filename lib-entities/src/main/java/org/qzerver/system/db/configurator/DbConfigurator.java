@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public final class DbConfigurator {
 
+    private static final String DERBY_LOG_PARAMETER = "derby.stream.error.file";
+
     @NotNull
     private DbConfiguratorType type = DbConfiguratorType.CUSTOM;
 
@@ -76,8 +78,6 @@ public final class DbConfigurator {
      * Init Derby-embedded internal properties
      */
     private void initDerbyEmbeddedSettings() {
-        final String DERBY_LOG_PARAMETER = "derby.stream.error.file";
-
         if (System.getProperty(DERBY_LOG_PARAMETER) == null) {
             File derbyLogFile;
             try {
@@ -99,6 +99,8 @@ public final class DbConfigurator {
         switch (type) {
             case DERBY_EMBEDDED:
                 initDerbyEmbeddedSettings();
+                break;
+            default:
                 break;
         }
     }

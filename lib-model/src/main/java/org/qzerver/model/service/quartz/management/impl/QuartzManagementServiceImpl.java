@@ -23,7 +23,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
     @Override
     public boolean isActive() {
         try {
-            return ! scheduler.isInStandbyMode();
+            return !scheduler.isInStandbyMode();
         } catch (SchedulerException e) {
             throw new SystemIntegrityException("Fail to check quartz activity", e);
         }
@@ -39,7 +39,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
                     scheduler.start();
                 }
             } else {
-                if (! scheduler.isInStandbyMode()) {
+                if (!scheduler.isInStandbyMode()) {
                     scheduler.standby();
                 }
             }

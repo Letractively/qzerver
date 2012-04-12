@@ -9,6 +9,14 @@ import java.util.Properties;
 
 public class QuartzPropertiesFactoryBean implements FactoryBean<Properties> {
 
+    private static final long DEFAULT_MISFIRE_THRESHOLD_MS = 60000;
+
+    private static final long DEFAULT_CLUSTER_CHECK_INTERVAL_MS = 3000;
+
+    private static final int DEFAULT_THREAD_COUNT = 10;
+
+    private static final int DEFAULT_THREAD_PRIORITY = 5;
+
     private String schema;
 
     private Properties properties;
@@ -17,15 +25,15 @@ public class QuartzPropertiesFactoryBean implements FactoryBean<Properties> {
 
     private String instanceId = "AUTO";
 
-    private long misfireThresholdMs = 60000;
+    private long misfireThresholdMs = DEFAULT_MISFIRE_THRESHOLD_MS;
 
-    private long clusterCheckinInterval = 30000;
+    private long clusterCheckinInterval = DEFAULT_CLUSTER_CHECK_INTERVAL_MS;
 
     private Class<? extends DriverDelegate> driverDelegateClass;
 
-    private int threadCount = 10;
+    private int threadCount = DEFAULT_THREAD_COUNT;
 
-    private int threadPriority = 5;
+    private int threadPriority = DEFAULT_THREAD_PRIORITY;
 
     private Map<Object, Object> additionalPropertyMap;
 

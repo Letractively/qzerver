@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * DAO for ClusterGroup entity
+ */
 @Repository
 public interface ClusterGroupDao {
 

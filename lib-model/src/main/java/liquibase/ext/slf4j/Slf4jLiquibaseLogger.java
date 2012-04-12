@@ -11,8 +11,10 @@ public class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Slf4jLiquibaseLogger.class);
 
+    private static final int DEFAULT_PRIORITY = 5;
+
     public int getPriority() {
-        return 5;
+        return DEFAULT_PRIORITY;
     }
 
     public void setName(String name) {

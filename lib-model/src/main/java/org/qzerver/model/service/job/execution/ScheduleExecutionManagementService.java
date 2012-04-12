@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Schedule execution internal functions
+ */
 @Service
 public interface ScheduleExecutionManagementService {
 
