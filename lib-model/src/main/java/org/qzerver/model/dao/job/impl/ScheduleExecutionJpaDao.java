@@ -32,7 +32,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         root.fetch(ScheduleExecution_.job);
 
         criteriaQuery.orderBy(
-                criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
+            criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -53,11 +53,11 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         root.fetch(ScheduleExecution_.job);
 
         criteriaQuery.where(
-                criteriaBuilder.isNotNull(root.get(ScheduleExecution_.finished))
+            criteriaBuilder.isNotNull(root.get(ScheduleExecution_.finished))
         );
 
         criteriaQuery.orderBy(
-                criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
+            criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -78,11 +78,11 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         root.fetch(ScheduleExecution_.job);
 
         criteriaQuery.where(
-                criteriaBuilder.isNull(root.get(ScheduleExecution_.finished))
+            criteriaBuilder.isNull(root.get(ScheduleExecution_.finished))
         );
 
         criteriaQuery.orderBy(
-                criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
+            criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
@@ -102,11 +102,11 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         Root<ScheduleExecution> root = criteriaQuery.from(ScheduleExecution.class);
 
         criteriaQuery.where(
-                criteriaBuilder.equal(root.get(ScheduleExecution_.job).get(ScheduleJob_.id), scheduleJobId)
+            criteriaBuilder.equal(root.get(ScheduleExecution_.job).get(ScheduleJob_.id), scheduleJobId)
         );
 
         criteriaQuery.orderBy(
-                criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
+            criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);

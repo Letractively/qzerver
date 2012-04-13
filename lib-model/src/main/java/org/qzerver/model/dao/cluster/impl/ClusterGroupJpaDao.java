@@ -29,7 +29,7 @@ public class ClusterGroupJpaDao implements ClusterGroupDao {
         root.fetch(ClusterGroup_.nodes);
 
         criteriaQuery.orderBy(
-                criteriaBuilder.asc(root.get(ClusterGroup_.name))
+            criteriaBuilder.asc(root.get(ClusterGroup_.name))
         );
 
         TypedQuery<ClusterGroup> typedQuery = entityManager.createQuery(criteriaQuery);

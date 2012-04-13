@@ -40,7 +40,7 @@ public class BusinessEntityJpaDao implements BusinessEntityDao {
         Root<T> root = criteriaQuery.from(clazz);
 
         criteriaQuery.where(
-                root.get(ENTITY_ID).in(ids)
+            root.get(ENTITY_ID).in(ids)
         );
 
         TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);
