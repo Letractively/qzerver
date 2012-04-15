@@ -14,7 +14,7 @@ public final class QzerverJobUtils {
     }
 
     /**
-     * Parse Quartz job name to ScheduleJob identifier
+     * Parse Quartz job name to ScheduleJob identifier.
      * @param name Quartz job name
      * @return Identifier
      */
@@ -23,7 +23,7 @@ public final class QzerverJobUtils {
     }
 
     /**
-     * Format Quatz job name from ScheduleJob identifier
+     * Format Quatz job name from ScheduleJob identifier.
      * @param id Identifier
      * @return Quartz job name
      */

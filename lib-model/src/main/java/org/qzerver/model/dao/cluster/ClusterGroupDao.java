@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * DAO for ClusterGroup entity
+ * DAO for ClusterGroup entity.
  */
 @Repository
 public interface ClusterGroupDao {
 
     /**
-     * Load all group sorted by name
+     * Load all group sorted by name.
      * @param extraction Extraction
      * @return Group list
      */

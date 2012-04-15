@@ -9,34 +9,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Cluster group and node management
+ * Cluster group and node management.
  */
 @Service
 public interface ClusterManagementService {
 
     /**
-     * Get all cluster groups
+     * Get all cluster groups.
      * @param extraction Extraction
      * @return List of cluster groups
      */
     List<ClusterGroup> getAllGroups(Extraction extraction);
 
     /**
-     * Get cluster group
+     * Get cluster group.
      * @param clusterGroupId Cluster group identifier
      * @return Cluster group
      */
     ClusterGroup getGroup(long clusterGroupId);
 
     /**
-     * Create new cluster group
+     * Create new cluster group.
      * @param name Name
      * @return Cluster group
      */
     ClusterGroup createGroup(String name);
 
     /**
-     * Modify group
+     * Modify group.
      * @param clusterGroupId Cluster group identifier
      * @param name Name
      * @return Cluster group
@@ -44,22 +44,26 @@ public interface ClusterManagementService {
     ClusterGroup modifyGroup(long clusterGroupId, String name);
 
     /**
-     * Roll cluster node index
+     * Roll cluster node index.
      * @param clusterGroupId Cluster group identify
      * @return New index position
      */
     int rollGroupIndex(long clusterGroupId);
 
     /**
-     * Delete cluster group
+     * Delete cluster group.
      * @param clusterGroupId Cluster group identifier
-     * @throws org.qzerver.model.service.cluster.exception.ClusterGroupUsed When cluster group is used by SchedulerJob
-     * and can't be deleted
+     * @throws AbstractServiceException Exception on error
+     * <h1>Specific exceptions:</h1>
+     * <ul>
+     *     <li>{@link org.qzerver.model.service.cluster.exception.ClusterGroupUsed} - When cluster group is used
+     *     by SchedulerJob and can't be deleted</li>
+     * </ul>
      */
     void deleteGroup(long clusterGroupId) throws AbstractServiceException;
 
     /**
-     * Create new node in the specified group
+     * Create new node in the specified group.
      * @param clusterGroupId Cluster group identifier
      * @param domain Domain
      * @param comment Comment
@@ -69,7 +73,7 @@ public interface ClusterManagementService {
     ClusterNode createNode(long clusterGroupId, String domain, String comment, boolean activity);
 
     /**
-     * Modify cluster node
+     * Modify cluster node.
      * @param clusterNodeId Cluster node identifier
      * @param domain Domain
      * @param comment Comment
@@ -79,7 +83,7 @@ public interface ClusterManagementService {
     ClusterNode modifyNode(long clusterNodeId, String domain, String comment, boolean activity);
 
     /**
-     * Delete cluster node
+     * Delete cluster node.
      * @param clusterNodeId Cluster node identifier
      */
     void deleteNode(long clusterNodeId);

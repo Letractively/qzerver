@@ -10,7 +10,7 @@ import java.util.TimeZone;
 public interface TemplateEngine {
 
     /**
-     * Generate text from template and attributes
+     * Generate text from template and attributes.
      * @param name Name of template
      * @param attributes Map of atributes
      * @param locale Locale

@@ -13,6 +13,7 @@ public interface MailAgent {
      * @param emailTo Target email address
      * @param subject Subject
      * @param text Message
+     * @throws MailAgentException Exception on mail error
      */
     void sendMail(String emailTo, String subject, String text) throws MailAgentException;
 

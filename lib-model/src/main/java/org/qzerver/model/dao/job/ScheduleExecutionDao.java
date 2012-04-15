@@ -8,34 +8,34 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * DAO for ScheduleExecution entity
+ * DAO for ScheduleExecution entity.
  */
 @Repository
 public interface ScheduleExecutionDao {
 
     /**
-     * Find all last executions
+     * Find all last executions.
      * @param extraction Extraction
      * @return Execution list
      */
     List<ScheduleExecution> findAll(Extraction extraction);
 
     /**
-     * Find all last closed executions
+     * Find all last closed executions.
      * @param extraction Extraction
      * @return Execution list
      */
     List<ScheduleExecution> findFinished(Extraction extraction);
 
     /**
-     * Find all last executions in progress
+     * Find all last executions in progress.
      * @param extraction Extraction
      * @return Execution list
      */
     List<ScheduleExecution> findEngaged(Extraction extraction);
 
     /**
-     * Find last executions by job
+     * Find last executions by job.
      * @param scheduleJobId Schedule job identifier
      * @param extraction Extraction
      * @return Execution list
@@ -43,14 +43,14 @@ public interface ScheduleExecutionDao {
     List<ScheduleExecution> findByJob(long scheduleJobId, Extraction extraction);
 
     /**
-     * Delete all expired execution records
+     * Delete all expired execution records.
      * @param expiration Expiration moment
      * @return Count of deleted records
      */
     int deleteExpired(Date expiration);
 
     /**
-     * Set job reference to null for all execution with specified job
+     * Set job reference to null for all execution with specified job.
      * @param scheduleJobId Schedule job identifier
      * @return Count of update records
      */

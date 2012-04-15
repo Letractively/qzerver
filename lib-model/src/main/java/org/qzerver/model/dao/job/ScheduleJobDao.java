@@ -12,7 +12,7 @@ import java.util.List;
 public interface ScheduleJobDao {
 
     /**
-     * Find all jobs which are connected to the specified cluster group
+     * Find all jobs which are connected to the specified cluster group.
      * @param clusterGroupId Cluster group identifier
      * @return List of schedule jobs
      */
