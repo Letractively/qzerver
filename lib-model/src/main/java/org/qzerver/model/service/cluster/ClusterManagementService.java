@@ -53,8 +53,7 @@ public interface ClusterManagementService {
     /**
      * Delete cluster group.
      * @param clusterGroupId Cluster group identifier
-     * @throws AbstractServiceException Exception on error
-     * <h1>Specific exceptions:</h1>
+     * @throws com.gainmatrix.lib.business.exception.AbstractServiceException Exception on error, includes:
      * <ul>
      *     <li>{@link org.qzerver.model.service.cluster.exception.ClusterGroupUsed} - When cluster group is used
      *     by SchedulerJob and can't be deleted</li>
