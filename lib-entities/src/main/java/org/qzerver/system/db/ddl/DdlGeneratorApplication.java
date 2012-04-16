@@ -130,7 +130,7 @@ public final class DdlGeneratorApplication {
         String content;
 
         try {
-            content = IOUtils.toString(stream);
+            content = IOUtils.toString(stream, "UTF-8");
         } finally {
             stream.close();
         }

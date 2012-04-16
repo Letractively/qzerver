@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Adapter for Liquibase logging subsystem. Translates all messages to SLF4J logger
  */
-public class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
+public final class Slf4jLiquibaseLogger implements liquibase.logging.Logger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Slf4jLiquibaseLogger.class);
 
