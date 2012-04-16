@@ -1,36 +1,70 @@
 package org.qzerver.model.domain.action.localcommand;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionResult;
 
-public class LocalCommandActionResult implements Serializable {
+/**
+ * Result from local command action
+ */
+public class LocalCommandActionResult implements ActionResult {
 
-    private int exitCode;
+    private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
 
-    private String stdout;
+    /**
+     * Actual exit code we get from a program
+     */
+    private int actualExitCode;
 
-    private String stderr;
+    /**
+     * Expected exit code. This code means success
+     */
+    private int expectedExitCode = DEFAULT_EXPECTED_EXIT_CODE;
 
-    public int getExitCode() {
-        return exitCode;
+    /**
+     * What we got from standard output (or both from standard output and error output). May be null if output is
+     * not required
+     */
+    private byte[] stdout;
+
+    /**
+     * What we got from error output. May be null if output is not required.
+     */
+    private byte[] stderr;
+
+    public int getExpectedExitCode() {
+        return expectedExitCode;
     }
 
-    public void setExitCode(int exitCode) {
-        this.exitCode = exitCode;
+    public void setExpectedExitCode(int expectedExitCode) {
+        this.expectedExitCode = expectedExitCode;
     }
 
-    public String getStderr() {
+    public int getActualExitCode() {
+        return actualExitCode;
+    }
+
+    public void setActualExitCode(int actualExitCode) {
+        this.actualExitCode = actualExitCode;
+    }
+
+    public byte[] getStderr() {
         return stderr;
     }
 
-    public void setStderr(String stderr) {
+    public void setStderr(byte[] stderr) {
         this.stderr = stderr;
     }
 
-    public String getStdout() {
+    public byte[] getStdout() {
         return stdout;
     }
 
-    public void setStdout(String stdout) {
+    public void setStdout(byte[] stdout) {
         this.stdout = stdout;
     }
+
+    @Override
+    public boolean isSucceed() {
+        return actualExitCode == expectedExitCode;
+    }
+
 }
