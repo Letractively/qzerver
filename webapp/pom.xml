@@ -147,7 +147,6 @@
                     <stopKey>jetty-stop</stopKey>
                     <stopPort>${jetty.stop.port}</stopPort>
                 </configuration>
-                <!--
                 <executions>
                     <execution>
                         <id>start-jetty</id>
@@ -168,7 +167,6 @@
                         </goals>
                     </execution>
                 </executions>
-                -->
             </plugin>
         </plugins>
     </build>
