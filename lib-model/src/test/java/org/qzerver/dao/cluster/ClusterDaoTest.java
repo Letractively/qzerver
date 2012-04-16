@@ -1,9 +1,9 @@
 package org.qzerver.dao.cluster;
 
 import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.spring.dao.BusinessEntityJpaDaoChecker;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
-import org.qzerver.base.BusinessEntityJpaDaoChecker;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 
@@ -26,7 +26,7 @@ public class ClusterDaoTest extends AbstractModelTest {
         clusterGroup.setRollingIndex(2);
 
         BusinessEntityJpaDaoChecker.checkBusinessEntityDao(entityManager, businessEntityDao,
-                ClusterGroup.class, clusterGroup);
+            ClusterGroup.class, clusterGroup);
     }
 
     @Test

@@ -1,10 +1,10 @@
 package org.qzerver.dao.job;
 
 import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.spring.dao.BusinessEntityJpaDaoChecker;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
-import org.qzerver.base.BusinessEntityJpaDaoChecker;
 import org.qzerver.model.domain.entities.job.*;
 
 import javax.annotation.Resource;
@@ -26,7 +26,7 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleGroup.setName("dgfsrgw");
 
         BusinessEntityJpaDaoChecker.checkBusinessEntityDao(entityManager, businessEntityDao,
-                ScheduleGroup.class, scheduleGroup);
+            ScheduleGroup.class, scheduleGroup);
     }
 
     public void testScheduleActionDao() throws Exception {
