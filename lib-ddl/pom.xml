@@ -61,8 +61,8 @@
                 <dependencies>
                     <dependency>
                         <groupId>com.gainmatrix</groupId>
-                        <artifactId>gainmatrix-lib-log4j</artifactId>
-                        <version>${com.gainmatrix.lib-log4j.version}</version>
+                        <artifactId>gainmatrix-maven-log4j</artifactId>
+                        <version>1.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
