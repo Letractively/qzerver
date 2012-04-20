@@ -1,8 +1,8 @@
 package org.qzerver.model.domain.action.jmx;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionResult;
 
-public class JmxActionResult implements Serializable {
+public class JmxActionResult implements ActionResult {
 
     private String exception;
 
@@ -12,5 +12,10 @@ public class JmxActionResult implements Serializable {
 
     public void setException(String exception) {
         this.exception = exception;
+    }
+
+    @Override
+    public boolean isSucceed() {
+        return false;
     }
 }

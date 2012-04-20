@@ -1,8 +1,8 @@
 package org.qzerver.model.domain.action.socket;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionResult;
 
-public class SocketActionResult implements Serializable {
+public class SocketActionResult implements ActionResult {
 
     private byte[] response;
 
@@ -12,5 +12,10 @@ public class SocketActionResult implements Serializable {
 
     public void setResponse(byte[] response) {
         this.response = response;
+    }
+
+    @Override
+    public boolean isSucceed() {
+        return false;
     }
 }

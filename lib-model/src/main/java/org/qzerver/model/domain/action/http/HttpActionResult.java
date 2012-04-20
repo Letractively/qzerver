@@ -1,8 +1,8 @@
 package org.qzerver.model.domain.action.http;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionResult;
 
-public class HttpActionResult implements Serializable {
+public class HttpActionResult implements ActionResult {
 
     private int status;
 
@@ -34,4 +34,8 @@ public class HttpActionResult implements Serializable {
         this.status = status;
     }
 
+    @Override
+    public boolean isSucceed() {
+        return false;
+    }
 }

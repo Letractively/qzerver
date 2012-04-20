@@ -103,47 +103,37 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     }
 
     protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution) {
-        // Nodes counter
+        // Succeed nodes counter
         int succeedNodes = 0;
 
-        // Nodes iterator
+        // All nodes iterator
         Iterator<ScheduleExecutionNode> nodeIterator = scheduleExecution.getNodes().iterator();
 
         // Start loop throught all execution nodes
         while (nodeIterator.hasNext()) {
             // Get fresh copy of execution and check the cancellation flag
-            ScheduleExecution scheduleExecutionLoaded =
-                    executionManagementService.getExecution(scheduleExecution.getId());
-            if (scheduleExecutionLoaded.isCancelled()) {
+            ScheduleExecution scheduleExecutionReloaded =
+                executionManagementService.getExecution(scheduleExecution.getId());
+            if (scheduleExecutionReloaded.isCancelled()) {
+                LOGGER.debug("Execution [{}] is cancelled", scheduleExecution.getName());
                 return ScheduleExecutionStatus.CANCELED;
             }
 
             // Current node
-            ScheduleExecutionNode node = nodeIterator.next();
+            ScheduleExecutionNode currentNode = nodeIterator.next();
 
-            LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
-
-            // Register node execution start, execute and register finish
-            ScheduleExecutionResult scheduleExecutionResult =
-                executionManagementService.startExecutionResult(node.getId());
-
-            ActionResult actionResult = null;
-            try {
-                actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
-            } finally {
-                scheduleExecutionResult =
-                    executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
-            }
+            // Execution action on node
+            ScheduleExecutionResult scheduleExecutionResult = executeJobNode(scheduleExecution, currentNode);
 
             // If last action succeedes break the node loop
-            if (actionResult != null && actionResult.isSucceed()) {
-                LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+            if (scheduleExecutionResult.isSucceed()) {
+                LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), currentNode.getAddress());
                 succeedNodes++;
                 if (!scheduleExecution.isAllNodes()) {
                     return ScheduleExecutionStatus.SUCCEED;
                 }
             } else {
-                LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+                LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), currentNode.getAddress());
             }
 
             // Are there any other pending nodes?
@@ -154,7 +144,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                         scheduleExecutionResult.getFinished().getTime() - scheduleExecution.getStarted().getTime();
 
                     if (durationMs > scheduleExecution.getTimeout()) {
-                        LOGGER.debug("Time is out for execution [{}]", scheduleExecution.getName());
+                        LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getName());
                         return ScheduleExecutionStatus.TIMEOUT;
                     }
                 }
@@ -168,6 +158,24 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         }
 
         return ScheduleExecutionStatus.FAILED;
+    }
+
+    protected ScheduleExecutionResult executeJobNode(ScheduleExecution scheduleExecution, ScheduleExecutionNode node) {
+        LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+
+        // Register node execution start, execute and register finish
+        ScheduleExecutionResult scheduleExecutionResult =
+            executionManagementService.startExecutionResult(node.getId());
+
+        ActionResult actionResult = null;
+        try {
+            actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
+        } finally {
+            scheduleExecutionResult =
+                executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
+        }
+
+        return scheduleExecutionResult;
     }
 
     @Required

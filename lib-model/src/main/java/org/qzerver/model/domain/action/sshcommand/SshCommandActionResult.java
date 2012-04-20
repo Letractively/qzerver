@@ -1,8 +1,8 @@
 package org.qzerver.model.domain.action.sshcommand;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionResult;
 
-public class SshCommandActionResult implements Serializable {
+public class SshCommandActionResult implements ActionResult {
 
     private int exitCode;
 
@@ -32,5 +32,10 @@ public class SshCommandActionResult implements Serializable {
 
     public void setStdout(String stdout) {
         this.stdout = stdout;
+    }
+
+    @Override
+    public boolean isSucceed() {
+        return false;
     }
 }

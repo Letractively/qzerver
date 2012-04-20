@@ -1,9 +1,10 @@
 package org.qzerver.model.domain.action.jmx;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionDefinition;
+
 import java.util.List;
 
-public class JmxActionDefinition implements Serializable {
+public class JmxActionDefinition implements ActionDefinition {
 
     private String url;
 
@@ -63,5 +64,9 @@ public class JmxActionDefinition implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public void doSomethind() {
     }
 }

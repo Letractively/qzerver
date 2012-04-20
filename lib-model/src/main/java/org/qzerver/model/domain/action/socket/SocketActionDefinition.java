@@ -1,8 +1,8 @@
 package org.qzerver.model.domain.action.socket;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionDefinition;
 
-public class SocketActionDefinition implements Serializable {
+public class SocketActionDefinition implements ActionDefinition {
 
     private byte[] message;
 
@@ -22,5 +22,9 @@ public class SocketActionDefinition implements Serializable {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    @Override
+    public void doSomethind() {
     }
 }

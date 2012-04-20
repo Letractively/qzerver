@@ -1,9 +1,10 @@
 package org.qzerver.model.domain.action.http;
 
-import java.io.Serializable;
+import org.qzerver.model.domain.action.ActionDefinition;
+
 import java.util.Map;
 
-public class HttpActionDefinition implements Serializable {
+public class HttpActionDefinition implements ActionDefinition {
 
     private static final HttpActionProtocol DEFAULT_PROTOCOL = HttpActionProtocol.HTTP;
 
@@ -79,5 +80,9 @@ public class HttpActionDefinition implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public void doSomethind() {
     }
 }

@@ -6,11 +6,20 @@ import java.util.Date;
 
 public class AutomaticJobExecutionParameters implements Serializable {
 
+    /**
+     * Schedule job identifier
+     */
     private long scheduleJobId;
 
+    /**
+     * Schedule time for the job
+     */
     @NotNull
     private Date scheduled;
 
+    /**
+     * Actual fire time for the job
+     */
     @NotNull
     private Date fired;
 

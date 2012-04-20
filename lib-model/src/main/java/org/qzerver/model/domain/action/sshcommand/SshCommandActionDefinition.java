@@ -1,8 +1,10 @@
 package org.qzerver.model.domain.action.sshcommand;
 
+import org.qzerver.model.domain.action.ActionDefinition;
+
 import java.util.List;
 
-public class SshCommandActionDefinition {
+public class SshCommandActionDefinition implements ActionDefinition {
 
     private int port;
 
@@ -62,5 +64,9 @@ public class SshCommandActionDefinition {
 
     public void setParameters(List<String> parameters) {
         this.parameters = parameters;
+    }
+
+    @Override
+    public void doSomethind() {
     }
 }

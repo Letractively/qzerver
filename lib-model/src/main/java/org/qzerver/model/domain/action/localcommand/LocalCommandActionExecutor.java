@@ -5,9 +5,11 @@ import org.qzerver.model.domain.action.ActionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LocalCommandAction implements ActionExecutor<LocalCommandActionResult, LocalCommandActionDefinition> {
+public class LocalCommandActionExecutor
+    implements ActionExecutor<LocalCommandActionResult, LocalCommandActionDefinition>
+{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandActionExecutor.class);
 
     @Override
     public LocalCommandActionResult execute(LocalCommandActionDefinition definition, String nodeAddress) {
