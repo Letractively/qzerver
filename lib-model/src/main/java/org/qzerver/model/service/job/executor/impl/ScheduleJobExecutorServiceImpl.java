@@ -127,13 +127,15 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
             // If last action succeedes break the node loop
             if (scheduleExecutionResult.isSucceed()) {
-                LOGGER.debug("Success execution [{}] on node [{}]", scheduleExecution.getName(), currentNode.getAddress());
+                LOGGER.debug("Success execution [{}] on node [{}]",
+                    scheduleExecution.getName(), currentNode.getAddress());
                 succeedNodes++;
                 if (!scheduleExecution.isAllNodes()) {
                     return ScheduleExecutionStatus.SUCCEED;
                 }
             } else {
-                LOGGER.debug("Failed execution [{}] on node [{}]", scheduleExecution.getName(), currentNode.getAddress());
+                LOGGER.debug("Failed execution [{}] on node [{}]",
+                    scheduleExecution.getName(), currentNode.getAddress());
             }
 
             // Are there any other pending nodes?
