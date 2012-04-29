@@ -38,8 +38,8 @@
         <org.apache.commons.digester.version>2.1</org.apache.commons.digester.version>
         <org.apache.commons.codec.version>1.5</org.apache.commons.codec.version>
         <org.apache.commons.httpclient.version>3.1</org.apache.commons.httpclient.version>
-        <org.hibernate.core.version>4.1.1.Final</org.hibernate.core.version>
-        <org.hibernate.entitymanager.version>4.1.1.Final</org.hibernate.entitymanager.version>
+        <org.hibernate.core.version>4.1.2.Final</org.hibernate.core.version>
+        <org.hibernate.entitymanager.version>4.1.2.Final</org.hibernate.entitymanager.version>
         <org.hibernate.validator.version>4.2.0.Final</org.hibernate.validator.version>
         <org.freemarker.version>2.3.19</org.freemarker.version>
         <org.codehaus.jackson.version>1.8.5</org.codehaus.jackson.version>

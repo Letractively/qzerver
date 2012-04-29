@@ -20,11 +20,6 @@
         <level value="DEBUG"/>
     </logger>
 
-    <logger name="org.hibernate.ejb.metamodel.MetadataContext">
-        <!-- https://hibernate.onjira.com/browse/HHH-5024 -->
-        <level value="FATAL"/>
-    </logger>
-
     <root>
         <priority value="INFO" />
         <appender-ref ref="console"/>
