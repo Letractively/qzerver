@@ -29,3 +29,20 @@
  * relativeUrl - relative reference
 --]
 [#macro resource relativeUrl]${requestContext.getContextUrl("${relativeUrl}?r=${renderContext.revision?c}")?html}[/#macro]]
+
+[#-- Output exception dump
+ * exception - instance of java.lang.Throwable
+--]
+[#macro exceptionDump throwable]
+[#escape x as x?html]
+<div class="exception-dump">
+<h1>${throwable.class.name}</h1>
+[#if throwable.message??]
+<h2>${throwable.message}</h2>
+[/#if]
+[#list throwable.stackTrace as stackTraceElement]
+<div>${stackTraceElement.className}#${stackTraceElement.methodName} (${stackTraceElement.fileName}:${stackTraceElement.lineNumber})</div>
+[/#list]
+</div>
+[/#escape]
+[/#macro]

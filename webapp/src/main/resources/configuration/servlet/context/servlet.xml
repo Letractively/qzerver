@@ -101,7 +101,7 @@
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="warnLogCategory" value="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"/>
         <property name="defaultStatusCode" value="500"/>
-        <property name="defaultErrorView" value="error/exception"/>
+        <property name="defaultErrorView" value="error/5xx"/>
         <property name="exceptionAttribute" value="exception"/>
         <property name="exceptionMappings">
             <props>
@@ -127,7 +127,6 @@
                 <prop key="error/404">404</prop>
                 <prop key="error/4xx">400</prop>
                 <prop key="error/5xx">500</prop>
-                <prop key="error/exception">500</prop>
             </props>
         </property>
     </bean>
