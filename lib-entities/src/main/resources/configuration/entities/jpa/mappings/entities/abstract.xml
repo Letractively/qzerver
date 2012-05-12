@@ -13,7 +13,7 @@
             pk-column-name="sequence_name"
             value-column-name="next_val"/>
 
-    <mapped-superclass class="com.gainmatrix.lib.business.AbstractBusinessEntity">
+    <mapped-superclass class="com.gainmatrix.lib.business.entity.AbstractBusinessEntity">
         <pre-persist method-name="updateBusinessModelVersion"/>
         <pre-update method-name="updateBusinessModelVersion"/>
         <attributes>
@@ -25,7 +25,7 @@
         </attributes>
     </mapped-superclass>
 
-    <embeddable class="com.gainmatrix.lib.business.BusinessId">
+    <embeddable class="com.gainmatrix.lib.business.entity.BusinessId">
         <attributes>
             <basic name="hi">
                 <column name="business_id_hi" insertable="true" updatable="false" nullable="false"/>

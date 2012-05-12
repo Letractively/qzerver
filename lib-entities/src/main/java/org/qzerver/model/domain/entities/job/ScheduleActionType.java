@@ -1,9 +1,8 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;
 
-public enum ScheduleActionType implements Coded {
+public enum ScheduleActionType {
 
     /**
      * Execute local command
@@ -32,11 +31,6 @@ public enum ScheduleActionType implements Coded {
 
     ScheduleActionType(int ordinal) {
         Preconditions.checkState(ordinal == this.ordinal());
-    }
-
-    @Override
-    public int getCode() {
-        return ordinal();
     }
 
 }

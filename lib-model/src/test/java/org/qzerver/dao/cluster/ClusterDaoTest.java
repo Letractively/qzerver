@@ -1,6 +1,6 @@
 package org.qzerver.dao.cluster;
 
-import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.spring.dao.BusinessEntityJpaDaoChecker;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;

@@ -1,6 +1,6 @@
 package org.qzerver.model.service.cluster.impl;
 
-import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;

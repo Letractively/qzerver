@@ -1,6 +1,6 @@
 package org.qzerver.model.service.job.management.impl;
 
-import com.gainmatrix.lib.business.BusinessEntityDao;
+import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;

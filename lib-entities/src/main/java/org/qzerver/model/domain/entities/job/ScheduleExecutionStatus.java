@@ -1,9 +1,8 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;
 
-public enum ScheduleExecutionStatus implements Coded {
+public enum ScheduleExecutionStatus {
 
     /**
      * Execution succeed
@@ -34,8 +33,4 @@ public enum ScheduleExecutionStatus implements Coded {
         Preconditions.checkState(this.ordinal() == ordinal);
     }
 
-    @Override
-    public int getCode() {
-        return ordinal();
-    }
 }

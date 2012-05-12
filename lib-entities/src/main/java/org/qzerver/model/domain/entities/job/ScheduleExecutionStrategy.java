@@ -1,9 +1,8 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.beans.Coded;
 import com.google.common.base.Preconditions;
 
-public enum ScheduleExecutionStrategy implements Coded {
+public enum ScheduleExecutionStrategy {
 
     /**
      * Circle strategy moves the rolling node index with each execution
@@ -22,11 +21,6 @@ public enum ScheduleExecutionStrategy implements Coded {
 
     ScheduleExecutionStrategy(int ordinal) {
         Preconditions.checkState(this.ordinal() == ordinal);
-    }
-
-    @Override
-    public int getCode() {
-        return ordinal();
     }
 
 }
