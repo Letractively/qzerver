@@ -23,6 +23,8 @@ public class LocalCommandActionDefinition implements ActionDefinition {
 
     private boolean combineOutput;
 
+    private int timeoutMs;
+
     public String getCommand() {
         return command;
     }
@@ -85,6 +87,14 @@ public class LocalCommandActionDefinition implements ActionDefinition {
 
     public void setCombineOutput(boolean combineOutput) {
         this.combineOutput = combineOutput;
+    }
+
+    public int getTimeoutMs() {
+        return timeoutMs;
+    }
+
+    public void setTimeoutMs(int timeoutMs) {
+        this.timeoutMs = timeoutMs;
     }
 
     @Override

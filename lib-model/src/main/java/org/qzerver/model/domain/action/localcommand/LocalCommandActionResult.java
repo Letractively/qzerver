@@ -30,6 +30,11 @@ public class LocalCommandActionResult implements ActionResult {
      */
     private byte[] stderr;
 
+    /**
+     * Status of execution
+     */
+    private LocalCommandActionResultStatus status = LocalCommandActionResultStatus.NORMAL;
+
     public int getExpectedExitCode() {
         return expectedExitCode;
     }
@@ -60,6 +65,14 @@ public class LocalCommandActionResult implements ActionResult {
 
     public void setStdout(byte[] stdout) {
         this.stdout = stdout;
+    }
+
+    public LocalCommandActionResultStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LocalCommandActionResultStatus status) {
+        this.status = status;
     }
 
     @Override
