@@ -25,6 +25,7 @@
     <properties>
         <!-- Dependencies -->
         <com.gainmatrix.lib-beans.version>1.5-SNAPSHOT</com.gainmatrix.lib-beans.version>
+        <com.gainmatrix.lib-liquibase.version>1.0-SNAPSHOT</com.gainmatrix.lib-liquibase.version>
         <com.gainmatrix.lib-spring.version>1.5-SNAPSHOT</com.gainmatrix.lib-spring.version>
         <com.gainmatrix.lib-web.version>1.5-SNAPSHOT</com.gainmatrix.lib-web.version>
         <com.google.guava.version>11.0</com.google.guava.version>

@@ -46,6 +46,12 @@
         </dependency>
         <dependency>
             <groupId>com.gainmatrix</groupId>
+            <artifactId>gainmatrix-lib-liquibase</artifactId>
+            <version>${com.gainmatrix.lib-liquibase.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gainmatrix</groupId>
             <artifactId>gainmatrix-lib-spring</artifactId>
             <version>${com.gainmatrix.lib-spring.version}</version>
             <scope>compile</scope>
