@@ -144,10 +144,11 @@
      <bean id="attributePublisher" class="com.gainmatrix.lib.web.attribute.impl.CompositeAttributePublisher">
          <property name="attributePublishers">
              <list value-type="com.gainmatrix.lib.web.attribute.AttributePublisher">
-                 <bean class="org.qzerver.web.attribute.render.RenderContextAttributePublisher">
-                     <property name="web" value="${app.web}"/>
+                 <bean class="org.qzerver.web.attribute.render.ExtendedRenderContextAttributePublisher">
                      <property name="chronometer" ref="chronometer"/>
                      <property name="clientI18nResolver" ref="clientI18nResolver"/>
+                     <property name="web" value="${app.url}"/>
+                     <property name="applicationVersion" value="${app.version}"/>
                  </bean>
                  <bean class="org.qzerver.web.attribute.freemarker.FreemarkerAttributePublisher"/>
              </list>

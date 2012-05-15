@@ -1,7 +1,7 @@
 [#ftl encoding="UTF-8" strict_syntax="true" strip_whitespace="true"]
 
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
-[#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.RenderContext" --]
+[#-- @ftlvariable name="renderContext" type="com.gainmatrix.lib.web.attribute.render.RenderContext" --]
 
 [#-- Output message by a specified code
  * code - message code
