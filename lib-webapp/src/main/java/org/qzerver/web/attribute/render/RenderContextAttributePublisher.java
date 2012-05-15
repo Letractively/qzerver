@@ -3,7 +3,8 @@ package org.qzerver.web.attribute.render;
 import com.gainmatrix.lib.spring.i18n.ClientI18nResolver;
 import com.gainmatrix.lib.time.Chronometer;
 import com.gainmatrix.lib.web.attribute.AttributePublisher;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
+import org.qzerver.system.version.ApplicationVersionHolder;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,8 @@ public class RenderContextAttributePublisher implements AttributePublisher {
         RenderContext renderContext = new RenderContext();
         renderContext.setNow(chronometer.getCurrentMoment());
         renderContext.setWeb(web);
-        renderContext.setRevision(BusinessModel.VERSION);
+        renderContext.setBusinessModelVersion(BusinessModelVersionHolder.VERSION);
+        renderContext.setApplicationVersion(ApplicationVersionHolder.VERSION);
         renderContext.setLocale(clientI18nResolver.getLocale());
         renderContext.setTimezone(clientI18nResolver.getTimeZone());
 

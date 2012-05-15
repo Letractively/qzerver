@@ -28,7 +28,7 @@
 [#-- Compose internal versioned resource reference (js, image, css)
  * relativeUrl - relative reference
 --]
-[#macro resource relativeUrl]${requestContext.getContextUrl("${relativeUrl}?r=${renderContext.revision?c}")?html}[/#macro]]
+[#macro resource relativeUrl]${requestContext.getContextUrl("${relativeUrl}?r=${renderContext.applicationVersion}")?html}[/#macro]]
 
 [#-- Output exception dump
  * exception - instance of java.lang.Throwable

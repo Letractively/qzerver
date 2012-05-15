@@ -67,6 +67,7 @@
         <module>lib-entities</module>
         <module>lib-ddl</module>
         <module>lib-model</module>
+        <module>lib-webapp</module>
         <module>webapp</module>
     </modules>
 

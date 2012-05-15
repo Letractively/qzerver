@@ -1,7 +1,7 @@
 package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,7 +37,7 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
     private Date created;
 
     public ScheduleAction() {
-        super(BusinessModel.VERSION);
+        super(BusinessModelVersionHolder.VERSION);
     }
 
     @Override

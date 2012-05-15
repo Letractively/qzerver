@@ -3,7 +3,7 @@ package org.qzerver.model.domain.entities.job;
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +27,7 @@ public class ScheduleGroup extends AbstractBusinessEntity<Long> {
     private Set<ScheduleJob> jobs;
 
     public ScheduleGroup() {
-        super(BusinessModel.VERSION);
+        super(BusinessModelVersionHolder.VERSION);
     }
 
     @Override

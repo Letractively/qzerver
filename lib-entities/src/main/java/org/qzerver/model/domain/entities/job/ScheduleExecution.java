@@ -3,7 +3,7 @@ package org.qzerver.model.domain.entities.job;
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -116,7 +116,7 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private String hostname;
 
     public ScheduleExecution() {
-        super(BusinessModel.VERSION);
+        super(BusinessModelVersionHolder.VERSION);
     }
 
     @Override

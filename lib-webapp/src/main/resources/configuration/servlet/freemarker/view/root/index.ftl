@@ -40,9 +40,9 @@
 
     <p>${renderContext.now?datetime?string}</p>
 
-    <p>${renderContext.revision}</p>
+    <p>${renderContext.businessModelVersion}</p>
 
-    <p>${renderContext.revision?c}</p>
+    <p>${renderContext.businessModelVersion?c}</p>
 
     <p>timezone: ${renderContext.timezone.ID}</p>
 

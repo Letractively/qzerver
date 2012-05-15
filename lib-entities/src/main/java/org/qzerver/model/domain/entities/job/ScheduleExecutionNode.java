@@ -3,7 +3,7 @@ package org.qzerver.model.domain.entities.job;
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 
 import javax.validation.constraints.Min;
@@ -43,7 +43,7 @@ public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
     private boolean localhost;
 
     public ScheduleExecutionNode() {
-        super(BusinessModel.VERSION);
+        super(BusinessModelVersionHolder.VERSION);
     }
 
     @Override

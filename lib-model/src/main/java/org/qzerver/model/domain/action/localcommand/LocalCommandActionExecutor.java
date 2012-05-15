@@ -75,6 +75,14 @@ public class LocalCommandActionExecutor
             return result;
         }
 
+        executeProcess(process, definition, result);
+
+        return result;
+    }
+
+    private void executeProcess(Process process, LocalCommandActionDefinition definition,
+        LocalCommandActionResult result)
+    {
         //
         ProcessExecutionThread processExecutionThread = new ProcessExecutionThread(process);
         processExecutionThread.start();
@@ -115,9 +123,6 @@ public class LocalCommandActionExecutor
         } catch (InterruptedException e) {
             LOGGER.warn("Unexpected interruption of joining process error thread");
         }
-
-
-        return null;
     }
 
 

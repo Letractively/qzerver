@@ -32,69 +32,10 @@
         <!-- QZERVER -->
         <dependency>
             <groupId>org.qzerver</groupId>
-            <artifactId>qzerver-lib-model</artifactId>
+            <artifactId>qzerver-lib-webapp</artifactId>
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Apache Commons -->
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>${org.apache.commons.fileupload.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Jackson -->
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>${org.codehaus.jackson.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${org.codehaus.jackson.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Views -->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${org.freemarker.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Spring Framework (MVC) -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Java API -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${javax.servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-             <groupId>javax.servlet</groupId>
-             <artifactId>jstl</artifactId>
-             <version>1.1.2</version>
-             <scope>compile</scope>
-         </dependency>
-         <dependency>
-             <groupId>taglibs</groupId>
-             <artifactId>standard</artifactId>
-             <version>1.1.2</version>
-             <scope>compile</scope>
-         </dependency>
         <!-- Log -->
         <dependency>
             <groupId>org.slf4j</groupId>

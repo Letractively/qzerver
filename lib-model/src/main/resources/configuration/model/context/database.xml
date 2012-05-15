@@ -28,7 +28,7 @@
         <property name="connectionTestStatement" value="${app.database.pool.sql.probe}"/>
     </bean>
 
-    <bean id="liquibase" class="org.qzerver.system.liquibase.LiquibaseInitializer">
+    <bean id="liquibase" class="com.gainmatrix.lib.liquibase.ControlledSpringLiquibase">
         <property name="dataSource" ref="dataSource" />
         <property name="changeLog" value="classpath:configuration/entities/liquibase/changelog.xml"/>
         <property name="defaultSchema" value="${app.database.schema}"/>

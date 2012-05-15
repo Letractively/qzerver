@@ -3,7 +3,7 @@ package org.qzerver.model.domain.entities.cluster;
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModel;
+import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -50,7 +50,7 @@ public class ClusterNode extends AbstractBusinessEntity<Long> {
     private boolean enabled;
 
     public ClusterNode() {
-        super(BusinessModel.VERSION);
+        super(BusinessModelVersionHolder.VERSION);
     }
 
     @Override

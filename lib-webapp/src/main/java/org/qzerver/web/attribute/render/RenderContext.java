@@ -5,9 +5,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Context for rendering web page
+ */
 public class RenderContext implements Serializable {
 
-    private int revision;
+    private int businessModelVersion;
+
+    private String applicationVersion;
 
     private Locale locale;
 
@@ -17,12 +22,12 @@ public class RenderContext implements Serializable {
 
     private String web;
 
-    public int getRevision() {
-        return revision;
+    public int getBusinessModelVersion() {
+        return businessModelVersion;
     }
 
-    public void setRevision(int revision) {
-        this.revision = revision;
+    public void setBusinessModelVersion(int businessModelVersion) {
+        this.businessModelVersion = businessModelVersion;
     }
 
     public Locale getLocale() {
@@ -55,5 +60,13 @@ public class RenderContext implements Serializable {
 
     public void setWeb(String web) {
         this.web = web;
+    }
+
+    public String getApplicationVersion() {
+        return applicationVersion;
+    }
+
+    public void setApplicationVersion(String applicationVersion) {
+        this.applicationVersion = applicationVersion;
     }
 }
