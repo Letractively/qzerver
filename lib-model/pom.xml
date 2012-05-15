@@ -56,12 +56,6 @@
             <version>${com.gainmatrix.lib-spring.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.gainmatrix</groupId>
-            <artifactId>gainmatrix-lib-web</artifactId>
-            <version>${com.gainmatrix.lib-web.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -213,7 +207,7 @@
             <version>${org.hibernate.validator.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- Templates -->
+        <!-- FreeMarker -->
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>

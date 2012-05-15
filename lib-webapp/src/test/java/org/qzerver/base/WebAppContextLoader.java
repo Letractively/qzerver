@@ -15,11 +15,11 @@ import java.util.Set;
 
 public class WebAppContextLoader implements ContextLoader {
 
-    private static final String CONTEXT_MODEL = "classpath:/configuration/model/context/root.xml";
+    private static final String CONTEXT_MODEL = "classpath:/org/qzerver/resources/configuration/model/context/root.xml";
 
-    private static final String CONTEXT_WEBAPP = "classpath:/configuration/webapp/context/root.xml";
+    private static final String CONTEXT_WEBAPP = "classpath:/org/qzerver/resources/configuration/webapp/context/root.xml";
 
-    private static final String CONTEXT_SERVLET = "classpath:/configuration/servlet/context/root.xml";
+    private static final String CONTEXT_SERVLET = "classpath:/org/qzerver/resources/configuration/servlet/context/root.xml";
 
     private static final String CONTEXT_TEST_MODEL = "classpath:/test/context/test-model.xml";
 

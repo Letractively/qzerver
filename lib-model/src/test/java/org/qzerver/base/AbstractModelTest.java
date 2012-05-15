@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         locations = {
-                "classpath:/configuration/model/context/root.xml",
+                "classpath:/org/qzerver/resources/configuration/model/context/root.xml",
                 "classpath:/test/context/test-model.xml"
         }
 )

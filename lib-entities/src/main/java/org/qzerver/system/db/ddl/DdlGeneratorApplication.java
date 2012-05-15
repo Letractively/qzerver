@@ -29,7 +29,8 @@ import java.util.*;
 
 public final class DdlGeneratorApplication {
 
-    private static final String PERSISTENCE_CONFIGURATION = "configuration/entities/jpa/persistence.xml";
+    private static final String PERSISTENCE_CONFIGURATION =
+        "org/qzerver/resources/configuration/entities/jpa/persistence.xml";
 
     private static final Map<String, DbConfiguratorType> DB_TYPES = ImmutableMap.<String, DbConfiguratorType>builder()
             .put("hsqldb", DbConfiguratorType.HSQLDB)

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${app.mail.server}"/>
+        <property name="port" value="${app.mail.port}"/>
+        <property name="username" value="${app.mail.username}"/>
+        <property name="password" value="${app.mail.password}"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">${app.mail.transport.protocol}</prop>
+                <prop key="mail.smtp.auth">${app.mail.smtp.auth}</prop>
+                <prop key="mail.smtp.connectiontimeout">${app.mail.smtp.connectiontimeout.ms}</prop>
+                <prop key="mail.smtp.timeout">${app.mail.smtp.timeout.ms}</prop>
+                <prop key="mail.smtp.starttls.enable">${app.mail.smtp.starttls.enable}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailAgent" class="org.qzerver.model.agent.mail.impl.MailAgentImpl">
+        <property name="javaMailSender" ref="mailSender"/>
+        <property name="emailFrom" value="${app.mail.email.from}"/>
+    </bean>
+
+    <bean id="mailFreemarkerConfigurationFactory" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactory">
+        <property name="preTemplateLoaders">
+            <array>
+                <bean class="freemarker.cache.ClassTemplateLoader">
+                    <constructor-arg index="0" value="org.qzerver.model.ClassLoaderSource"/>
+                    <constructor-arg index="1" value="/"/>
+                </bean>
+            </array>
+        </property>
+        <property name="preferFileSystemAccess" value="true"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="strict_syntax">true</prop>
+                <prop key="whitespace_stripping">true</prop>
+                <prop key="tag_syntax">auto_detect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailFreemarkerConfiguration" factory-bean="mailFreemarkerConfigurationFactory" factory-method="createConfiguration"/>
+
+    <bean id="mailFreemarkerTemplateEngine" class="org.qzerver.system.template.impl.FreemarkerTemplateEngine">
+        <property name="configuration" ref="mailFreemarkerConfiguration"/>
+        <property name="prefix" value="/org/qzerver/resources/configuration/model/freemarker/mail/"/>
+        <property name="suffix" value=".ftl"/>
+    </bean>
+
+</beans>

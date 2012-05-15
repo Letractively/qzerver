@@ -51,7 +51,7 @@
                             <mainClass>org.qzerver.system.db.ddl.DdlGeneratorApplication</mainClass>
                             <classpathScope>runtime</classpathScope>
                             <arguments>
-                                <argument>${project.build.directory}/generated-resources/sql/qzerver</argument>
+                                <argument>${project.build.directory}/generated-resources/org/qzerver/resources/sql/ddl/db</argument>
                             </arguments>
                             <includePluginDependencies>true</includePluginDependencies>
                             <includeProjectDependencies>true</includeProjectDependencies>
