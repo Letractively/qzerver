@@ -1,3 +1,5 @@
+[#ftl encoding="UTF-8" strict_syntax="true" strip_whitespace="true"]
+
 [#-- Get object value as string
  * value - Mandatory (non-null) value of any type
 --]

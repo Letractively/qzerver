@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class ExtendedRenderContextAttributePublisher extends RenderContextAttributePublisher {
 
     @NotNull
-    private String web;
+    private String url;
 
     @Override
     protected RenderContext createRenderContext() {
@@ -22,7 +22,7 @@ public class ExtendedRenderContextAttributePublisher extends RenderContextAttrib
         super.publishRenderContext(renderContext);
 
         ExtendedRenderContext extendedRenderContext = (ExtendedRenderContext) renderContext;
-        extendedRenderContext.setWeb(web);
+        extendedRenderContext.setWeb(url);
         extendedRenderContext.setBusinessModelVersion(BusinessModelVersionHolder.VERSION);
     }
 
@@ -32,8 +32,8 @@ public class ExtendedRenderContextAttributePublisher extends RenderContextAttrib
     }
 
     @Required
-    public void setWeb(String web) {
-        this.web = web;
+    public void setUrl(String web) {
+        this.url = web;
     }
 
 }
