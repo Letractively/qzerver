@@ -1,5 +1,9 @@
 package org.qzerver.model.service.mail.impl;
 
+import com.gainmatrix.lib.business.exception.SystemIntegrityException;
+import com.gainmatrix.lib.template.TextTemplate;
+import com.gainmatrix.lib.template.TextTemplateException;
+import com.gainmatrix.lib.template.TextTemplateFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.hibernate.validator.constraints.Email;
@@ -7,8 +11,6 @@ import org.qzerver.model.agent.mail.MailAgent;
 import org.qzerver.model.agent.mail.MailAgentException;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.service.mail.MailService;
-import org.qzerver.system.template.TemplateEngine;
-import org.qzerver.system.template.TemplateEngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -34,7 +36,7 @@ public class MailServiceImpl implements MailService {
     private MailAgent mailAgent;
 
     @NotNull
-    private TemplateEngine templateEngine;
+    private TextTemplateFactory textTemplateFactory;
 
     @NotNull
     private boolean enabled;
@@ -51,25 +53,20 @@ public class MailServiceImpl implements MailService {
     @Async
     @Override
     public void notifyJobExecutionFailed(ScheduleExecution execution) {
+        Preconditions.checkNotNull(execution, "Execution is null");
+
         if (!enabled) {
             return;
         }
 
-        Preconditions.checkNotNull(execution, "Execution is null");
-
         Map<String, Object> attributes = ImmutableMap.<String, Object>builder()
-                .put("execution", execution)
-                .build();
+            .put("execution", execution)
+            .build();
 
         String subject = messageSourceAccessor.getMessage("mail.subject." + NAME_JOB_FAILED, locale);
         String text;
 
-        try {
-            text = templateEngine.template(NAME_JOB_FAILED + ".ftl", attributes, locale, timezone);
-        } catch (TemplateEngineException e) {
-            LOGGER.error("Fail to render template for [" + NAME_JOB_FAILED + "]", e);
-            return;
-        }
+        text = renderTemplate(NAME_JOB_FAILED, attributes);
 
         try {
             mailAgent.sendMail(mailTo, subject, text);
@@ -79,6 +76,35 @@ public class MailServiceImpl implements MailService {
         }
 
         LOGGER.debug("Message [" + NAME_JOB_FAILED + "] is sent");
+    }
+
+    protected String renderTemplate(String name, Map<String, Object> attributes) {
+        // Load template
+        TextTemplate textTemplate;
+
+        try {
+            textTemplate = textTemplateFactory.getTemplate(name, locale);
+        } catch (TextTemplateException e) {
+            throw new SystemIntegrityException("Template [" + name + "] is not found", e);
+        }
+
+        // Prepare model
+        Map<String, Object> model = ImmutableMap.<String, Object>builder()
+            .put("locale", locale)
+            .put("timezone", timezone)
+            .putAll(attributes)
+            .build();
+
+        // Render template
+        String text;
+
+        try {
+            text = textTemplate.render(model);
+        } catch (TextTemplateException e) {
+            throw new SystemIntegrityException("Template [" + name + "] could not be rendered", e);
+        }
+
+        return text;
     }
 
     @Required
@@ -97,8 +123,8 @@ public class MailServiceImpl implements MailService {
     }
 
     @Required
-    public void setTemplateEngine(TemplateEngine templateEngine) {
-        this.templateEngine = templateEngine;
+    public void setTextTemplateFactory(TextTemplateFactory textTemplateFactory) {
+        this.textTemplateFactory = textTemplateFactory;
     }
 
     @Required

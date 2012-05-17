@@ -47,7 +47,7 @@
 
     <bean id="mailFreemarkerConfiguration" factory-bean="mailFreemarkerConfigurationFactory" factory-method="createConfiguration"/>
 
-    <bean id="mailFreemarkerTemplateEngine" class="org.qzerver.system.template.impl.FreemarkerTemplateEngine">
+    <bean id="mailFreemarkerTemplateFactory" class="com.gainmatrix.lib.freemarker.core.template.FreemarkerTextTemplateFactory">
         <property name="configuration" ref="mailFreemarkerConfiguration"/>
         <property name="prefix" value="/org/qzerver/resources/configuration/model/freemarker/mail/"/>
         <property name="suffix" value=".ftl"/>
