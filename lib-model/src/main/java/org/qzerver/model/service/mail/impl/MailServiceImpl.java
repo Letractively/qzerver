@@ -26,6 +26,8 @@ public class MailServiceImpl implements MailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
 
+    private static final String DEFAULT_SUBJECT = "Qzerver notification";
+
     private static final String NAME_JOB_FAILED = "job-failed";
 
     @NotNull
@@ -59,10 +61,14 @@ public class MailServiceImpl implements MailService {
             .put("execution", execution)
             .build();
 
-        sendTemplatedMail(NAME_JOB_FAILED, attributes);
+        Object[] subjectArguments = {
+            execution.getJob().getName()
+        };
+
+        sendTemplatedMail(NAME_JOB_FAILED, attributes, subjectArguments);
     }
 
-    protected void sendTemplatedMail(String name, Map<String, Object> attributes) {
+    protected void sendTemplatedMail(String name, Map<String, Object> attributes, Object[] subjectArguments) {
         Preconditions.checkNotNull(name, "Mail template name is null");
         Preconditions.checkNotNull(attributes, "Mail attribute container is null");
 
@@ -98,11 +104,15 @@ public class MailServiceImpl implements MailService {
         }
 
         // Load subject
-        String subject = messageSourceAccessor.getMessage("mail.subject." + name, locale);
+        String defaultSubject = messageSourceAccessor.getMessage("mail.subject.default",
+            null, DEFAULT_SUBJECT, locale);
+
+        String currentSubject = messageSourceAccessor.getMessage("mail.subject." + name,
+            subjectArguments, defaultSubject, locale);
 
         // Send mail
         try {
-            mailAgent.sendMail(mailTo, subject, text);
+            mailAgent.sendMail(mailTo, currentSubject, text);
         } catch (MailAgentException e) {
             LOGGER.error("Fail to send message [" + name + "]", e);
             return;
