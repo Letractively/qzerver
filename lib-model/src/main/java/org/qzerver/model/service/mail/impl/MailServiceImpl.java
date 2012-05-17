@@ -55,30 +55,23 @@ public class MailServiceImpl implements MailService {
     public void notifyJobExecutionFailed(ScheduleExecution execution) {
         Preconditions.checkNotNull(execution, "Execution is null");
 
-        if (!enabled) {
-            return;
-        }
-
         Map<String, Object> attributes = ImmutableMap.<String, Object>builder()
             .put("execution", execution)
             .build();
 
-        String subject = messageSourceAccessor.getMessage("mail.subject." + NAME_JOB_FAILED, locale);
-        String text;
+        sendTemplatedMail(NAME_JOB_FAILED, attributes);
+    }
 
-        text = renderTemplate(NAME_JOB_FAILED, attributes);
+    protected void sendTemplatedMail(String name, Map<String, Object> attributes) {
+        Preconditions.checkNotNull(name, "Mail template name is null");
+        Preconditions.checkNotNull(attributes, "Mail attribute container is null");
 
-        try {
-            mailAgent.sendMail(mailTo, subject, text);
-        } catch (MailAgentException e) {
-            LOGGER.error("Fail to send message [" + NAME_JOB_FAILED + "]", e);
+        // Check: is mailing required
+        if (!enabled) {
+            LOGGER.debug("Message [" + name + "] is not sent because mailing is off");
             return;
         }
 
-        LOGGER.debug("Message [" + NAME_JOB_FAILED + "] is sent");
-    }
-
-    protected String renderTemplate(String name, Map<String, Object> attributes) {
         // Load template
         TextTemplate textTemplate;
 
@@ -104,7 +97,18 @@ public class MailServiceImpl implements MailService {
             throw new SystemIntegrityException("Template [" + name + "] could not be rendered", e);
         }
 
-        return text;
+        // Load subject
+        String subject = messageSourceAccessor.getMessage("mail.subject." + name, locale);
+
+        // Send mail
+        try {
+            mailAgent.sendMail(mailTo, subject, text);
+        } catch (MailAgentException e) {
+            LOGGER.error("Fail to send message [" + name + "]", e);
+            return;
+        }
+
+        LOGGER.debug("Message [" + name + "] is sent");
     }
 
     @Required
