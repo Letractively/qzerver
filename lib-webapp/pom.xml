@@ -40,8 +40,8 @@
         </dependency>
         <dependency>
             <groupId>com.gainmatrix</groupId>
-            <artifactId>gainmatrix-lib-freemarker</artifactId>
-            <version>${com.gainmatrix.lib-freemarker.version}</version>
+            <artifactId>gainmatrix-lib-freemarker-web</artifactId>
+            <version>${com.gainmatrix.lib-freemarker-web.version}</version>
             <scope>compile</scope>
         </dependency>
         <!-- Apache Commons -->

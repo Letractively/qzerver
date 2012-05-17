@@ -28,9 +28,8 @@
     <bean id="mailFreemarkerConfigurationFactory" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactory">
         <property name="preTemplateLoaders">
             <array>
-                <bean class="freemarker.cache.ClassTemplateLoader">
-                    <constructor-arg index="0" value="org.qzerver.model.ClassLoaderSource"/>
-                    <constructor-arg index="1" value="/"/>
+                <bean class="com.gainmatrix.lib.freemarker.core.SpringContextTemplateLoader">
+                    <property name="templateLoaderPath" value="classpath:/"/>
                 </bean>
             </array>
         </property>

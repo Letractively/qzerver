@@ -9,13 +9,8 @@
     <bean id="viewFreemarkerConfigurationFactory" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="preTemplateLoaders">
             <array>
-                <bean class="freemarker.cache.ClassTemplateLoader">
-                    <constructor-arg index="0" value="org.qzerver.web.ClassLoaderSource"/>
-                    <constructor-arg index="1" value="/"/>
-                </bean>
-                <bean class="freemarker.cache.ClassTemplateLoader">
-                    <constructor-arg index="0" value="com.gainmatrix.lib.freemarker.ClassLoaderSource"/>
-                    <constructor-arg index="1" value="/"/>
+                <bean class="com.gainmatrix.lib.freemarker.core.SpringContextTemplateLoader">
+                    <property name="templateLoaderPath" value="classpath:/"/>
                 </bean>
             </array>
         </property>
