@@ -58,6 +58,12 @@
         </dependency>
         <dependency>
             <groupId>com.gainmatrix</groupId>
+            <artifactId>gainmatrix-lib-jpa</artifactId>
+            <version>${com.gainmatrix.lib-jpa.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gainmatrix</groupId>
             <artifactId>gainmatrix-lib-freemarker-core</artifactId>
             <version>${com.gainmatrix.lib-freemarker-core.version}</version>
             <scope>compile</scope>

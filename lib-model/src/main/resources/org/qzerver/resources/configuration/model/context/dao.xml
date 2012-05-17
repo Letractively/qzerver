@@ -5,7 +5,7 @@
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
-    <bean id="businessEntityDao" class="com.gainmatrix.lib.spring.dao.BusinessEntityJpaDao"/>
+    <bean id="businessEntityDao" class="com.gainmatrix.lib.jpa.BusinessEntityJpaDao"/>
 
     <bean id="clusterGroupDao" class="org.qzerver.model.dao.cluster.impl.ClusterGroupJpaDao"/>
 

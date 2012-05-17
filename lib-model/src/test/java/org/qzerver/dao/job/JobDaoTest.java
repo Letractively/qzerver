@@ -1,7 +1,7 @@
 package org.qzerver.dao.job;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
-import com.gainmatrix.lib.spring.dao.BusinessEntityJpaDaoChecker;
+import com.gainmatrix.lib.jpa.BusinessEntityJpaDaoChecker;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
