@@ -1,9 +1,9 @@
 [#ftl encoding="UTF-8" strict_syntax="true" strip_whitespace="true"]
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.ExtendedRenderContext" --]
-[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/system.ftl" as system]
-[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/layout.ftl" as layout]
-[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/helpers.ftl" as helpers]
+[#import "/com/gainmatrix/resources/freemarker/macro/web/system.ftl" as system]
+[#import "/com/gainmatrix/resources/freemarker/macro/web/layout.ftl" as layout]
+[#import "/com/gainmatrix/resources/freemarker/macro/core/helpers.ftl" as helpers]
 [@layout.root_main titleCode="FreeMarker sample page"]
 [#escape x as x?html]
 
