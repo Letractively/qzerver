@@ -24,7 +24,6 @@
             <basic name="enabled">
                 <column name="enabled" nullable="false"/>
             </basic>
-            <version name="version"/>
             <many-to-one name="group" fetch="LAZY" optional="false">
                 <join-column name="cluster_group_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>

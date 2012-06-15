@@ -15,7 +15,6 @@
             <basic name="name">
                 <column name="name" nullable="false" length="128"/>
             </basic>
-            <version name="version"/>
             <one-to-many name="jobs" fetch="LAZY" mapped-by="group" orphan-removal="true">
                 <cascade>
                     <cascade-all/>

@@ -29,7 +29,6 @@
             <basic name="orderIndex">
                 <column name="order_index" nullable="false"/>
             </basic>
-            <version name="version"/>
             <many-to-one name="execution" fetch="LAZY" optional="false">
                 <join-column name="schedule_execution_id" referenced-column-name="id" nullable="false"/>
             </many-to-one>

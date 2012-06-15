@@ -26,7 +26,6 @@
             </many-to-one>
             <one-to-one name="result" fetch="LAZY" mapped-by="node"/>
         </attributes>
-
     </entity>
 
 </entity-mappings>

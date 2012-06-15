@@ -20,6 +20,7 @@
             <basic name="businessModelVersion">
                 <column name="business_model" nullable="false"/>
             </basic>
+            <version name="version"/>
             <embedded name="businessId"/>
             <transient name="currentBusinessModelVersion"/>
         </attributes>

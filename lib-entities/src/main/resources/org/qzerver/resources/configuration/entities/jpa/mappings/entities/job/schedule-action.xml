@@ -25,7 +25,6 @@
             <basic name="created">
                 <column name="created" nullable="false"/>
             </basic>
-            <version name="version"/>
         </attributes>
     </entity>
 
