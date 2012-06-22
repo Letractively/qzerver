@@ -69,7 +69,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
             <resource>
                 <directory>${project.build.directory}/generated-resources</directory>
