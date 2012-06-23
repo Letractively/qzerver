@@ -15,6 +15,7 @@ import java.util.Map;
 public class LocalCommandActionExecutor
     implements ActionExecutor<LocalCommandActionResult, LocalCommandActionDefinition>
 {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandActionExecutor.class);
 
     private static final String PARAM_NODE = "${node}";
