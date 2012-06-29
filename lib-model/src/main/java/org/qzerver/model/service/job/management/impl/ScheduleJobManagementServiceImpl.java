@@ -108,27 +108,31 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         if (scheduleJob.isEnabled()) {
             TimeZone timeZone = TimeZone.getTimeZone(parameters.getTimezone());
-
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-                    .withMisfireHandlingInstructionDoNothing()
-                    .inTimeZone(timeZone);
-
-            TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
-            Trigger trigger = TriggerBuilder.newTrigger()
-                    .forJob(jobKey)
-                    .withIdentity(triggerKey)
-                    .withSchedule(scheduleBuilder)
-                    .startNow()
-                    .build();
-
-            try {
-                scheduler.scheduleJob(trigger);
-            } catch (SchedulerException e) {
-                throw new SystemIntegrityException("Fail to schedule quartz job", e);
-            }
+            createScheduleJobTrigger(scheduleJob, timeZone);
         }
 
         return scheduleJob;
+    }
+
+    private void createScheduleJobTrigger(ScheduleJob scheduleJob, TimeZone timeZone) {
+        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
+            .withMisfireHandlingInstructionDoNothing()
+            .inTimeZone(timeZone);
+
+        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
+        TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
+        Trigger trigger = TriggerBuilder.newTrigger()
+            .forJob(jobKey)
+            .withIdentity(triggerKey)
+            .withSchedule(scheduleBuilder)
+            .startNow()
+            .build();
+
+        try {
+            scheduler.scheduleJob(trigger);
+        } catch (SchedulerException e) {
+            throw new SystemIntegrityException("Fail to schedule quartz job", e);
+        }
     }
 
     @Override
@@ -222,26 +226,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         if (enabled) {
             TimeZone timeZone = TimeZone.getTimeZone(scheduleJob.getTimezone());
-
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-                    .withMisfireHandlingInstructionDoNothing()
-                    .inTimeZone(timeZone);
-
-            JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-            TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
-            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron());
-            CronTrigger trigger = TriggerBuilder.newTrigger()
-                    .forJob(jobKey)
-                    .withIdentity(triggerKey)
-                    .withSchedule(cronScheduleBuilder)
-                    .startNow()
-                    .build();
-
-            try {
-                scheduler.scheduleJob(trigger);
-            } catch (SchedulerException e) {
-                throw new SystemIntegrityException("Fail to schedule quartz trigger", e);
-            }
+            createScheduleJobTrigger(scheduleJob, timeZone);
         } else {
             List<? extends Trigger> triggers;
             try {
