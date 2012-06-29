@@ -92,8 +92,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         businessEntityDao.save(scheduleJob);
 
+        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
         JobDetail jobDetail = JobBuilder.newJob()
-                .withIdentity(QzerverJobUtils.jobKey(scheduleJob))
+                .withIdentity(jobKey)
                 .storeDurably(true)
                 .requestRecovery(false)
                 .ofType(QzerverJob.class)
@@ -112,9 +113,10 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
                     .withMisfireHandlingInstructionDoNothing()
                     .inTimeZone(timeZone);
 
+            TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
             Trigger trigger = TriggerBuilder.newTrigger()
-                    .forJob(QzerverJobUtils.jobKey(scheduleJob))
-                    .withIdentity(QzerverJobUtils.triggerKey(scheduleJob))
+                    .forJob(jobKey)
+                    .withIdentity(triggerKey)
                     .withSchedule(scheduleBuilder)
                     .startNow()
                     .build();
@@ -139,7 +141,8 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleExecutionDao.detachJob(scheduleJob.getId());
 
         try {
-            scheduler.deleteJob(QzerverJobUtils.jobKey(scheduleJob));
+            JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
+            scheduler.deleteJob(jobKey);
         } catch (SchedulerException e) {
             throw new SystemIntegrityException("Fail to delete quartz job", e);
         }
@@ -186,15 +189,17 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
                 .withMisfireHandlingInstructionDoNothing()
                 .inTimeZone(timeZone);
 
+        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
+        TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
         CronTrigger trigger = TriggerBuilder.newTrigger()
-                .forJob(QzerverJobUtils.jobKey(scheduleJob))
-                .withIdentity(QzerverJobUtils.triggerKey(scheduleJob))
+                .forJob(jobKey)
+                .withIdentity(triggerKey)
                 .withSchedule(scheduleBuilder)
                 .startNow()
                 .build();
 
         try {
-            scheduler.rescheduleJob(QzerverJobUtils.triggerKey(scheduleJob), trigger);
+            scheduler.rescheduleJob(triggerKey, trigger);
         } catch (SchedulerException e) {
             throw new SystemIntegrityException("Fail to reschedule quartz trigger", e);
         }
@@ -222,10 +227,13 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
                     .withMisfireHandlingInstructionDoNothing()
                     .inTimeZone(timeZone);
 
+            JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
+            TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
+            CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron());
             CronTrigger trigger = TriggerBuilder.newTrigger()
-                    .forJob(QzerverJobUtils.jobKey(scheduleJob))
-                    .withIdentity(QzerverJobUtils.triggerKey(scheduleJob))
-                    .withSchedule(CronScheduleBuilder.cronSchedule(scheduleJob.getCron()))
+                    .forJob(jobKey)
+                    .withIdentity(triggerKey)
+                    .withSchedule(cronScheduleBuilder)
                     .startNow()
                     .build();
 
@@ -237,7 +245,8 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         } else {
             List<? extends Trigger> triggers;
             try {
-                triggers = scheduler.getTriggersOfJob(QzerverJobUtils.jobKey(scheduleJob));
+                JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
+                triggers = scheduler.getTriggersOfJob(jobKey);
             } catch (SchedulerException e) {
                 throw new SystemIntegrityException("Fail to get triggers list", e);
             }

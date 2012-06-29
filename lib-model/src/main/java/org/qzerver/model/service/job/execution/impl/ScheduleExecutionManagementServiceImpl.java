@@ -80,7 +80,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCEED);
         scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
-        scheduleExecution.setHostname(StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH));
+
+        String hostName = StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH);
+        scheduleExecution.setHostname(hostName);
 
         // Check if cluster group is specified for the job
         ClusterGroup clusterGroup = scheduleJob.getCluster();

@@ -28,9 +28,11 @@ public class ClusterGroupJpaDao implements ClusterGroupDao {
         Root<ClusterGroup> root = criteriaQuery.from(ClusterGroup.class);
         root.fetch(ClusterGroup_.nodes);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.orderBy(
             criteriaBuilder.asc(root.get(ClusterGroup_.name))
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ClusterGroup> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {

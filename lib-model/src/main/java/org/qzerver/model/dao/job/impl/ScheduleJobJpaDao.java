@@ -27,9 +27,11 @@ public class ScheduleJobJpaDao implements ScheduleJobDao {
         CriteriaQuery<ScheduleJob> criteriaQuery = criteriaBuilder.createQuery(ScheduleJob.class);
         Root<ScheduleJob> root = criteriaQuery.from(ScheduleJob.class);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.where(
             criteriaBuilder.equal(root.get(ScheduleJob_.cluster).get(ClusterGroup_.id), clusterGroupId)
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleJob> typedQuery = entityManager.createQuery(criteriaQuery);
 

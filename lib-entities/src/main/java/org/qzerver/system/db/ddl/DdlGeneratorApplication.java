@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
@@ -21,10 +20,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.util.*;
 
 public final class DdlGeneratorApplication {
@@ -51,11 +47,9 @@ public final class DdlGeneratorApplication {
     }
 
     public static void main(String[] arguments) throws Exception {
-        System.err.println("Arguments: " + ArrayUtils.toString(arguments));
-        System.err.println("Classpath: " + System.getProperty("java.class.path"));
-
         // Resolve output directory
-        File targetDir = new File(System.getProperty("user.dir"));
+        String targetDirName = System.getProperty("user.dir");
+        File targetDir = new File(targetDirName);
 
         if ((arguments != null) && (arguments.length > 0)) {
             targetDir = new File(arguments[0]);
@@ -74,30 +68,35 @@ public final class DdlGeneratorApplication {
             // Hibernate configuration
             Configuration cfg = new Configuration();
             boolean isNewGenerator = DbConfiguratorData.HIBERNATE_NEW_GENERATORS.get(dbConfiguratorType);
-            cfg.setProperty("hibernate.id.new_generator_mappings", Boolean.toString(isNewGenerator));
+            String isNewGeneratorAsString = Boolean.toString(isNewGenerator);
+            cfg.setProperty("hibernate.id.new_generator_mappings", isNewGeneratorAsString);
 
             // Compose configuration
             List<String> mappings = loadMappingList();
             for (String mapping : mappings) {
-                cfg.addXML(loadResourceContent(mapping));
+                String resourceContent = loadResourceContent(mapping);
+                cfg.addXML(resourceContent);
             }
 
             // Get dialect instance
             Properties dialectProps = new Properties();
-            dialectProps.put(Environment.DIALECT, DbConfiguratorData.HIBERNATE_DIALECTS.get(dbConfiguratorType));
+            String dialectClassName = DbConfiguratorData.HIBERNATE_DIALECTS.get(dbConfiguratorType);
+            dialectProps.put(Environment.DIALECT, dialectClassName);
 
             Dialect dialect = Dialect.getDialect(dialectProps);
 
             // Generate create&drop DDL scripts
             final String lineEnding = ";\n";
 
-            String[] scriptCreateDdl = cfg.generateSchemaCreationScript(dialect);
+            String[] scriptCreateDdlArray = cfg.generateSchemaCreationScript(dialect);
+            List<String> scriptCreateDdlList = Arrays.asList(scriptCreateDdlArray);
             File scriptCreateFile = new File(targetDir, dbName + "-create.sql");
-            FileUtils.writeLines(scriptCreateFile, "UTF-8", Arrays.asList(scriptCreateDdl), lineEnding);
+            FileUtils.writeLines(scriptCreateFile, "UTF-8", scriptCreateDdlList, lineEnding);
 
-            String[] scriptDropDdl = cfg.generateDropSchemaScript(dialect);
+            String[] scriptDropDdlArray = cfg.generateDropSchemaScript(dialect);
+            List<String> scriptDropDdlList = Arrays.asList(scriptDropDdlArray);
             File scriptDropFile = new File(targetDir, dbName + "-drop.sql");
-            FileUtils.writeLines(scriptDropFile, "UTF-8", Arrays.asList(scriptDropDdl), lineEnding);
+            FileUtils.writeLines(scriptDropFile, "UTF-8", scriptDropDdlList, lineEnding);
         }
     }
 
@@ -106,7 +105,8 @@ public final class DdlGeneratorApplication {
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
         String persistenceContent = loadResourceContent(PERSISTENCE_CONFIGURATION);
-        InputSource persistenceSource = new InputSource(new StringReader(persistenceContent));
+        Reader persistenceReader = new StringReader(persistenceContent);
+        InputSource persistenceSource = new InputSource(persistenceReader);
         Document document = documentBuilder.parse(persistenceSource);
 
         XPath xpath = XPathFactory.newInstance().newXPath();

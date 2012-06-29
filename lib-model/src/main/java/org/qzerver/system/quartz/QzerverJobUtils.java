@@ -32,10 +32,12 @@ public final class QzerverJobUtils {
     }
 
     public static TriggerKey triggerKey(ScheduleJob scheduleJob) {
-        return TriggerKey.triggerKey(formatJobName(scheduleJob.getId()), QZERVER_GROUP);
+        String jobName = formatJobName(scheduleJob.getId());
+        return TriggerKey.triggerKey(jobName, QZERVER_GROUP);
     }
 
     public static JobKey jobKey(ScheduleJob scheduleJob) {
-        return JobKey.jobKey(formatJobName(scheduleJob.getId()), QZERVER_GROUP);
+        String jobName = formatJobName(scheduleJob.getId());
+        return JobKey.jobKey(jobName, QZERVER_GROUP);
     }
 }

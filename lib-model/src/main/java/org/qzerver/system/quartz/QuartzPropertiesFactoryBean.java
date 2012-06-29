@@ -1,5 +1,6 @@
 package org.qzerver.system.quartz;
 
+import com.gainmatrix.lib.properties.PropertiesStringWriter;
 import org.quartz.impl.jdbcjobstore.DriverDelegate;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -42,18 +43,20 @@ public class QuartzPropertiesFactoryBean implements FactoryBean<Properties> {
         properties = new Properties();
 
         // Fixed properties
-        properties.put("org.quartz.scheduler.instanceName", instanceName);
-        properties.put("org.quartz.scheduler.instanceId", instanceId);
-        properties.put("org.quartz.jobStore.misfireThreshold", Long.toString(misfireThresholdMs));
-        properties.put("org.quartz.jobStore.clusterCheckinInterval", Long.toString(clusterCheckinInterval));
-        properties.put("org.quartz.jobStore.isClustered", Boolean.toString(true));
-        properties.put("org.quartz.jobStore.driverDelegateClass", driverDelegateClass.getCanonicalName());
-        properties.put("org.quartz.threadPool.threadCount", Integer.toString(threadCount));
-        properties.put("org.quartz.threadPool.threadPriority", Integer.toString(threadPriority));
-        properties.put("org.quartz.scheduler.skipUpdateCheck", Boolean.toString(true));
+        PropertiesStringWriter.write(properties, "org.quartz.scheduler.instanceName", instanceName);
+        PropertiesStringWriter.write(properties, "org.quartz.scheduler.instanceId", instanceId);
+        PropertiesStringWriter.write(properties, "org.quartz.jobStore.misfireThreshold", misfireThresholdMs);
+        PropertiesStringWriter.write(properties, "org.quartz.jobStore.clusterCheckinInterval", clusterCheckinInterval);
+        PropertiesStringWriter.write(properties, "org.quartz.jobStore.isClustered", true);
+        PropertiesStringWriter.write(properties, "org.quartz.jobStore.driverDelegateClass",
+            driverDelegateClass.getCanonicalName());
+        PropertiesStringWriter.write(properties, "org.quartz.threadPool.threadCount", threadCount);
+        PropertiesStringWriter.write(properties, "org.quartz.threadPool.threadPriority", threadPriority);
+        PropertiesStringWriter.write(properties, "org.quartz.scheduler.skipUpdateCheck", true);
 
         // Schema and table prefix
-        properties.put("org.quartz.jobStore.tablePrefix", (schema != null) ? schema + ".QRTZ_" : "QRTZ_");
+        String tablePrefix = schema != null ? schema + ".QRTZ_" : "QRTZ_";
+        PropertiesStringWriter.write(properties, "org.quartz.jobStore.tablePrefix", tablePrefix);
 
         // Additional properties
         if (additionalPropertyMap != null) {

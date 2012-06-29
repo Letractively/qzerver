@@ -31,9 +31,11 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         Root<ScheduleExecution> root = criteriaQuery.from(ScheduleExecution.class);
         root.fetch(ScheduleExecution_.job);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.orderBy(
             criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {
@@ -52,6 +54,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         Root<ScheduleExecution> root = criteriaQuery.from(ScheduleExecution.class);
         root.fetch(ScheduleExecution_.job);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.where(
             criteriaBuilder.isNotNull(root.get(ScheduleExecution_.finished))
         );
@@ -59,6 +62,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         criteriaQuery.orderBy(
             criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {
@@ -77,6 +81,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         Root<ScheduleExecution> root = criteriaQuery.from(ScheduleExecution.class);
         root.fetch(ScheduleExecution_.job);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.where(
             criteriaBuilder.isNull(root.get(ScheduleExecution_.finished))
         );
@@ -84,6 +89,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         criteriaQuery.orderBy(
             criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {
@@ -101,6 +107,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         CriteriaQuery<ScheduleExecution> criteriaQuery = criteriaBuilder.createQuery(ScheduleExecution.class);
         Root<ScheduleExecution> root = criteriaQuery.from(ScheduleExecution.class);
 
+        // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.where(
             criteriaBuilder.equal(root.get(ScheduleExecution_.job).get(ScheduleJob_.id), scheduleJobId)
         );
@@ -108,6 +115,7 @@ public class ScheduleExecutionJpaDao implements ScheduleExecutionDao {
         criteriaQuery.orderBy(
             criteriaBuilder.desc(root.get(ScheduleExecution_.fired))
         );
+        // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleExecution> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {

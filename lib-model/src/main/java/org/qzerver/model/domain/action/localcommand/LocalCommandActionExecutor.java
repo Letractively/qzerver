@@ -36,7 +36,8 @@ public class LocalCommandActionExecutor
 
         // Process builder
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File(definition.getDirectory()));
+        File workingFolder = new File(definition.getDirectory());
+        pb.directory(workingFolder);
         pb.redirectErrorStream(definition.isCombineOutput());
 
         // Environment
