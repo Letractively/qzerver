@@ -1,7 +1,7 @@
 package org.qzerver.base;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
-import org.apache.commons.lang.ArrayUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockServletConfig;
@@ -58,7 +58,7 @@ public class WebAppContextLoader implements ContextLoader {
 
         XmlWebApplicationContext servletContext = new XmlWebApplicationContext();
         servletContext.setParent(modelContext);
-        servletContext.setConfigLocations(servletLocations.toArray(ArrayUtils.EMPTY_STRING_ARRAY));
+        servletContext.setConfigLocations(Iterables.toArray(servletLocations, String.class));
         servletContext.setAllowCircularReferences(true);
         servletContext.setAllowBeanDefinitionOverriding(true);
 
