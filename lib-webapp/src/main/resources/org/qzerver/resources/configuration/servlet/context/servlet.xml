@@ -88,7 +88,7 @@
 
     <bean id="mvcBeanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="messageInterpolator">
-            <bean class="com.gainmatrix.lib.spring.validation.MessageSourceMessageInterpolator">
+            <bean class="com.gainmatrix.lib.validation.MessageSourceMessageInterpolator">
                 <property name="messageSource" ref="messageSource"/>
             </bean>
         </property>
