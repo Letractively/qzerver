@@ -30,6 +30,7 @@
         <com.gainmatrix.lib-freemarker-web.version>1.0-SNAPSHOT</com.gainmatrix.lib-freemarker-web.version>
         <com.gainmatrix.lib-jpa.version>1.0-SNAPSHOT</com.gainmatrix.lib-jpa.version>
         <com.gainmatrix.lib-spring.version>1.5-SNAPSHOT</com.gainmatrix.lib-spring.version>
+        <com.gainmatrix.lib-validation.version>1.0-SNAPSHOT</com.gainmatrix.lib-validation.version>
         <com.gainmatrix.lib-web.version>1.5-SNAPSHOT</com.gainmatrix.lib-web.version>
         <com.google.guava.version>12.0</com.google.guava.version>
         <com.google.findbugs.version>1.3.9</com.google.findbugs.version>

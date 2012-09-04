@@ -1,6 +1,6 @@
 package org.qzerver.model.service.job.executor.impl;
 
-import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
+import com.gainmatrix.lib.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.domain.action.ActionResult;

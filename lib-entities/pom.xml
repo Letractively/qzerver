@@ -31,6 +31,12 @@
             <version>${com.gainmatrix.lib-beans.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.gainmatrix</groupId>
+            <artifactId>gainmatrix-lib-validation</artifactId>
+            <version>${com.gainmatrix.lib-validation.version}</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
