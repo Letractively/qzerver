@@ -3,7 +3,7 @@ package org.qzerver.model.service.job.management.impl;
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
-import com.gainmatrix.lib.validation.BeanValidationUtils;
+import com.gainmatrix.lib.validation.utils.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import org.quartz.*;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
