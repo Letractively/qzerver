@@ -3,7 +3,7 @@ package org.qzerver.model.service.job.execution.impl;
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;
-import com.gainmatrix.lib.validation.utils.BeanValidationUtils;
+import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
