@@ -2,13 +2,10 @@ package org.qzerver.system.quartz;
 
 import org.quartz.JobKey;
 import org.quartz.TriggerKey;
-import org.qzerver.model.domain.entities.job.ScheduleJob;
 
 public final class QzerverJobUtils {
 
     public static final String QZERVER_GROUP = "QZERVER_GROUP";
-
-    public static final String QZERVER_TRIGGER = "QZERVER_TRIGGER";
 
     private QzerverJobUtils() {
     }
@@ -23,21 +20,32 @@ public final class QzerverJobUtils {
     }
 
     /**
-     * Format Quatz job name from ScheduleJob identifier.
-     * @param id Identifier
+     * Format Quatz job name from identifier.
+     * @param jobId Identifier
      * @return Quartz job name
      */
-    public static String formatJobName(long id) {
-        return Long.toString(id);
+    public static String formatJobName(long jobId) {
+        return Long.toString(jobId);
     }
 
-    public static TriggerKey triggerKey(ScheduleJob scheduleJob) {
-        String jobName = formatJobName(scheduleJob.getId());
+    /**
+     * Create Quartz trigger key from identifier
+     * @param jobId Job identifier
+     * @return Quartz trigger key
+     */
+    public static TriggerKey triggerKey(long jobId) {
+        String jobName = formatJobName(jobId);
         return TriggerKey.triggerKey(jobName, QZERVER_GROUP);
     }
 
-    public static JobKey jobKey(ScheduleJob scheduleJob) {
-        String jobName = formatJobName(scheduleJob.getId());
+    /**
+     * Create Quartz job key fron identifier
+     * @param jobId Job identifier
+     * @return Quartz job key
+     */
+    public static JobKey jobKey(long jobId) {
+        String jobName = formatJobName(jobId);
         return JobKey.jobKey(jobName, QZERVER_GROUP);
     }
+
 }

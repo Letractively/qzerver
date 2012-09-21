@@ -39,9 +39,6 @@
     <!--suppress SpringModelInspection -->
     <mvc:resources mapping="/js/**" location="/js/" cache-period="31536000"/>
 
-    <!--suppress SpringPlaceholdersInspection -->
-    <util:properties id="webappProperties" location="file:${QZERVER_CONFIGURATION}/settings.properties"/>
-
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <array>
@@ -55,7 +52,7 @@
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
         <property name="fileEncoding" value="utf-8"/>
         <property name="localOverride" value="true"/>
-        <property name="properties" ref="webappProperties"/>
+        <property name="properties" ref="localProperties"/>
     </bean>
 
     <!-- Paging strategies -->
@@ -94,7 +91,9 @@
         </property>
     </bean>
 
-    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"/>
+    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
+        <property name="validator" ref="beanValidator"/>
+    </bean>
 
     <!-- Exception handling -->
 

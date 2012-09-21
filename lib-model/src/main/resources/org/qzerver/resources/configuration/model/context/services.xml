@@ -27,8 +27,8 @@
         <property name="businessEntityDao" ref="businessEntityDao"/>
         <property name="scheduleJobDao" ref="scheduleJobDao"/>
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
+        <property name="quartzManagementService" ref="quartzManagementService"/>
         <property name="chronometer" ref="chronometer"/>
-        <property name="scheduler" ref="quartzScheduler"/>
     </bean>
 
     <bean id="scheduleExecutionManagementService" class="org.qzerver.model.service.job.execution.impl.ScheduleExecutionManagementServiceImpl">

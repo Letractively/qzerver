@@ -21,26 +21,27 @@ public class QzerverJob implements Job {
 
         LOGGER.debug("Quartz job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
 
-        if (QzerverJobUtils.QZERVER_GROUP.equals(jobKey.getGroup())) {
-            ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
-            Preconditions.checkNotNull(applicationContext, "Application context is not set");
-
-            ScheduleJobExecutorService executorService = applicationContext.getBean(ScheduleJobExecutorService.class);
-
-            long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
-
-            AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
-            parameters.setScheduleJobId(scheduleJobId);
-            parameters.setFired(context.getFireTime());
-            parameters.setScheduled(context.getScheduledFireTime());
-
-            try {
-                executorService.executeAutomaticJob(parameters);
-            } catch (Exception e) {
-                LOGGER.error("Fail to execute job with id : " + scheduleJobId, e);
-            }
-        } else {
+        if (!QzerverJobUtils.QZERVER_GROUP.equals(jobKey.getGroup())) {
             LOGGER.warn("Unknown Quartz job group [{}]", jobKey.getGroup());
+            return;
+        }
+
+        ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
+        Preconditions.checkNotNull(applicationContext, "Application context is not set");
+
+        ScheduleJobExecutorService executorService = applicationContext.getBean(ScheduleJobExecutorService.class);
+
+        long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
+
+        AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
+        parameters.setScheduleJobId(scheduleJobId);
+        parameters.setFired(context.getFireTime());
+        parameters.setScheduled(context.getScheduledFireTime());
+
+        try {
+            executorService.executeAutomaticJob(parameters);
+        } catch (Exception e) {
+            LOGGER.error("Fail to execute job with id : " + scheduleJobId, e);
         }
     }
 

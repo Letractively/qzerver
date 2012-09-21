@@ -2,10 +2,8 @@ package org.qzerver.model.service.job.management.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
-import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
-import org.quartz.*;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -16,8 +14,7 @@ import org.qzerver.model.service.job.management.ScheduleJobManagementService;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
-import org.qzerver.system.quartz.QzerverJob;
-import org.qzerver.system.quartz.QzerverJobUtils;
+import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,8 +24,6 @@ import org.springframework.validation.Validator;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
 
 @Transactional(propagation = Propagation.REQUIRED)
 public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementService {
@@ -45,13 +40,13 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     private ScheduleExecutionDao scheduleExecutionDao;
 
     @NotNull
+    private QuartzManagementService quartzManagementService;
+
+    @NotNull
     private Chronometer chronometer;
 
     @NotNull
     private Validator beanValidator;
-
-    @NotNull
-    private Scheduler scheduler;
 
     @Override
     public ScheduleJob createJob(ScheduleJobCreateParameters parameters) {
@@ -92,47 +87,10 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         businessEntityDao.save(scheduleJob);
 
-        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-        JobDetail jobDetail = JobBuilder.newJob()
-                .withIdentity(jobKey)
-                .storeDurably(true)
-                .requestRecovery(false)
-                .ofType(QzerverJob.class)
-                .build();
-
-        try {
-            scheduler.addJob(jobDetail, false);
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to create quartz job", e);
-        }
-
-        if (scheduleJob.isEnabled()) {
-            TimeZone timeZone = TimeZone.getTimeZone(parameters.getTimezone());
-            createScheduleJobTrigger(scheduleJob, timeZone);
-        }
+        quartzManagementService.createJob(scheduleJob.getId(),
+            parameters.getCron(), parameters.getTimezone(), parameters.isEnabled());
 
         return scheduleJob;
-    }
-
-    private void createScheduleJobTrigger(ScheduleJob scheduleJob, TimeZone timeZone) {
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-            .withMisfireHandlingInstructionDoNothing()
-            .inTimeZone(timeZone);
-
-        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-        TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
-        Trigger trigger = TriggerBuilder.newTrigger()
-            .forJob(jobKey)
-            .withIdentity(triggerKey)
-            .withSchedule(scheduleBuilder)
-            .startNow()
-            .build();
-
-        try {
-            scheduler.scheduleJob(trigger);
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to schedule quartz job", e);
-        }
     }
 
     @Override
@@ -144,12 +102,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         scheduleExecutionDao.detachJob(scheduleJob.getId());
 
-        try {
-            JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-            scheduler.deleteJob(jobKey);
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to delete quartz job", e);
-        }
+        quartzManagementService.deleteJob(scheduleJob.getId());
 
         businessEntityDao.deleteById(ScheduleJob.class, scheduleJobId);
 
@@ -186,27 +139,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         }
 
         scheduleJob.setCron(parameters.getCron());
+        scheduleJob.setTimezone(parameters.getTimezone());
 
-        TimeZone timeZone = TimeZone.getTimeZone(parameters.getTimezone());
-
-        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCron())
-                .withMisfireHandlingInstructionDoNothing()
-                .inTimeZone(timeZone);
-
-        JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-        TriggerKey triggerKey = QzerverJobUtils.triggerKey(scheduleJob);
-        CronTrigger trigger = TriggerBuilder.newTrigger()
-                .forJob(jobKey)
-                .withIdentity(triggerKey)
-                .withSchedule(scheduleBuilder)
-                .startNow()
-                .build();
-
-        try {
-            scheduler.rescheduleJob(triggerKey, trigger);
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to reschedule quartz trigger", e);
-        }
+        quartzManagementService.rescheduleJob(scheduleJob.getId(), scheduleJob.getCron(), parameters.getTimezone());
 
         return scheduleJob;
     }
@@ -225,24 +160,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setEnabled(enabled);
 
         if (enabled) {
-            TimeZone timeZone = TimeZone.getTimeZone(scheduleJob.getTimezone());
-            createScheduleJobTrigger(scheduleJob, timeZone);
+            quartzManagementService.enableJob(scheduleJob.getId(), scheduleJob.getCron(), scheduleJob.getTimezone());
         } else {
-            List<? extends Trigger> triggers;
-            try {
-                JobKey jobKey = QzerverJobUtils.jobKey(scheduleJob);
-                triggers = scheduler.getTriggersOfJob(jobKey);
-            } catch (SchedulerException e) {
-                throw new SystemIntegrityException("Fail to get triggers list", e);
-            }
-
-            for (Trigger trigger : triggers) {
-                try {
-                    scheduler.unscheduleJob(trigger.getKey());
-                } catch (SchedulerException e) {
-                    throw new SystemIntegrityException("Fail to unschedule quartz trigger", e);
-                }
-            }
+            quartzManagementService.disableJob(scheduleJob.getId());
         }
 
         return scheduleJob;
@@ -274,8 +194,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     }
 
     @Required
-    public void setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
+    public void setQuartzManagementService(QuartzManagementService quartzManagementService) {
+        this.quartzManagementService = quartzManagementService;
     }
-
 }

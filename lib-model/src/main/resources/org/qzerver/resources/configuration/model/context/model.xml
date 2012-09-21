@@ -13,8 +13,10 @@
 
     <!-- Application settings -->
 
-    <!--suppress SpringPlaceholdersInspection -->
-    <util:properties id="modelProperties" location="file:${QZERVER_CONFIGURATION}/settings.properties"/>
+    <bean name="localProperties" class="com.gainmatrix.lib.spring.properties.ResourcePropertiesFactoryBean">
+        <property name="resource" value="file:${QZERVER_CONFIGURATION}/settings.properties"/>
+        <property name="mode" value="MANDATORY"/>
+    </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -28,7 +30,7 @@
         <property name="ignoreUnresolvablePlaceholders" value="false"/>
         <property name="fileEncoding" value="utf-8"/>
         <property name="localOverride" value="true"/>
-        <property name="properties" ref="modelProperties"/>
+        <property name="properties" ref="localProperties"/>
     </bean>
 
     <!-- Localized messages -->
@@ -54,7 +56,9 @@
 
     <bean id="beanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
-    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"/>
+    <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
+        <property name="validator" ref="beanValidator"/>
+    </bean>
 
     <!-- Date&time source -->
 
