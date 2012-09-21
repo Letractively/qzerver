@@ -2,17 +2,16 @@ package org.qzerver.system.quartz;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.listeners.JobListenerSupport;
-import org.springframework.context.ApplicationContext;
-
-import javax.annotation.Resource;
+import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
+import org.springframework.beans.factory.annotation.Required;
 
 public class QzerverJobListener extends JobListenerSupport {
 
-    protected static final String CONTEXT_NAME = "QzerverApplicationContext";
+    protected static final String SERVICE_NAME = "ScheduleJobExecutorService";
 
     private static final String LISTENER_NAME = "QZERVER job listener";
 
-    private ApplicationContext applicationContext;
+    private ScheduleJobExecutorService executorService;
 
     @Override
     public String getName() {
@@ -21,12 +20,12 @@ public class QzerverJobListener extends JobListenerSupport {
 
     @Override
     public void jobToBeExecuted(JobExecutionContext context) {
-        context.put(CONTEXT_NAME, applicationContext);
+        context.put(SERVICE_NAME, executorService);
     }
 
-    @Resource
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
+    @Required
+    public void setExecutorService(ScheduleJobExecutorService executorService) {
+        this.executorService = executorService;
     }
 
 }

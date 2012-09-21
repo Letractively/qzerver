@@ -5,9 +5,13 @@ import org.quartz.TriggerKey;
 
 public final class QzerverJobUtils {
 
-    public static final String QZERVER_GROUP = "QZERVER_GROUP";
+    private static final String QZERVER_GROUP = "QZERVER_GROUP";
 
     private QzerverJobUtils() {
+    }
+
+    public static boolean isQzerverJob(JobKey jobKey) {
+        return QZERVER_GROUP.equals(jobKey.getGroup());
     }
 
     /**

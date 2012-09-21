@@ -6,7 +6,6 @@ import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
@@ -16,20 +15,21 @@ public class QzerverJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        Preconditions.checkNotNull(context, "Context is not set");
+
         JobDetail jobDetail = context.getJobDetail();
         JobKey jobKey = jobDetail.getKey();
 
         LOGGER.debug("Quartz job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
 
-        if (!QzerverJobUtils.QZERVER_GROUP.equals(jobKey.getGroup())) {
-            LOGGER.warn("Unknown Quartz job group [{}]", jobKey.getGroup());
+        if (!QzerverJobUtils.isQzerverJob(jobKey)) {
+            LOGGER.warn("Unknown job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
             return;
         }
 
-        ApplicationContext applicationContext = (ApplicationContext) context.get(QzerverJobListener.CONTEXT_NAME);
-        Preconditions.checkNotNull(applicationContext, "Application context is not set");
-
-        ScheduleJobExecutorService executorService = applicationContext.getBean(ScheduleJobExecutorService.class);
+        ScheduleJobExecutorService executorService =
+            (ScheduleJobExecutorService) context.get(QzerverJobListener.SERVICE_NAME);
+        Preconditions.checkNotNull(executorService, "Executor service is not set");
 
         long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
 
