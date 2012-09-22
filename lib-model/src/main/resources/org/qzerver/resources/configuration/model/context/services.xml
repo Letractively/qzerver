@@ -15,7 +15,7 @@
     </bean>
 
     <bean id="scheduleJobExecutorService" class="org.qzerver.model.service.job.executor.impl.ScheduleJobExecutorServiceImpl">
-        <property name="beanValidator" ref="beanValidator"/>
+        <property name="beanValidator" ref="modelBeanValidator"/>
         <property name="executionManagementService" ref="scheduleExecutionManagementService"/>
         <property name="chronometer" ref="chronometer"/>
         <property name="actionAgent" ref="actionAgent"/>
@@ -23,7 +23,7 @@
     </bean>
 
     <bean id="scheduleJobManagementService" class="org.qzerver.model.service.job.management.impl.ScheduleJobManagementServiceImpl">
-        <property name="beanValidator" ref="beanValidator"/>
+        <property name="beanValidator" ref="modelBeanValidator"/>
         <property name="businessEntityDao" ref="businessEntityDao"/>
         <property name="scheduleJobDao" ref="scheduleJobDao"/>
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
@@ -32,7 +32,7 @@
     </bean>
 
     <bean id="scheduleExecutionManagementService" class="org.qzerver.model.service.job.execution.impl.ScheduleExecutionManagementServiceImpl">
-        <property name="beanValidator" ref="beanValidator"/>
+        <property name="beanValidator" ref="modelBeanValidator"/>
         <property name="chronometer" ref="chronometer"/>
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
         <property name="businessEntityDao" ref="businessEntityDao"/>

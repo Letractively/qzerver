@@ -22,7 +22,7 @@ public class QzerverJob implements Job {
 
         LOGGER.debug("Quartz job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
 
-        if (!QzerverJobUtils.isQzerverJob(jobKey)) {
+        if (!QzerverKeyUtils.isQzerverJob(jobKey)) {
             LOGGER.warn("Unknown job [name={}, group={}] is fired", jobKey.getName(), jobKey.getGroup());
             return;
         }
@@ -31,7 +31,7 @@ public class QzerverJob implements Job {
             (ScheduleJobExecutorService) context.get(QzerverJobListener.SERVICE_NAME);
         Preconditions.checkNotNull(executorService, "Executor service is not set");
 
-        long scheduleJobId = QzerverJobUtils.parseJobName(jobKey.getName());
+        long scheduleJobId = QzerverKeyUtils.parseJobName(jobKey);
 
         AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
         parameters.setScheduleJobId(scheduleJobId);

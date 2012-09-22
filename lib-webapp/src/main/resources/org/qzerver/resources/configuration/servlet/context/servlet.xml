@@ -92,7 +92,7 @@
     </bean>
 
     <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
-        <property name="validator" ref="beanValidator"/>
+        <property name="validator" ref="modelBeanValidator"/>
     </bean>
 
     <!-- Exception handling -->

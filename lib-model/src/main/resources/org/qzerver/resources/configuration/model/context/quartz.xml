@@ -25,11 +25,6 @@
         <property name="overwriteExistingJobs" value="false"/>
         <property name="waitForJobsToCompleteOnShutdown" value="${app.quartz.shutdown.wait}"/>
         <property name="quartzProperties" ref="quartzSchedulerProperties"/>
-        <property name="triggers">
-            <array>
-                <ref bean="exampleTrigger"/>
-            </array>
-        </property>
     </bean>
 
     <bean name="quartzSchedulerInitializer" class="org.qzerver.system.quartz.QuartzInitializer">
@@ -41,21 +36,6 @@
                 </bean>
             </array>
         </property>
-    </bean>
-
-    <bean name="exampleJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-        <property name="name" value="rtgqwewethweth"/>
-        <property name="jobClass" value="org.qzerver.system.quartz.QzerverJob"/>
-        <property name="jobDataAsMap">
-            <map>
-                <entry key="test" value="abcdef"/>
-            </map>
-        </property>
-    </bean>
-
-    <bean id="exampleTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="exampleJob" />
-        <property name="cronExpression" value="0 * * * * ?"/>
     </bean>
 
 </beans>

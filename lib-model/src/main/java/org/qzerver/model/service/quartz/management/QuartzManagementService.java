@@ -3,7 +3,7 @@ package org.qzerver.model.service.quartz.management;
 import org.springframework.stereotype.Service;
 
 /**
- * Quartz engine management
+ * Facade to Quartz scheduler internals
  */
 @Service
 public interface QuartzManagementService {
@@ -62,6 +62,6 @@ public interface QuartzManagementService {
      * @param jobId Jon identifier
      * @return Returns true if job is enabled
      */
-    boolean isJobEnabled(long jobId);
+    boolean isJobActive(long jobId);
 
 }

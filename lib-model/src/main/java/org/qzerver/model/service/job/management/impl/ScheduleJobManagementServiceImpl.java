@@ -102,9 +102,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         scheduleExecutionDao.detachJob(scheduleJob.getId());
 
-        quartzManagementService.deleteJob(scheduleJob.getId());
-
         businessEntityDao.deleteById(ScheduleJob.class, scheduleJobId);
+
+        quartzManagementService.deleteJob(scheduleJob.getId());
 
         ScheduleGroup scheduleGroup = scheduleJob.getGroup();
         scheduleGroup.getJobs().remove(scheduleJob);

@@ -54,10 +54,10 @@
 
     <!-- Bean validation (via Hibernate Validation framework) -->
 
-    <bean id="beanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
+    <bean id="modelBeanValidator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
     <bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
-        <property name="validator" ref="beanValidator"/>
+        <property name="validator" ref="modelBeanValidator"/>
     </bean>
 
     <!-- Date&time source -->

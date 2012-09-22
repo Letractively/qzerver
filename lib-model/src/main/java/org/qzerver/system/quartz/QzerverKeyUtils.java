@@ -3,11 +3,14 @@ package org.qzerver.system.quartz;
 import org.quartz.JobKey;
 import org.quartz.TriggerKey;
 
-public final class QzerverJobUtils {
+/**
+ * Some static helper function to handle Quartz keys
+ */
+public final class QzerverKeyUtils {
 
     private static final String QZERVER_GROUP = "QZERVER_GROUP";
 
-    private QzerverJobUtils() {
+    private QzerverKeyUtils() {
     }
 
     public static boolean isQzerverJob(JobKey jobKey) {
@@ -16,11 +19,11 @@ public final class QzerverJobUtils {
 
     /**
      * Parse Quartz job name to ScheduleJob identifier.
-     * @param name Quartz job name
+     * @param jobKey Quartz job key
      * @return Identifier
      */
-    public static long parseJobName(String name) {
-        return Long.parseLong(name);
+    public static long parseJobName(JobKey jobKey) {
+        return Long.parseLong(jobKey.getName());
     }
 
     /**

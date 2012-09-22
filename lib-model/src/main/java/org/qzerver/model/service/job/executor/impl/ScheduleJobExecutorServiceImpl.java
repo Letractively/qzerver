@@ -95,7 +95,6 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         } catch (Exception e) {
             LOGGER.error("Internal error while executing the job : " + scheduleExecution.getJob().getId(), e);
         } finally {
-            // Finish execution report
             scheduleExecution = executionManagementService.finishExecution(scheduleExecution.getId(), status);
         }
 

@@ -4,7 +4,7 @@ import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import org.quartz.*;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.qzerver.system.quartz.QzerverJob;
-import org.qzerver.system.quartz.QzerverJobUtils;
+import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -45,7 +45,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void createJob(long jobId, String cron, String timeZoneId, boolean enabled) {
-        JobKey jobKey = QzerverJobUtils.jobKey(jobId);
+        JobKey jobKey = QzerverKeyUtils.jobKey(jobId);
 
         JobDetail jobDetail = JobBuilder.newJob()
                 .withIdentity(jobKey)
@@ -61,7 +61,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         }
 
         if (enabled) {
-            Trigger trigger = createScheduleJobTrigger(jobId, cron, timeZoneId);
+            Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
 
             try {
                 scheduler.scheduleJob(trigger);
@@ -73,7 +73,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void deleteJob(long jobId) {
-        JobKey jobKey = QzerverJobUtils.jobKey(jobId);
+        JobKey jobKey = QzerverKeyUtils.jobKey(jobId);
 
         try {
             scheduler.deleteJob(jobKey);
@@ -84,7 +84,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void rescheduleJob(long jobId, String cron, String timeZoneId) {
-        Trigger trigger = createScheduleJobTrigger(jobId, cron, timeZoneId);
+        Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
 
         try {
             scheduler.rescheduleJob(trigger.getKey(), trigger);
@@ -94,8 +94,8 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
     }
 
     @Override
-    public boolean isJobEnabled(long jobId) {
-        TriggerKey triggerKey = QzerverJobUtils.triggerKey(jobId);
+    public boolean isJobActive(long jobId) {
+        TriggerKey triggerKey = QzerverKeyUtils.triggerKey(jobId);
 
         try {
             Trigger trigger = scheduler.getTrigger(triggerKey);
@@ -111,7 +111,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void disableJob(long jobId) {
-        JobKey jobKey = QzerverJobUtils.jobKey(jobId);
+        JobKey jobKey = QzerverKeyUtils.jobKey(jobId);
 
         List<? extends Trigger> triggers;
         try {
@@ -131,11 +131,11 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void enableJob(long jobId, String cron, String timeZoneId) {
-        if (isJobEnabled(jobId)) {
+        if (isJobActive(jobId)) {
             return;
         }
 
-        Trigger trigger = createScheduleJobTrigger(jobId, cron, timeZoneId);
+        Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
 
         try {
             scheduler.scheduleJob(trigger);
@@ -144,15 +144,15 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         }
     }
 
-    private Trigger createScheduleJobTrigger(long jobId, String cron, String timeZoneId) {
+    private Trigger createJobTrigger(long jobId, String cron, String timeZoneId) {
         TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron)
             .withMisfireHandlingInstructionDoNothing()
             .inTimeZone(timeZone);
 
-        JobKey jobKey = QzerverJobUtils.jobKey(jobId);
-        TriggerKey triggerKey = QzerverJobUtils.triggerKey(jobId);
+        JobKey jobKey = QzerverKeyUtils.jobKey(jobId);
+        TriggerKey triggerKey = QzerverKeyUtils.triggerKey(jobId);
 
         return TriggerBuilder.newTrigger()
             .forJob(jobKey)
