@@ -24,7 +24,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
     private Scheduler scheduler;
 
     @Override
-    public boolean isActive() {
+    public boolean isSchedulerActive() {
         try {
             return !scheduler.isInStandbyMode();
         } catch (SchedulerException e) {
@@ -33,13 +33,26 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
     }
 
     @Override
-    public void setActive(boolean active) {
-        LOGGER.debug("Set quartz state = {}", active);
+    public void enableScheduler() {
+        try {
+            if (scheduler.isInStandbyMode()) {
+                LOGGER.debug("Turn Quartz on");
+                scheduler.start();
+            }
+        } catch (SchedulerException e) {
+            throw new SystemIntegrityException("Fail to start quartz", e);
+        }
+    }
 
-        if (active) {
-            startQuartzScheduler();
-        } else {
-            stopQuartzScheduler();
+    @Override
+    public void disableScheduler() {
+        try {
+            if (!scheduler.isInStandbyMode()) {
+                LOGGER.debug("Turn Quartz off");
+                scheduler.standby();
+            }
+        } catch (SchedulerException e) {
+            throw new SystemIntegrityException("Fail to stop quartz", e);
         }
     }
 
@@ -61,7 +74,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         }
 
         if (enabled) {
-            Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
+            Trigger trigger = createJobCronTrigger(jobId, cron, timeZoneId);
 
             try {
                 scheduler.scheduleJob(trigger);
@@ -84,7 +97,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
 
     @Override
     public void rescheduleJob(long jobId, String cron, String timeZoneId) {
-        Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
+        Trigger trigger = createJobCronTrigger(jobId, cron, timeZoneId);
 
         try {
             scheduler.rescheduleJob(trigger.getKey(), trigger);
@@ -135,7 +148,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
             return;
         }
 
-        Trigger trigger = createJobTrigger(jobId, cron, timeZoneId);
+        Trigger trigger = createJobCronTrigger(jobId, cron, timeZoneId);
 
         try {
             scheduler.scheduleJob(trigger);
@@ -144,7 +157,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         }
     }
 
-    private Trigger createJobTrigger(long jobId, String cron, String timeZoneId) {
+    private Trigger createJobCronTrigger(long jobId, String cron, String timeZoneId) {
         TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
 
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron)
@@ -160,26 +173,6 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
             .withSchedule(scheduleBuilder)
             .startNow()
             .build();
-    }
-
-    private void startQuartzScheduler() {
-        try {
-            if (scheduler.isInStandbyMode()) {
-                scheduler.start();
-            }
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to start quartz", e);
-        }
-    }
-
-    private void stopQuartzScheduler() {
-        try {
-            if (!scheduler.isInStandbyMode()) {
-                scheduler.standby();
-            }
-        } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to stop quartz", e);
-        }
     }
 
     @Required

@@ -12,13 +12,17 @@ public interface QuartzManagementService {
      * Check current state of Quartz engine (current node only)
      * @return true if Quartz is active
      */
-    boolean isActive();
+    boolean isSchedulerActive();
 
     /**
-     * Set Quartz state (current node only)
-     * @param active state
+     * Turn Quartz scheduler on (current node only)
      */
-    void setActive(boolean active);
+    void enableScheduler();
+
+    /**
+     * Turn Quartz scheduler off (current node only)
+     */
+    void disableScheduler();
 
     /**
      * Create quartz job

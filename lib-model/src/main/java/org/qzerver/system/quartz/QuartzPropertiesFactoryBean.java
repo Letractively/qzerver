@@ -16,7 +16,7 @@ public class QuartzPropertiesFactoryBean implements FactoryBean<Properties> {
 
     private static final int DEFAULT_THREAD_COUNT = 10;
 
-    private static final int DEFAULT_THREAD_PRIORITY = 5;
+    private static final int DEFAULT_THREAD_PRIORITY = Thread.NORM_PRIORITY;
 
     private String schema;
 

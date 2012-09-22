@@ -28,19 +28,19 @@ public final class DdlGeneratorApplication {
     private static final String PERSISTENCE_CONFIGURATION =
         "org/qzerver/resources/configuration/entities/jpa/persistence.xml";
 
-    private static final Map<String, DbConfiguratorType> DB_TYPES = ImmutableMap.<String, DbConfiguratorType>builder()
-            .put("hsqldb", DbConfiguratorType.HSQLDB)
-            .put("mysql", DbConfiguratorType.MYSQL_INNO)
-            .put("postgresql", DbConfiguratorType.POSTGRES)
-            .put("firebird", DbConfiguratorType.FIREBIRD)
-            .put("interbase", DbConfiguratorType.INTERBASE)
-            .put("oracle8i", DbConfiguratorType.ORACLE8I)
-            .put("oracle9i", DbConfiguratorType.ORACLE9I)
-            .put("oracle10g", DbConfiguratorType.ORACLE10G)
-            .put("oracle11g", DbConfiguratorType.ORACLE11G)
-            .put("mssql2005", DbConfiguratorType.MSSQL2005)
-            .put("mssql2008", DbConfiguratorType.MSSQL2008)
-            .put("derby", DbConfiguratorType.DERBY_CLIENT)
+    private static final Map<DbConfiguratorType, String> DB_TYPES = ImmutableMap.<DbConfiguratorType, String>builder()
+            .put(DbConfiguratorType.HSQLDB, "hsqldb")
+            .put(DbConfiguratorType.MYSQL_INNO, "mysql")
+            .put(DbConfiguratorType.POSTGRES, "postgresql")
+            .put(DbConfiguratorType.FIREBIRD, "firebird")
+            .put(DbConfiguratorType.INTERBASE, "interbase")
+            .put(DbConfiguratorType.ORACLE8I, "oracle8i")
+            .put(DbConfiguratorType.ORACLE9I, "oracle9i")
+            .put(DbConfiguratorType.ORACLE10G, "oracle10g")
+            .put(DbConfiguratorType.ORACLE11G, "oracle11g")
+            .put(DbConfiguratorType.MSSQL2005, "mssql2005")
+            .put(DbConfiguratorType.MSSQL2008, "mssql2008")
+            .put(DbConfiguratorType.DERBY_CLIENT, "derby")
             .build();
 
     private DdlGeneratorApplication() {
@@ -61,9 +61,9 @@ public final class DdlGeneratorApplication {
         }
 
         // Compose mapping for each db type
-        for (Map.Entry<String, DbConfiguratorType> dbTypeEntry : DB_TYPES.entrySet()) {
-            final String dbName = dbTypeEntry.getKey();
-            final DbConfiguratorType dbConfiguratorType = dbTypeEntry.getValue();
+        for (Map.Entry<DbConfiguratorType, String> dbTypeEntry : DB_TYPES.entrySet()) {
+            final DbConfiguratorType dbConfiguratorType = dbTypeEntry.getKey();
+            final String dbName = dbTypeEntry.getValue();
 
             // Hibernate configuration
             Configuration cfg = new Configuration();

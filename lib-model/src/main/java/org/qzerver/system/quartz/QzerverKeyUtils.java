@@ -8,7 +8,7 @@ import org.quartz.TriggerKey;
  */
 public final class QzerverKeyUtils {
 
-    private static final String QZERVER_GROUP = "QZERVER_GROUP";
+    public static final String QZERVER_GROUP = "QZERVER_GROUP";
 
     private QzerverKeyUtils() {
     }
