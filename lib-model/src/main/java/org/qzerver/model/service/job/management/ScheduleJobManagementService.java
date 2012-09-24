@@ -36,12 +36,25 @@ public interface ScheduleJobManagementService {
     ScheduleJob rescheduleJob(long scheduleJobId, ScheduleJobRescheduleParameters parameters);
 
     /**
-     * Control job
+     * Enable job
      * @param scheduleJobId Job identifier
-     * @param enabled Whether job is enabled
      * @return Job entity
      */
-    ScheduleJob controlJob(long scheduleJobId, boolean enabled);
+    ScheduleJob enableJob(long scheduleJobId);
+
+    /**
+     * Disable job
+     * @param scheduleJobId Job identifier
+     * @return Job entity
+     */
+    ScheduleJob disableJob(long scheduleJobId);
+
+    /**
+     * Get job description
+     * @param scheduleJobId Job identifier
+     * @return Job entity
+     */
+    ScheduleJob findJob(long scheduleJobId);
 
     /**
      * Delete job

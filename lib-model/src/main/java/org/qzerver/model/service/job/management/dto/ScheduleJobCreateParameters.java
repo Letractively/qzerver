@@ -3,6 +3,7 @@ package org.qzerver.model.service.job.management.dto;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.entities.job.ScheduleActionType;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.system.validation.Cron;
 
@@ -30,11 +31,12 @@ public class ScheduleJobCreateParameters implements Serializable {
     @NotNull
     private ScheduleActionType actionType;
 
+    @NotNull
+    private ScheduleExecutionStrategy strategy = ScheduleExecutionStrategy.CIRCULAR;
+
     private Long clusterGroupId;
 
     private long schedulerGroupId;
-
-    private boolean concurrent;
 
     private boolean enabled;
 
@@ -78,14 +80,6 @@ public class ScheduleJobCreateParameters implements Serializable {
         this.clusterGroupId = clusterGroupId;
     }
 
-    public boolean isConcurrent() {
-        return concurrent;
-    }
-
-    public void setConcurrent(boolean concurrent) {
-        this.concurrent = concurrent;
-    }
-
     public long getSchedulerGroupId() {
         return schedulerGroupId;
     }
@@ -108,6 +102,14 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    public ScheduleExecutionStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(ScheduleExecutionStrategy strategy) {
+        this.strategy = strategy;
     }
 }
 

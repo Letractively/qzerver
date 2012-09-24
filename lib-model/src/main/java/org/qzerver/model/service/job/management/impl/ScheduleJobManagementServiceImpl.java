@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
+import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -84,6 +85,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setDescription(parameters.getDescription());
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
+        scheduleJob.setStrategy(parameters.getStrategy());
 
         businessEntityDao.save(scheduleJob);
 
@@ -147,23 +149,51 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     }
 
     @Override
-    public ScheduleJob controlJob(long scheduleJobId, boolean enabled) {
+    public ScheduleJob enableJob(long scheduleJobId) {
         ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
         if (scheduleJob == null) {
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
-        if (scheduleJob.isEnabled() == enabled) {
+        if (scheduleJob.isEnabled()) {
             return scheduleJob;
         }
 
-        scheduleJob.setEnabled(enabled);
+        scheduleJob.setEnabled(true);
 
-        if (enabled) {
-            quartzManagementService.enableJob(scheduleJob.getId(), scheduleJob.getCron(), scheduleJob.getTimezone());
-        } else {
-            quartzManagementService.disableJob(scheduleJob.getId());
+        quartzManagementService.enableJob(scheduleJob.getId(), scheduleJob.getCron(), scheduleJob.getTimezone());
+
+        return scheduleJob;
+    }
+
+    @Override
+    public ScheduleJob disableJob(long scheduleJobId) {
+        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
+        if (scheduleJob == null) {
+            throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
+
+        if (!scheduleJob.isEnabled()) {
+            return scheduleJob;
+        }
+
+        scheduleJob.setEnabled(false);
+
+        quartzManagementService.disableJob(scheduleJob.getId());
+
+        return scheduleJob;
+    }
+
+    @Override
+    public ScheduleJob findJob(long scheduleJobId) {
+        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
+        if (scheduleJob == null) {
+            return null;
+        }
+
+        Hibernate.initialize(scheduleJob.getAction());
+        Hibernate.initialize(scheduleJob.getGroup());
+        Hibernate.initialize(scheduleJob.getCluster());
 
         return scheduleJob;
     }
