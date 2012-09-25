@@ -102,9 +102,6 @@
             <column name="standby" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="concurrent" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
             <column name="limit_trials" type="INTEGER">
                 <constraints nullable="false"/>
             </column>

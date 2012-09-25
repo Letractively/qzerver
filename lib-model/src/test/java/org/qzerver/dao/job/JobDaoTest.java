@@ -60,7 +60,6 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleJob.setTimezone("UTC");
         scheduleJob.setEnabled(true);
         scheduleJob.setStandby(false);
-        scheduleJob.setConcurrent(false);
         scheduleJob.setAllNodes(true);
         scheduleJob.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
         scheduleJob.setTimeout(1000);
@@ -93,7 +92,6 @@ public class JobDaoTest extends AbstractModelTest {
         scheduleJob.setTimezone("UTC");
         scheduleJob.setEnabled(true);
         scheduleJob.setStandby(false);
-        scheduleJob.setConcurrent(false);
         scheduleJob.setAllNodes(true);
         scheduleJob.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
         scheduleJob.setTimeout(1000);

@@ -68,11 +68,6 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
     private ScheduleAction action;
 
     /**
-     * Are several instances of this job allowed to execute
-     */
-    private boolean concurrent;
-
-    /**
      * Cluster group to execute. If null then action is executed on localhost
      */
     private ClusterGroup cluster;
@@ -167,14 +162,6 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setAction(ScheduleAction action) {
         this.action = action;
-    }
-
-    public boolean isConcurrent() {
-        return concurrent;
-    }
-
-    public void setConcurrent(boolean concurrent) {
-        this.concurrent = concurrent;
     }
 
     public ClusterGroup getCluster() {

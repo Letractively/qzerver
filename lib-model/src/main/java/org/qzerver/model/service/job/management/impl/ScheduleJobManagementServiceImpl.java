@@ -80,7 +80,6 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setAction(scheduleAction);
         scheduleJob.setEnabled(parameters.isEnabled());
         scheduleJob.setStandby(false);
-        scheduleJob.setConcurrent(false);
         scheduleJob.setName(parameters.getName());
         scheduleJob.setDescription(parameters.getDescription());
         scheduleJob.setCron(parameters.getCron());
