@@ -102,7 +102,7 @@ public class QuartzManagementServiceImpl implements QuartzManagementService {
         try {
             scheduler.rescheduleJob(trigger.getKey(), trigger);
         } catch (SchedulerException e) {
-            throw new SystemIntegrityException("Fail to reschedule quartz trigger", e);
+            throw new SystemIntegrityException("Fail to replace quartz trigger on reschedule", e);
         }
     }
 

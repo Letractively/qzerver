@@ -142,7 +142,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
 
-        quartzManagementService.rescheduleJob(scheduleJob.getId(), scheduleJob.getCron(), parameters.getTimezone());
+        if (scheduleJob.isEnabled()) {
+            quartzManagementService.rescheduleJob(scheduleJob.getId(), scheduleJob.getCron(), parameters.getTimezone());
+        }
 
         return scheduleJob;
     }

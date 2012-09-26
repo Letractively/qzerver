@@ -16,6 +16,8 @@ import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
+import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
+import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.springframework.validation.Validator;
 
@@ -220,6 +222,206 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
 
         ScheduleAction action = scheduleJob.getAction();
         Assert.assertNotNull(action);
+    }
+
+    @Test
+    public void testModifyJob() throws Exception {
+        String cron = "0 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup = new ScheduleGroup();
+        scheduleGroup.setName("test group");
+        businessEntityDao.save(scheduleGroup);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setOrderIndex(0);
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone(DEFAULT_TIMEZONE);
+        parameters.setCron(cron);
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(clusterGroup.getId());
+        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleJobModifyParameters modifyParameters = new ScheduleJobModifyParameters();
+        modifyParameters.setName("Name2");
+        modifyParameters.setDescription("Description2");
+
+        ScheduleJob scheduleJobModified = scheduleJobManagementService.modifyJob(scheduleJob.getId(), modifyParameters);
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertEquals("Name2", scheduleJobModified.getName());
+        Assert.assertEquals("Description2", scheduleJobModified.getDescription());
+
+        control.verify();
+    }
+
+    @Test
+    public void testToggleJob() throws Exception {
+        String cron = "0 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup = new ScheduleGroup();
+        scheduleGroup.setName("test group");
+        businessEntityDao.save(scheduleGroup);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setOrderIndex(0);
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        Capture<Long> idCapture1 = new Capture<Long>(CaptureType.ALL);
+        Capture<Long> idCapture2 = new Capture<Long>(CaptureType.ALL);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        quartzManagementService.disableJob(
+            EasyMock.capture(idCapture1)
+        );
+
+        quartzManagementService.enableJob(
+            EasyMock.capture(idCapture2),
+            EasyMock.eq(cron),
+            EasyMock.eq(DEFAULT_TIMEZONE)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone(DEFAULT_TIMEZONE);
+        parameters.setCron(cron);
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(clusterGroup.getId());
+        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleJob scheduleJobModified;
+
+        scheduleJobModified = scheduleJobManagementService.disableJob(scheduleJob.getId());
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertFalse(scheduleJobModified.isEnabled());
+
+        scheduleJobModified = scheduleJobManagementService.enableJob(scheduleJob.getId());
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertTrue(scheduleJobModified.isEnabled());
+
+        control.verify();
+
+        Assert.assertEquals(scheduleJobModified.getId(), idCapture1.getValue());
+        Assert.assertEquals(scheduleJobModified.getId(), idCapture2.getValue());
+    }
+
+    @Test
+    public void testRescheduleJob() throws Exception {
+        String cron1 = "0 0 0 * * ?";
+        String cron2 = "1 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup = new ScheduleGroup();
+        scheduleGroup.setName("test group");
+        businessEntityDao.save(scheduleGroup);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setOrderIndex(0);
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        Capture<Long> idCapture = new Capture<Long>(CaptureType.ALL);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron1),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        quartzManagementService.rescheduleJob(
+            EasyMock.capture(idCapture),
+            EasyMock.eq(cron2),
+            EasyMock.eq(DEFAULT_TIMEZONE)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone(DEFAULT_TIMEZONE);
+        parameters.setCron(cron1);
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(clusterGroup.getId());
+        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleJobRescheduleParameters rescheduleParameters = new ScheduleJobRescheduleParameters();
+        rescheduleParameters.setCron(cron2);
+        rescheduleParameters.setTimezone(DEFAULT_TIMEZONE);
+
+        ScheduleJob scheduleJobModified;
+
+        scheduleJobModified = scheduleJobManagementService.rescheduleJob(scheduleJob.getId(), rescheduleParameters);
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertTrue(scheduleJobModified.isEnabled());
+
+        control.verify();
+
+        Assert.assertEquals(scheduleJobModified.getId(), idCapture.getValue());
     }
 
 }
