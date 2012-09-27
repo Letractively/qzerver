@@ -1,5 +1,6 @@
 package org.qzerver.model.service.job.management;
 
+import org.qzerver.model.domain.entities.job.ScheduleGroup;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
@@ -11,6 +12,34 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface ScheduleJobManagementService {
+
+    /**
+     * Create schedule job group
+     * @param name Name of the group
+     * @return Group entity
+     */
+    ScheduleGroup createGroup(String name);
+
+    /**
+     * Delete job group
+     * @param scheduleGroupId Job group v
+     */
+    void deleteGroup(long scheduleGroupId);
+
+    /**
+     * Find group by identifier
+     * @param scheduleGroupId Group identifier
+     * @return Group entity
+     */
+    ScheduleGroup findGroup(long scheduleGroupId);
+
+    /**
+     * Modify group
+     * @param scheduleGroupId Group identifier
+     * @param name Name
+     * @return Group entity
+     */
+    ScheduleGroup modifyGroup(long scheduleGroupId, String name);
 
     /**
      * Create new scheduler job

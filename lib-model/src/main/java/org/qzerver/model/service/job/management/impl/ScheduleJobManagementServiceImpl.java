@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
+import com.google.common.base.Preconditions;
 import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
@@ -50,6 +51,44 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     private Validator beanValidator;
 
     @Override
+    public ScheduleGroup createGroup(String name) {
+        Preconditions.checkNotNull(name, "Name is not specified");
+
+        ScheduleGroup scheduleGroup = new ScheduleGroup();
+        scheduleGroup.setName(name);
+
+        businessEntityDao.save(scheduleGroup);
+
+        return scheduleGroup;
+    }
+
+    @Override
+    public void deleteGroup(long scheduleGroupId) {
+        businessEntityDao.deleteById(ScheduleGroup.class, scheduleGroupId);
+    }
+
+    @Override
+    public ScheduleGroup findGroup(long scheduleGroupId) {
+        ScheduleGroup scheduleGroup = businessEntityDao.findById(ScheduleGroup.class, scheduleGroupId);
+        if (scheduleGroup != null) {
+            Hibernate.initialize(scheduleGroup.getJobs());
+        }
+        return scheduleGroup;
+    }
+
+    @Override
+    public ScheduleGroup modifyGroup(long scheduleGroupId, String name) {
+        ScheduleGroup scheduleGroup = businessEntityDao.findById(ScheduleGroup.class, scheduleGroupId);
+        if (scheduleGroup == null) {
+            throw new MissingEntityException(ClusterGroup.class, scheduleGroupId);
+        }
+
+        scheduleGroup.setName(name);
+
+        return scheduleGroup;
+    }
+
+    @Override
     public ScheduleJob createJob(ScheduleJobCreateParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
@@ -61,9 +100,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
             }
         }
 
-        ScheduleGroup scheduleGroup = businessEntityDao.findById(ScheduleGroup.class, parameters.getSchedulerGroupId());
+        ScheduleGroup scheduleGroup = businessEntityDao.findById(ScheduleGroup.class, parameters.getScheduleGroupId());
         if (scheduleGroup == null) {
-            throw new MissingEntityException(ScheduleGroup.class, parameters.getSchedulerGroupId());
+            throw new MissingEntityException(ScheduleGroup.class, parameters.getScheduleGroupId());
         }
 
         Date now = chronometer.getCurrentMoment();

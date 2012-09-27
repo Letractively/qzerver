@@ -12,6 +12,13 @@ import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
+import org.qzerver.model.domain.entities.job.ScheduleActionType;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
+import org.qzerver.model.domain.entities.job.ScheduleGroup;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
+import org.qzerver.model.service.cluster.exception.ClusterGroupUsed;
+import org.qzerver.model.service.job.management.ScheduleJobManagementService;
+import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -23,6 +30,9 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
     private IMocksControl control;
 
     private ClusterManagementServiceImpl clusterManagementService;
+
+    @Resource
+    private ScheduleJobManagementService scheduleJobManagementService;
 
     @Resource
     private BusinessEntityDao businessEntityDao;
@@ -48,6 +58,8 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testSimpleScenario() throws Exception {
+        // Create group
+
         ClusterGroup clusterGroup = clusterManagementService.createGroup("Test group");
         Assert.assertNotNull(clusterGroup);
         Assert.assertEquals("Test group", clusterGroup.getName());
@@ -57,6 +69,11 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
         entityManager.flush();
         entityManager.clear();
 
+        ClusterGroup clusterGroupModified = clusterManagementService.findGroup(clusterGroup.getId());
+        Assert.assertNotNull(clusterGroupModified);
+        Assert.assertEquals("Test group", clusterGroupModified.getName());
+        Assert.assertEquals(0, clusterGroupModified.getNodes().size());
+
         List<ClusterGroup> allClusterGroups = clusterManagementService.findAllGroups(null);
         Assert.assertNotNull(allClusterGroups);
         Assert.assertTrue(allClusterGroups.size() > 0);
@@ -64,7 +81,7 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
 
         // Modify group
 
-        ClusterGroup clusterGroupModified = clusterManagementService.modifyGroup(clusterGroup.getId(), "Test group 2");
+        clusterGroupModified = clusterManagementService.modifyGroup(clusterGroup.getId(), "Test group 2");
         Assert.assertNotNull(clusterGroupModified);
         Assert.assertEquals("Test group 2", clusterGroupModified.getName());
 
@@ -178,4 +195,107 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
         Assert.assertNull(clusterGroupModified);
     }
 
+    @Test
+    public void testRollIndex() throws Exception {
+        // Create group and nodes
+
+        ClusterGroup clusterGroup = clusterManagementService.createGroup("Test group");
+        Assert.assertNotNull(clusterGroup);
+        Assert.assertEquals(0, clusterGroup.getRollingIndex());
+
+        ClusterNode clusterNode1 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.1", "Node 1", true);
+        Assert.assertNotNull(clusterNode1);
+
+        ClusterNode clusterNode2 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.2", "Node 2", true);
+        Assert.assertNotNull(clusterNode2);
+
+        ClusterNode clusterNode3 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.3", "Node 3", false);
+        Assert.assertNotNull(clusterNode3);
+
+        ClusterNode clusterNode4 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.4", "Node 4", true);
+        Assert.assertNotNull(clusterNode4);
+
+        ClusterNode clusterNode5 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.5", "Node 5", false);
+        Assert.assertNotNull(clusterNode5);
+
+        // Roll index
+
+        int index;
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(1, index);
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(3, index);
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(0, index);
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(1, index);
+
+        // Toggle nodes and roll
+
+        clusterManagementService.modifyNode(clusterNode3.getId(), "10.2.0.3", "Node 3", true);
+        clusterManagementService.modifyNode(clusterNode4.getId(), "10.2.0.4", "Node 4", false);
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(2, index);
+
+        index = clusterManagementService.rollGroupIndex(clusterGroup.getId());
+        Assert.assertEquals(0, index);
+    }
+
+    @Test
+    public void testDeleteAssignedGroup() throws Exception {
+        // Create cluster group and nodes
+
+        ClusterGroup clusterGroup = clusterManagementService.createGroup("Test group");
+        Assert.assertNotNull(clusterGroup);
+        Assert.assertEquals(0, clusterGroup.getRollingIndex());
+
+        ClusterNode clusterNode1 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.1", "Node 1", true);
+        Assert.assertNotNull(clusterNode1);
+
+        ClusterNode clusterNode2 = clusterManagementService.createNode(clusterGroup.getId(),
+            "10.2.0.2", "Node 2", true);
+        Assert.assertNotNull(clusterNode2);
+
+        // Create scheduled job
+
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("Test group");
+        Assert.assertNotNull(scheduleGroup);
+
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone("UTC");
+        parameters.setCron("0 0 0 * * ?");
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(clusterGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        Assert.assertNotNull(scheduleJob);
+
+        // Try to delete assigned jobs
+
+        entityManager.flush();
+        entityManager.clear();
+
+        try {
+            clusterManagementService.deleteGroup(clusterGroup.getId());
+            Assert.fail("Exception is expected");
+        } catch (ClusterGroupUsed e) {
+            // do nothing
+        }
+    }
 }

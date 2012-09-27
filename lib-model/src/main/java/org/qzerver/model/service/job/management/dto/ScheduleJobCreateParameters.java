@@ -36,7 +36,7 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     private Long clusterGroupId;
 
-    private long schedulerGroupId;
+    private long scheduleGroupId;
 
     private boolean enabled;
 
@@ -80,12 +80,12 @@ public class ScheduleJobCreateParameters implements Serializable {
         this.clusterGroupId = clusterGroupId;
     }
 
-    public long getSchedulerGroupId() {
-        return schedulerGroupId;
+    public long getScheduleGroupId() {
+        return scheduleGroupId;
     }
 
-    public void setSchedulerGroupId(long schedulerGroupId) {
-        this.schedulerGroupId = schedulerGroupId;
+    public void setScheduleGroupId(long scheduleGroupId) {
+        this.scheduleGroupId = scheduleGroupId;
     }
 
     public boolean isEnabled() {

@@ -72,7 +72,7 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
 
     public void reindexNodes() {
         if (nodes != null) {
-            for (int i=0, size=nodes.size(); i < size; i++) {
+            for (int i = 0, size = nodes.size(); i < size; i++) {
                 nodes.get(i).setOrderIndex(i);
             }
         }

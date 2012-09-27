@@ -149,13 +149,13 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         businessEntityDao.lock(clusterGroup);
 
         int index = clusterGroup.getNodes().indexOf(clusterNode);
+        clusterGroup.getNodes().remove(index);
+
+        clusterGroup.reindexNodes();
 
         if (clusterGroup.getRollingIndex() > index) {
             clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
         }
-
-        clusterGroup.getNodes().remove(index);
-        clusterGroup.reindexNodes();
     }
 
     @Override

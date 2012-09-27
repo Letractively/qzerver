@@ -22,6 +22,8 @@ import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
 
@@ -48,6 +50,9 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     @Resource
     private ScheduleJobDao scheduleJobDao;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Before
     public void setUp() throws Exception {
         control = EasyMock.createStrictControl();
@@ -64,12 +69,47 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     }
 
     @Test
+    public void testClusters() {
+        // Create group
+
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        ScheduleGroup scheduleGroupModified;
+
+        scheduleGroupModified = scheduleJobManagementService.findGroup(scheduleGroup.getId());
+        Assert.assertNotNull(scheduleGroupModified);
+        Assert.assertEquals(scheduleGroup, scheduleGroupModified);
+
+        // Modify group
+
+        scheduleGroupModified = scheduleJobManagementService.modifyGroup(scheduleGroup.getId(), "Name 2");
+        Assert.assertNotNull(scheduleGroupModified);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        scheduleGroupModified = scheduleJobManagementService.findGroup(scheduleGroup.getId());
+        Assert.assertNotNull(scheduleGroupModified);
+        Assert.assertEquals("Name 2", scheduleGroupModified.getName());
+
+        // Delete group
+
+        scheduleJobManagementService.deleteGroup(scheduleGroup.getId());
+
+        scheduleGroupModified = scheduleJobManagementService.findGroup(scheduleGroup.getId());
+        Assert.assertNull(scheduleGroupModified);
+    }
+
+    @Test
     public void testCreateJobWithoutCluster() throws Exception {
         String cron = "0 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         control.reset();
 
@@ -90,7 +130,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(null);
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -106,9 +146,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     public void testCreateJobWithCluster() throws Exception {
         String cron = "0 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -147,7 +186,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -163,9 +202,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     public void testDeleteJob() throws Exception {
         String cron = "0 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -204,7 +242,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -225,9 +263,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     public void testModifyJob() throws Exception {
         String cron = "0 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -259,7 +296,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -281,9 +318,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     public void testToggleJob() throws Exception {
         String cron = "0 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -328,7 +364,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -355,9 +391,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         String cron1 = "0 0 0 * * ?";
         String cron2 = "1 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -397,7 +432,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
@@ -423,9 +458,8 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         String cron1 = "0 0 0 * * ?";
         String cron2 = "1 0 0 * * ?";
 
-        ScheduleGroup scheduleGroup = new ScheduleGroup();
-        scheduleGroup.setName("test group");
-        businessEntityDao.save(scheduleGroup);
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
 
         ClusterGroup clusterGroup = new ClusterGroup();
         clusterGroup.setName("Test cluster group");
@@ -463,7 +497,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         parameters.setEnabled(true);
         parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
