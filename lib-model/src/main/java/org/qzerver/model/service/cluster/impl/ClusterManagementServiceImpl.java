@@ -76,14 +76,16 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
             throw new ClusterGroupUsed();
         }
 
-        businessEntityDao.deleteById(ScheduleJob.class, clusterGroupId);
+        businessEntityDao.deleteById(ClusterGroup.class, clusterGroupId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ClusterGroup findGroup(long clusterGroupId) {
         ClusterGroup clusterGroup = businessEntityDao.findById(ClusterGroup.class, clusterGroupId);
-        Hibernate.initialize(clusterGroup.getNodes());
+        if (clusterGroup != null) {
+            Hibernate.initialize(clusterGroup.getNodes());
+        }
         return clusterGroup;
     }
 
@@ -130,6 +132,8 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         clusterGroup.getNodes().add(clusterNode);
         clusterNode.setGroup(clusterGroup);
 
+        clusterGroup.reindexNodes();
+
         return clusterNode;
     }
 
@@ -141,13 +145,17 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         }
 
         ClusterGroup clusterGroup = clusterNode.getGroup();
+
         businessEntityDao.lock(clusterGroup);
 
-//        if (clusterGroup.getRollingIndex() > clusterNode.getOrderIndex()) {
-//            clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
-//        }
+        int index = clusterGroup.getNodes().indexOf(clusterNode);
 
-        businessEntityDao.delete(clusterNode);
+        if (clusterGroup.getRollingIndex() > index) {
+            clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
+        }
+
+        clusterGroup.getNodes().remove(index);
+        clusterGroup.reindexNodes();
     }
 
     @Override

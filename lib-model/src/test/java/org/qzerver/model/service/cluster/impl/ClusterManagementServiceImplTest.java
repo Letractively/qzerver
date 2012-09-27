@@ -47,7 +47,7 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
     }
 
     @Test
-    public void testSimpleScenario() {
+    public void testSimpleScenario() throws Exception {
         ClusterGroup clusterGroup = clusterManagementService.createGroup("Test group");
         Assert.assertNotNull(clusterGroup);
         Assert.assertEquals("Test group", clusterGroup.getName());
@@ -123,18 +123,21 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
 
         clusterNodeModified = clusterGroupModified.getNodes().get(0);
         Assert.assertNotNull(clusterNodeModified);
+        Assert.assertEquals(0, clusterNodeModified.getOrderIndex());
         Assert.assertEquals("10.2.0.1", clusterNodeModified.getAddress());
         Assert.assertEquals("Node 1", clusterNodeModified.getDescription());
         Assert.assertEquals(true, clusterNodeModified.isEnabled());
 
         clusterNodeModified = clusterGroupModified.getNodes().get(1);
         Assert.assertNotNull(clusterNodeModified);
+        Assert.assertEquals(1, clusterNodeModified.getOrderIndex());
         Assert.assertEquals("10.2.0.2", clusterNodeModified.getAddress());
         Assert.assertEquals("Node 2", clusterNodeModified.getDescription());
         Assert.assertEquals(false, clusterNodeModified.isEnabled());
 
         clusterNodeModified = clusterGroupModified.getNodes().get(2);
         Assert.assertNotNull(clusterNodeModified);
+        Assert.assertEquals(2, clusterNodeModified.getOrderIndex());
         Assert.assertEquals("10.2.0.3", clusterNodeModified.getAddress());
         Assert.assertEquals("Node 3", clusterNodeModified.getDescription());
         Assert.assertEquals(true, clusterNodeModified.isEnabled());
@@ -152,15 +155,27 @@ public class ClusterManagementServiceImplTest extends AbstractModelTest {
 
         clusterNodeModified = clusterGroupModified.getNodes().get(0);
         Assert.assertNotNull(clusterNodeModified);
+        Assert.assertEquals(0, clusterNodeModified.getOrderIndex());
         Assert.assertEquals("10.2.0.1", clusterNodeModified.getAddress());
         Assert.assertEquals("Node 1", clusterNodeModified.getDescription());
         Assert.assertEquals(true, clusterNodeModified.isEnabled());
 
         clusterNodeModified = clusterGroupModified.getNodes().get(1);
         Assert.assertNotNull(clusterNodeModified);
+        Assert.assertEquals(1, clusterNodeModified.getOrderIndex());
         Assert.assertEquals("10.2.0.3", clusterNodeModified.getAddress());
         Assert.assertEquals("Node 3", clusterNodeModified.getDescription());
         Assert.assertEquals(true, clusterNodeModified.isEnabled());
+
+        // Delete group
+
+        clusterManagementService.deleteGroup(clusterGroup.getId());
+
+        entityManager.flush();
+        entityManager.clear();
+
+        clusterGroupModified = clusterManagementService.findGroup(clusterGroup.getId());
+        Assert.assertNull(clusterGroupModified);
     }
 
 }
