@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class ClusterGroupJpaDao implements ClusterGroupDao {
 
         CriteriaQuery<ClusterGroup> criteriaQuery = criteriaBuilder.createQuery(ClusterGroup.class);
         Root<ClusterGroup> root = criteriaQuery.from(ClusterGroup.class);
-        root.fetch(ClusterGroup_.nodes);
+        root.fetch(ClusterGroup_.nodes, JoinType.LEFT);
 
         // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.orderBy(

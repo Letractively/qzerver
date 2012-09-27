@@ -19,14 +19,14 @@ public interface ClusterManagementService {
      * @param extraction Extraction
      * @return List of cluster groups
      */
-    List<ClusterGroup> getAllGroups(Extraction extraction);
+    List<ClusterGroup> findAllGroups(Extraction extraction);
 
     /**
      * Get cluster group.
      * @param clusterGroupId Cluster group identifier
      * @return Cluster group
      */
-    ClusterGroup getGroup(long clusterGroupId);
+    ClusterGroup findGroup(long clusterGroupId);
 
     /**
      * Create new cluster group.
@@ -64,12 +64,12 @@ public interface ClusterManagementService {
     /**
      * Create new node in the specified group.
      * @param clusterGroupId Cluster group identifier
-     * @param domain Domain
+     * @param address Domain or IP address of a node
      * @param comment Comment
      * @param activity Is node active
      * @return Cluster node
      */
-    ClusterNode createNode(long clusterGroupId, String domain, String comment, boolean activity);
+    ClusterNode createNode(long clusterGroupId, String address, String comment, boolean activity);
 
     /**
      * Modify cluster node.

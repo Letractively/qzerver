@@ -5,6 +5,7 @@ import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;
 import com.google.common.base.Preconditions;
+import org.hibernate.Hibernate;
 import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -37,7 +38,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ClusterGroup> getAllGroups(Extraction extraction) {
+    public List<ClusterGroup> findAllGroups(Extraction extraction) {
         return clusterGroupDao.findAllGroups(extraction);
     }
 
@@ -80,9 +81,9 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
     @Override
     @Transactional(readOnly = true)
-    public ClusterGroup getGroup(long clusterGroupId) {
+    public ClusterGroup findGroup(long clusterGroupId) {
         ClusterGroup clusterGroup = businessEntityDao.findById(ClusterGroup.class, clusterGroupId);
-        clusterGroup.getNodes().size();
+        Hibernate.initialize(clusterGroup.getNodes());
         return clusterGroup;
     }
 
@@ -115,7 +116,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     }
 
     @Override
-    public ClusterNode createNode(long clusterGroupId, String domain, String comment, boolean activity) {
+    public ClusterNode createNode(long clusterGroupId, String address, String comment, boolean activity) {
         ClusterGroup clusterGroup = businessEntityDao.lockById(ClusterGroup.class, clusterGroupId);
         if (clusterGroup == null) {
             throw new MissingEntityException(ClusterGroup.class, clusterGroupId);
@@ -123,11 +124,11 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
 
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setEnabled(activity);
-        clusterNode.setAddress(domain);
+        clusterNode.setAddress(address);
         clusterNode.setDescription(comment);
 
-        clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
+        clusterNode.setGroup(clusterGroup);
 
         return clusterNode;
     }
@@ -142,11 +143,10 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
         ClusterGroup clusterGroup = clusterNode.getGroup();
         businessEntityDao.lock(clusterGroup);
 
-        if (clusterGroup.getRollingIndex() > clusterNode.getOrderIndex()) {
-            clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
-        }
+//        if (clusterGroup.getRollingIndex() > clusterNode.getOrderIndex()) {
+//            clusterGroup.setRollingIndex(clusterGroup.getRollingIndex() - 1);
+//        }
 
-        clusterGroup.getNodes().remove(clusterNode);
         businessEntityDao.delete(clusterNode);
     }
 

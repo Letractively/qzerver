@@ -40,7 +40,6 @@ public class ClusterDaoTest extends AbstractModelTest {
         clusterNode.setAddress("www.example.org");
         clusterNode.setEnabled(false);
         clusterNode.setDescription("rwgwrgwr");
-        clusterNode.setOrderIndex(2);
 
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);

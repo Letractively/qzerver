@@ -117,7 +117,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode1 = new ClusterNode();
         clusterNode1.setAddress("10.2.0.1");
         clusterNode1.setDescription("test node");
-        clusterNode1.setOrderIndex(0);
         clusterNode1.setEnabled(true);
         clusterNode1.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode1);
@@ -125,7 +124,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode2 = new ClusterNode();
         clusterNode2.setAddress("10.2.0.2");
         clusterNode2.setDescription("test node");
-        clusterNode2.setOrderIndex(0);
         clusterNode2.setEnabled(true);
         clusterNode2.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode2);
@@ -176,7 +174,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setAddress("10.2.0.1");
         clusterNode.setDescription("test node");
-        clusterNode.setOrderIndex(0);
         clusterNode.setEnabled(true);
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
@@ -239,7 +236,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setAddress("10.2.0.1");
         clusterNode.setDescription("test node");
-        clusterNode.setOrderIndex(0);
         clusterNode.setEnabled(true);
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
@@ -296,7 +292,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setAddress("10.2.0.1");
         clusterNode.setDescription("test node");
-        clusterNode.setOrderIndex(0);
         clusterNode.setEnabled(true);
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
@@ -356,7 +351,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
     }
 
     @Test
-    public void testRescheduleJob() throws Exception {
+    public void testRescheduleActiveJob() throws Exception {
         String cron1 = "0 0 0 * * ?";
         String cron2 = "1 0 0 * * ?";
 
@@ -371,7 +366,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         ClusterNode clusterNode = new ClusterNode();
         clusterNode.setAddress("10.2.0.1");
         clusterNode.setDescription("test node");
-        clusterNode.setOrderIndex(0);
         clusterNode.setEnabled(true);
         clusterNode.setGroup(clusterGroup);
         clusterGroup.getNodes().add(clusterNode);
@@ -418,6 +412,76 @@ public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
         scheduleJobModified = scheduleJobManagementService.rescheduleJob(scheduleJob.getId(), rescheduleParameters);
         Assert.assertNotNull(scheduleJobModified);
         Assert.assertTrue(scheduleJobModified.isEnabled());
+
+        control.verify();
+
+        Assert.assertEquals(scheduleJobModified.getId(), idCapture.getValue());
+    }
+
+    @Test
+    public void testReschedulePassiveJob() throws Exception {
+        String cron1 = "0 0 0 * * ?";
+        String cron2 = "1 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup = new ScheduleGroup();
+        scheduleGroup.setName("test group");
+        businessEntityDao.save(scheduleGroup);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        Capture<Long> idCapture = new Capture<Long>(CaptureType.ALL);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron1),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        quartzManagementService.disableJob(
+            EasyMock.capture(idCapture)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone(DEFAULT_TIMEZONE);
+        parameters.setCron(cron1);
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(clusterGroup.getId());
+        parameters.setSchedulerGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleJob scheduleJobModified;
+
+        scheduleJobModified = scheduleJobManagementService.disableJob(scheduleJob.getId());
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertFalse(scheduleJobModified.isEnabled());
+
+        ScheduleJobRescheduleParameters rescheduleParameters = new ScheduleJobRescheduleParameters();
+        rescheduleParameters.setCron(cron2);
+        rescheduleParameters.setTimezone(DEFAULT_TIMEZONE);
+
+        scheduleJobModified = scheduleJobManagementService.rescheduleJob(scheduleJob.getId(), rescheduleParameters);
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertFalse(scheduleJobModified.isEnabled());
 
         control.verify();
 
