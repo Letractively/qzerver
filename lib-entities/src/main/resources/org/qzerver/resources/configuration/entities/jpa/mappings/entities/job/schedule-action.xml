@@ -21,6 +21,7 @@
             </basic>
             <basic name="definition" fetch="LAZY" optional="true">
                 <column name="definition" nullable="true" length="16777216"/>
+                <lob/>
             </basic>
             <basic name="created">
                 <column name="created" nullable="false"/>

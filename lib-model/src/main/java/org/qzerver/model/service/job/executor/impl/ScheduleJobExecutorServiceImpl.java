@@ -1,5 +1,7 @@
 package org.qzerver.model.service.job.executor.impl;
 
+import com.gainmatrix.lib.business.exception.AbstractServiceException;
+import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import org.qzerver.model.agent.action.ActionAgent;
@@ -91,17 +93,23 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
         // Try to execute action on a node from the cluster
         try {
-            status = executeJobNodes(scheduleExecution);
-        } catch (Exception e) {
-            LOGGER.error("Internal error while executing the job : " + scheduleExecution.getJob().getId(), e);
-        } finally {
-            scheduleExecution = executionManagementService.finishExecution(scheduleExecution.getId(), status);
+            try {
+                status = executeJobNodes(scheduleExecution);
+            } catch (Exception e) {
+                LOGGER.error("Internal error while executing the job : " + scheduleExecution.getJob().getId(), e);
+            } finally {
+                scheduleExecution = executionManagementService.finishExecution(scheduleExecution.getId(), status);
+            }
+        } catch (AbstractServiceException e) {
+            throw new SystemIntegrityException("Fail to execute", e);
         }
 
         return scheduleExecution;
     }
 
-    protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution) {
+    protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution)
+        throws AbstractServiceException
+    {
         // Succeed nodes counter
         int succeedNodes = 0;
 
@@ -112,7 +120,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         while (nodeIterator.hasNext()) {
             // Get fresh copy of execution and check the cancellation flag
             ScheduleExecution scheduleExecutionReloaded =
-                executionManagementService.getExecution(scheduleExecution.getId());
+                executionManagementService.findExecution(scheduleExecution.getId());
             if (scheduleExecutionReloaded.isCancelled()) {
                 LOGGER.debug("Execution [{}] is cancelled", scheduleExecution.getName());
                 return ScheduleExecutionStatus.CANCELED;
@@ -161,7 +169,9 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return ScheduleExecutionStatus.FAILED;
     }
 
-    protected ScheduleExecutionResult executeJobNode(ScheduleExecution scheduleExecution, ScheduleExecutionNode node) {
+    protected ScheduleExecutionResult executeJobNode(ScheduleExecution scheduleExecution, ScheduleExecutionNode node)
+        throws AbstractServiceException
+    {
         LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
 
         // Register node execution start, execute and register finish

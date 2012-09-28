@@ -1,12 +1,14 @@
 package org.qzerver.model.service.job.execution.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
+import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -15,6 +17,8 @@ import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
+import org.qzerver.model.service.job.execution.exception.ExecutionAlreadyFinishedException;
+import org.qzerver.model.service.job.execution.exception.ResultAlreadyFinishedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -89,8 +93,10 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         if (clusterGroup != null) {
             // If cluster is set then choose some nodes to work on
             List<ClusterNode> selectedNodes = selectJobNodes(scheduleJob);
-            for (ClusterNode clusterNode : selectedNodes) {
+            for (int i = 0, size = selectedNodes.size(); i < size; i++) {
+                ClusterNode clusterNode = selectedNodes.get(i);
                 ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
+                executionNode.setOrderIndex(i);
                 executionNode.setLocalhost(false);
                 executionNode.setAddress(clusterNode.getAddress());
                 executionNode.setExecution(scheduleExecution);
@@ -99,6 +105,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         } else {
             // If cluster is not set then the only node is 'localhost' node
             ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
+            executionNode.setOrderIndex(0);
             executionNode.setLocalhost(true);
             executionNode.setAddress("localhost");
             executionNode.setExecution(scheduleExecution);
@@ -193,16 +200,22 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public ScheduleExecutionResult startExecutionResult(long scheduleExecutionNodeId) {
+    public ScheduleExecutionResult startExecutionResult(long scheduleExecutionNodeId) throws AbstractServiceException {
         ScheduleExecutionNode node = businessEntityDao.findById(ScheduleExecutionNode.class, scheduleExecutionNodeId);
         if (node == null) {
             throw new MissingEntityException(ScheduleExecutionNode.class, scheduleExecutionNodeId);
         }
 
-        ScheduleExecution execution = node.getExecution();
-        businessEntityDao.lock(execution);
+        ScheduleExecution scheduleExecution = node.getExecution();
+
+        if (scheduleExecution.getFinished() != null) {
+            throw new ExecutionAlreadyFinishedException(scheduleExecution.getId());
+        }
+
+        businessEntityDao.lock(scheduleExecution);
 
         ScheduleExecutionResult result = new ScheduleExecutionResult();
+        result.setOrderIndex(node.getOrderIndex());
         result.setStarted(chronometer.getCurrentMoment());
         result.setFinished(null);
         result.setSucceed(false);
@@ -210,8 +223,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         result.setNode(node);
         node.setResult(result);
 
-        result.setExecution(execution);
-        execution.getResults().add(result);
+        result.setExecution(scheduleExecution);
+        scheduleExecution.getResults().add(result);
 
         businessEntityDao.save(result);
 
@@ -219,12 +232,18 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, ActionResult actionResult) {
+    public ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, ActionResult actionResult)
+        throws AbstractServiceException
+    {
         ScheduleExecutionResult result =
             businessEntityDao.findById(ScheduleExecutionResult.class, scheduleExecutionResultId);
 
         if (result == null) {
             throw new MissingEntityException(ScheduleExecutionResult.class, scheduleExecutionResultId);
+        }
+
+        if (result.getFinished() != null) {
+            throw new ResultAlreadyFinishedException(result.getId());
         }
 
         result.setFinished(chronometer.getCurrentMoment());
@@ -241,7 +260,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public ScheduleExecution finishExecution(long scheduleExecutionId, ScheduleExecutionStatus status) {
+    public ScheduleExecution finishExecution(long scheduleExecutionId, ScheduleExecutionStatus status)
+        throws AbstractServiceException
+    {
         Preconditions.checkNotNull(status);
 
         ScheduleExecution scheduleExecution = businessEntityDao.lockById(ScheduleExecution.class, scheduleExecutionId);
@@ -249,20 +270,25 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
             throw new MissingEntityException(ScheduleExecution.class, scheduleExecutionId);
         }
 
+        if (scheduleExecution.getFinished() != null) {
+            throw new ExecutionAlreadyFinishedException(scheduleExecution.getId());
+        }
+
         scheduleExecution.setFinished(chronometer.getCurrentMoment());
         scheduleExecution.setStatus(status);
+        scheduleExecution.setCancelled(false);
 
-        scheduleExecution.getResults().size();
-        scheduleExecution.getNodes().size();
-        scheduleExecution.getJob().getVersion();
-        scheduleExecution.getAction().getVersion();
+        Hibernate.initialize(scheduleExecution.getResults());
+        Hibernate.initialize(scheduleExecution.getNodes());
+        Hibernate.initialize(scheduleExecution.getJob());
+        Hibernate.initialize(scheduleExecution.getAction());
 
         return scheduleExecution;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ScheduleExecution getExecution(long scheduleExecutionId) {
+    public ScheduleExecution findExecution(long scheduleExecutionId) {
         ScheduleExecution scheduleExecution = businessEntityDao.findById(ScheduleExecution.class, scheduleExecutionId);
         scheduleExecution.getResults().size();
         scheduleExecution.getNodes().size();
@@ -271,32 +297,38 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public void cancelExecution(long scheduleExecutionId) {
+    public ScheduleExecution cancelExecution(long scheduleExecutionId) throws AbstractServiceException {
         ScheduleExecution scheduleExecution = businessEntityDao.lockById(ScheduleExecution.class, scheduleExecutionId);
         if (scheduleExecution == null) {
             throw new MissingEntityException(ScheduleExecution.class, scheduleExecutionId);
         }
 
+        if (scheduleExecution.getFinished() != null) {
+            throw new ExecutionAlreadyFinishedException(scheduleExecutionId);
+        }
+
         scheduleExecution.setCancelled(true);
+
+        return scheduleExecution;
     }
 
     @Override
-    public List<ScheduleExecution> getAll(Extraction extraction) {
+    public List<ScheduleExecution> findAll(Extraction extraction) {
         return scheduleExecutionDao.findAll(extraction);
     }
 
     @Override
-    public List<ScheduleExecution> getByJob(long scheduleJobId, Extraction extraction) {
+    public List<ScheduleExecution> findByJob(long scheduleJobId, Extraction extraction) {
         return scheduleExecutionDao.findByJob(scheduleJobId, extraction);
     }
 
     @Override
-    public List<ScheduleExecution> getEngaged(Extraction extraction) {
+    public List<ScheduleExecution> findEngaged(Extraction extraction) {
         return scheduleExecutionDao.findEngaged(extraction);
     }
 
     @Override
-    public List<ScheduleExecution> getFinished(Extraction extraction) {
+    public List<ScheduleExecution> findFinished(Extraction extraction) {
         return scheduleExecutionDao.findFinished(extraction);
     }
 

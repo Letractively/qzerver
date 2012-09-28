@@ -25,6 +25,7 @@
             </basic>
             <basic name="payload" fetch="LAZY" optional="true">
                 <column name="payload" nullable="true" length="16777216"/>
+                <lob/>
             </basic>
             <basic name="orderIndex">
                 <column name="order_index" nullable="false"/>

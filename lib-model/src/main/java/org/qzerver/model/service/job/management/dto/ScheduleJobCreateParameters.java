@@ -7,6 +7,7 @@ import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.system.validation.Cron;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -33,6 +34,9 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     @NotNull
     private ScheduleExecutionStrategy strategy = ScheduleExecutionStrategy.CIRCULAR;
+
+    @Min(0)
+    private int trials;
 
     private Long clusterGroupId;
 
@@ -110,6 +114,14 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setStrategy(ScheduleExecutionStrategy strategy) {
         this.strategy = strategy;
+    }
+
+    public int getTrials() {
+        return trials;
+    }
+
+    public void setTrials(int trials) {
+        this.trials = trials;
     }
 }
 
