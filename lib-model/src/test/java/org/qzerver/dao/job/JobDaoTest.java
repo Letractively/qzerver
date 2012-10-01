@@ -4,7 +4,7 @@ import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.jpa.BusinessEntityJpaDaoChecker;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import org.junit.Test;
-import org.qzerver.base.AbstractModelTest;
+import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.domain.entities.job.*;
 
 import javax.annotation.Resource;
@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 
-public class JobDaoTest extends AbstractModelTest {
+public class JobDaoTest extends AbstractTransactionalTest {
 
     @PersistenceContext
     private EntityManager entityManager;

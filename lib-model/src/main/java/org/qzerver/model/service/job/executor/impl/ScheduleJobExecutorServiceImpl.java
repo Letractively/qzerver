@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
+import com.gainmatrix.lib.time.ChronometerTimer;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
@@ -47,18 +48,17 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     private MailService mailService;
 
     @Override
-    public ScheduleExecution executeAutomaticJob(AutomaticJobExecutionParameters parameters) {
+    public ScheduleExecution executeAutomaticJob(long scheduleJobId, AutomaticJobExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
-        LOGGER.debug("Job [id={}] will be executed (auto)", parameters.getScheduleJobId());
+        LOGGER.debug("Job [id={}] will be executed (auto)", scheduleJobId);
 
         StartExecutionParameters executionParameters = new StartExecutionParameters();
-        executionParameters.setScheduleJobId(parameters.getScheduleJobId());
         executionParameters.setScheduled(parameters.getScheduled());
         executionParameters.setFired(parameters.getFired());
         executionParameters.setManual(false);
 
-        ScheduleExecution execution = executeJob(executionParameters);
+        ScheduleExecution execution = executeJob(scheduleJobId, executionParameters);
 
         if (execution.getStatus() != ScheduleExecutionStatus.SUCCEED) {
             mailService.notifyJobExecutionFailed(execution);
@@ -74,19 +74,18 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         Date now = chronometer.getCurrentMoment();
 
         StartExecutionParameters executionParameters = new StartExecutionParameters();
-        executionParameters.setScheduleJobId(scheduleJobId);
         executionParameters.setScheduled(now);
         executionParameters.setFired(now);
         executionParameters.setManual(true);
 
-        return executeJob(executionParameters);
+        return executeJob(scheduleJobId, executionParameters);
     }
 
-    protected ScheduleExecution executeJob(StartExecutionParameters parameters) {
+    protected ScheduleExecution executeJob(long scheduleJobId, StartExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
         // Compose execution descriptor
-        ScheduleExecution scheduleExecution = executionManagementService.startExecution(parameters);
+        ScheduleExecution scheduleExecution = executionManagementService.startExecution(scheduleJobId, parameters);
 
         // The only reason the status is not assigned is that exception occurs in executeJobNodes() call
         ScheduleExecutionStatus status = ScheduleExecutionStatus.EXCEPTION;
@@ -110,6 +109,9 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution)
         throws AbstractServiceException
     {
+        // Remember when the process started
+        ChronometerTimer timer = new ChronometerTimer(chronometer);
+
         // Succeed nodes counter
         int succeedNodes = 0;
 
@@ -149,10 +151,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
             if (nodeIterator.hasNext()) {
                 // Check timeout
                 if (scheduleExecution.getTimeout() > 0) {
-                    long durationMs =
-                        scheduleExecutionResult.getFinished().getTime() - scheduleExecution.getStarted().getTime();
-
-                    if (durationMs > scheduleExecution.getTimeout()) {
+                    if (timer.elapsed() > scheduleExecution.getTimeout()) {
                         LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getName());
                         return ScheduleExecutionStatus.TIMEOUT;
                     }
@@ -180,10 +179,11 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
         ActionResult actionResult = null;
         try {
-            actionResult = actionAgent.executeAction(scheduleExecution.getAction(), node);
+            actionResult = actionAgent.executeAction(scheduleExecution.getId(),
+                scheduleExecution.getAction(), node.getAddress());
         } finally {
-            scheduleExecutionResult =
-                executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(), actionResult);
+            scheduleExecutionResult = executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
+                actionResult);
         }
 
         return scheduleExecutionResult;

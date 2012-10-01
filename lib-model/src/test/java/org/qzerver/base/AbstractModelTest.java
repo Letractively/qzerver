@@ -1,11 +1,16 @@
 package org.qzerver.base;
 
+import com.gainmatrix.lib.time.impl.StubChronometer;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
+/**
+ * Abstract non-transactional test with context
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(
         locations = {
@@ -13,8 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
                 "classpath:/test/context/test-model.xml"
         }
 )
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@Transactional
 public abstract class AbstractModelTest {
+
+    @Resource
+    private StubChronometer chronometer;
+
+    @Before
+    public void setUp() throws Exception {
+        chronometer.now();
+    }
 
 }

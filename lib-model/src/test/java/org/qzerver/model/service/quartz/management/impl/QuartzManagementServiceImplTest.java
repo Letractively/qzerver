@@ -310,7 +310,7 @@ public class QuartzManagementServiceImplTest {
         }
 
         @Override
-        public ScheduleExecution executeAutomaticJob(AutomaticJobExecutionParameters parameters) {
+        public ScheduleExecution executeAutomaticJob(long scheduleJobId, AutomaticJobExecutionParameters parameters) {
             queue.add(parameters);
 
             ScheduleExecution dummyExecution = new ScheduleExecution();

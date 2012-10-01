@@ -6,8 +6,6 @@ import java.util.Date;
 
 public class StartExecutionParameters implements Serializable {
 
-    private long scheduleJobId;
-
     @NotNull
     private Date scheduled;
 
@@ -30,14 +28,6 @@ public class StartExecutionParameters implements Serializable {
 
     public void setScheduled(Date scheduled) {
         this.scheduled = scheduled;
-    }
-
-    public long getScheduleJobId() {
-        return scheduleJobId;
-    }
-
-    public void setScheduleJobId(long scheduleJobId) {
-        this.scheduleJobId = scheduleJobId;
     }
 
     public boolean isManual() {

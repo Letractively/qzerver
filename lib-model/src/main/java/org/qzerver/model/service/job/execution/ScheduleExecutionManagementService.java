@@ -19,10 +19,11 @@ public interface ScheduleExecutionManagementService {
 
     /**
      * Register start of execution
+     * @param scheduleJobId Job identifier
      * @param parameters Execution parameters
      * @return Schedule job entity
      */
-    ScheduleExecution startExecution(StartExecutionParameters parameters);
+    ScheduleExecution startExecution(long scheduleJobId, StartExecutionParameters parameters);
 
     /**
      * Register start of node execution

@@ -56,17 +56,17 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     private Validator beanValidator;
 
     @Override
-    public ScheduleExecution startExecution(StartExecutionParameters parameters) {
+    public ScheduleExecution startExecution(long scheduleJobId, StartExecutionParameters parameters) {
         BeanValidationUtils.checkValidity(parameters, beanValidator);
 
-        LOGGER.debug("Start execution of job [id={}]", parameters.getScheduleJobId());
+        LOGGER.debug("Start execution of job [id={}]", scheduleJobId);
 
         Date now = chronometer.getCurrentMoment();
 
         // Select job by id
-        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, parameters.getScheduleJobId());
+        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
         if (scheduleJob == null) {
-            throw new MissingEntityException(ScheduleJob.class, parameters.getScheduleJobId());
+            throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
         // Create new execution
@@ -290,9 +290,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     @Transactional(readOnly = true)
     public ScheduleExecution findExecution(long scheduleExecutionId) {
         ScheduleExecution scheduleExecution = businessEntityDao.findById(ScheduleExecution.class, scheduleExecutionId);
-        scheduleExecution.getResults().size();
-        scheduleExecution.getNodes().size();
-        scheduleExecution.getAction().getVersion();
+        Hibernate.initialize(scheduleExecution.getResults());
+        Hibernate.initialize(scheduleExecution.getNodes());
+        Hibernate.initialize(scheduleExecution.getAction());
         return scheduleExecution;
     }
 

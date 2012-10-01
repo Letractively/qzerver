@@ -38,11 +38,16 @@ public class ScheduleJobCreateParameters implements Serializable {
     @Min(0)
     private int trials;
 
+    @Min(0)
+    private int timeout;
+
     private Long clusterGroupId;
 
     private long scheduleGroupId;
 
     private boolean enabled;
+
+    private boolean allNodes;
 
     public ScheduleActionType getActionType() {
         return actionType;
@@ -122,6 +127,22 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setTrials(int trials) {
         this.trials = trials;
+    }
+
+    public boolean isAllNodes() {
+        return allNodes;
+    }
+
+    public void setAllNodes(boolean allNodes) {
+        this.allNodes = allNodes;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }
 

@@ -9,7 +9,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.qzerver.base.AbstractModelTest;
+import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-public class ScheduleJobManagementServiceImplTest extends AbstractModelTest {
+public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalTest {
 
     private static final String DEFAULT_TIMEZONE = "UTC";
 

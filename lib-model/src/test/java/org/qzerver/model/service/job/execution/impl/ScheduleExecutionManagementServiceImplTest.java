@@ -5,11 +5,9 @@ import com.gainmatrix.lib.time.ChronometerUtils;
 import com.gainmatrix.lib.time.impl.StubChronometer;
 import com.google.common.collect.Iterators;
 import junit.framework.Assert;
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.qzerver.base.AbstractModelTest;
+import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -27,13 +25,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTest {
-
-    private IMocksControl control;
+public class ScheduleExecutionManagementServiceImplTest extends AbstractTransactionalTest {
 
     private ScheduleExecutionManagementServiceImpl scheduleExecutionManagementService;
-
-    private QuartzManagementService quartzManagementService;
 
     private ScheduleGroup scheduleGroup;
 
@@ -46,6 +40,9 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
     private ClusterNode clusterNode2;
 
     private ClusterNode clusterNode3;
+
+    @Resource
+    private QuartzManagementService quartzManagementService;
 
     @Resource
     private Validator modelBeanValidator;
@@ -70,14 +67,10 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
 
     @Before
     public void setUp() throws Exception {
-        control = EasyMock.createStrictControl();
-
-        quartzManagementService = control.createMock(QuartzManagementService.class);
-
         scheduleExecutionManagementService = new ScheduleExecutionManagementServiceImpl();
         scheduleExecutionManagementService.setBeanValidator(modelBeanValidator);
         scheduleExecutionManagementService.setChronometer(chronometer);
-        scheduleExecutionManagementService.setNode("node-1");
+        scheduleExecutionManagementService.setNode("test.example.com");
         scheduleExecutionManagementService.setScheduleExecutionDao(scheduleExecutionDao);
         scheduleExecutionManagementService.setClusterManagementService(clusterManagementService);
         scheduleExecutionManagementService.setBusinessEntityDao(businessEntityDao);
@@ -102,7 +95,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
 
         scheduleJob = scheduleJobManagementService.createJob(parameters);
 
-        // Disable Quartz job manually to prevent the execution
+        // Disable Quartz job manually to prevent the firing from Quartz
         quartzManagementService.disableJob(scheduleJob.getId());
     }
 
@@ -111,13 +104,12 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
         // Start execution
 
         StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
-        startExecutionParameters.setScheduleJobId(scheduleJob.getId());
         startExecutionParameters.setManual(false);
         startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
         startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
 
         ScheduleExecution scheduleExecution =
-            scheduleExecutionManagementService.startExecution(startExecutionParameters);
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
         Assert.assertNotNull(scheduleExecution);
         Assert.assertNull(scheduleExecution.getFinished());
 
@@ -133,17 +125,17 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
         ScheduleExecutionNode scheduleExecutionNode1 = scheduleExecutionModified.getNodes().get(0);
         Assert.assertNotNull(scheduleExecutionNode1);
         Assert.assertEquals(0, scheduleExecutionNode1.getOrderIndex());
-        Assert.assertEquals("10.2.0.2", scheduleExecutionNode1.getAddress());
+        Assert.assertEquals(clusterNode2.getAddress(), scheduleExecutionNode1.getAddress());
 
         ScheduleExecutionNode scheduleExecutionNode2 = scheduleExecutionModified.getNodes().get(1);
         Assert.assertNotNull(scheduleExecutionNode2);
         Assert.assertEquals(1, scheduleExecutionNode2.getOrderIndex());
-        Assert.assertEquals("10.2.0.3", scheduleExecutionNode2.getAddress());
+        Assert.assertEquals(clusterNode3.getAddress(), scheduleExecutionNode2.getAddress());
 
         ScheduleExecutionNode scheduleExecutionNode3 = scheduleExecutionModified.getNodes().get(2);
         Assert.assertNotNull(scheduleExecutionNode3);
         Assert.assertEquals(2, scheduleExecutionNode3.getOrderIndex());
-        Assert.assertEquals("10.2.0.1", scheduleExecutionNode3.getAddress());
+        Assert.assertEquals(clusterNode1.getAddress(), scheduleExecutionNode3.getAddress());
 
         // Search all executions
 
@@ -222,13 +214,12 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractModelTes
         // Start execution
 
         StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
-        startExecutionParameters.setScheduleJobId(scheduleJob.getId());
         startExecutionParameters.setManual(false);
         startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
         startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
 
         ScheduleExecution scheduleExecution =
-            scheduleExecutionManagementService.startExecution(startExecutionParameters);
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
         Assert.assertNotNull(scheduleExecution);
         Assert.assertNull(scheduleExecution.getFinished());
 

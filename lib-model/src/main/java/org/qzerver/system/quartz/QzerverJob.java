@@ -34,12 +34,11 @@ public class QzerverJob implements Job {
         long scheduleJobId = QzerverKeyUtils.parseJobName(jobKey);
 
         AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
-        parameters.setScheduleJobId(scheduleJobId);
         parameters.setFired(context.getFireTime());
         parameters.setScheduled(context.getScheduledFireTime());
 
         try {
-            executorService.executeAutomaticJob(parameters);
+            executorService.executeAutomaticJob(scheduleJobId, parameters);
         } catch (Exception e) {
             LOGGER.error("Fail to execute job with id : " + scheduleJobId, e);
         }

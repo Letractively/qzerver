@@ -12,10 +12,11 @@ public interface ScheduleJobExecutorService {
 
     /**
      * Execute schedule job (initiated by Quartz trigger)
+     * @param scheduleJobId Schedule job identifier
      * @param parameters Execution parameters
      * @return Status of execution
      */
-    ScheduleExecution executeAutomaticJob(AutomaticJobExecutionParameters parameters);
+    ScheduleExecution executeAutomaticJob(long scheduleJobId, AutomaticJobExecutionParameters parameters);
 
     /**
      * Execute schedule job (inititated manually)

@@ -80,4 +80,9 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+    @Override
+    public String toString() {
+        return "ScheduleAction{}";
+    }
 }

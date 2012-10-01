@@ -120,11 +120,13 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setEnabled(parameters.isEnabled());
         scheduleJob.setStandby(false);
         scheduleJob.setName(parameters.getName());
+        scheduleJob.setAllNodes(parameters.isAllNodes());
         scheduleJob.setDescription(parameters.getDescription());
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
         scheduleJob.setStrategy(parameters.getStrategy());
         scheduleJob.setTrials(parameters.getTrials());
+        scheduleJob.setTimeout(parameters.getTimeout());
 
         businessEntityDao.save(scheduleJob);
 

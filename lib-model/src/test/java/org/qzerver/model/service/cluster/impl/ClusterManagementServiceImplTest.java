@@ -7,7 +7,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.qzerver.base.AbstractModelTest;
+import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public class ClusterManagementServiceImplTest extends AbstractModelTest {
+public class ClusterManagementServiceImplTest extends AbstractTransactionalTest {
 
     private IMocksControl control;
 
