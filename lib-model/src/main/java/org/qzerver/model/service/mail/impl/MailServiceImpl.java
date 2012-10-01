@@ -62,7 +62,7 @@ public class MailServiceImpl implements MailService {
             .build();
 
         Object[] subjectArguments = {
-            execution.getJob().getName()
+            execution.getName()
         };
 
         sendTemplatedMail(NAME_JOB_FAILED, attributes, subjectArguments);

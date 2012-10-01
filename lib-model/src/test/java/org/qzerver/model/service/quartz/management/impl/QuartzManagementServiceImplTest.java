@@ -13,6 +13,7 @@ import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
+import org.qzerver.model.service.job.executor.dto.ManualJobExecutionParameters;
 import org.qzerver.system.quartz.QzerverJobListener;
 import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -321,7 +322,7 @@ public class QuartzManagementServiceImplTest {
         }
 
         @Override
-        public ScheduleExecution executeManualJob(long scheduleJobId) {
+        public ScheduleExecution executeManualJob(long scheduleJobId, ManualJobExecutionParameters parameters) {
             throw new UnsupportedOperationException("Should never happen here");
         }
 

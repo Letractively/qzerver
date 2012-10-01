@@ -7,6 +7,7 @@ import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
@@ -81,6 +82,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
         scheduleExecution.setForced(parameters.isManual());
+        scheduleExecution.setComment(parameters.getComment());
         scheduleExecution.setStatus(ScheduleExecutionStatus.SUCCEED);
         scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
@@ -88,37 +90,60 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         String hostName = StringUtils.left(node, ScheduleExecution.MAX_NODE_LENGTH);
         scheduleExecution.setHostname(hostName);
 
-        // Check if cluster group is specified for the job
+        List<ScheduleExecutionNode> nodes = selectExecutionNodes(scheduleJob, parameters);
+        for (ScheduleExecutionNode node : nodes) {
+            node.setExecution(scheduleExecution);
+            scheduleExecution.getNodes().add(node);
+        }
+
+        businessEntityDao.save(scheduleExecution);
+
+        return scheduleExecution;
+    }
+
+    private List<ScheduleExecutionNode> selectExecutionNodes(ScheduleJob scheduleJob,
+        StartExecutionParameters parameters)
+    {
+        // If specific address list is set then use it
+        if (CollectionUtils.isNotEmpty(parameters.getAddresses())) {
+            List<String> addresses = parameters.getAddresses();
+            List<ScheduleExecutionNode> result = new ArrayList<ScheduleExecutionNode>(addresses.size());
+            for (int i = 0, size = addresses.size(); i < size; i++) {
+                String address = parameters.getAddresses().get(i);
+                ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
+                executionNode.setOrderIndex(i);
+                executionNode.setLocalhost(false);
+                executionNode.setAddress(address);
+                result.add(executionNode);
+            }
+            return result;
+        }
+
+        // If cluster is set then choose some nodes to work on
         ClusterGroup clusterGroup = scheduleJob.getCluster();
         if (clusterGroup != null) {
-            // If cluster is set then choose some nodes to work on
-            List<ClusterNode> selectedNodes = selectJobNodes(scheduleJob);
+            List<ClusterNode> selectedNodes = selectClusterNodes(scheduleJob);
+            List<ScheduleExecutionNode> result = new ArrayList<ScheduleExecutionNode>(selectedNodes.size());
             for (int i = 0, size = selectedNodes.size(); i < size; i++) {
                 ClusterNode clusterNode = selectedNodes.get(i);
                 ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
                 executionNode.setOrderIndex(i);
                 executionNode.setLocalhost(false);
                 executionNode.setAddress(clusterNode.getAddress());
-                executionNode.setExecution(scheduleExecution);
-                scheduleExecution.getNodes().add(executionNode);
+                result.add(executionNode);
             }
-        } else {
-            // If cluster is not set then the only node is 'localhost' node
-            ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
-            executionNode.setOrderIndex(0);
-            executionNode.setLocalhost(true);
-            executionNode.setAddress("localhost");
-            executionNode.setExecution(scheduleExecution);
-            scheduleExecution.getNodes().add(executionNode);
+            return result;
         }
 
-        // Save created execution entity
-        businessEntityDao.save(scheduleExecution);
-
-        return scheduleExecution;
+        // If cluster is not set then the only node is 'localhost' node
+        ScheduleExecutionNode executionNode = new ScheduleExecutionNode();
+        executionNode.setOrderIndex(0);
+        executionNode.setLocalhost(true);
+        executionNode.setAddress("localhost");
+        return Collections.singletonList(executionNode);
     }
 
-    private List<ClusterNode> selectJobNodes(ScheduleJob scheduleJob) {
+    private List<ClusterNode> selectClusterNodes(ScheduleJob scheduleJob) {
         ClusterGroup clusterGroup = scheduleJob.getCluster();
 
         List<ClusterNode> selectedNodes;
@@ -126,13 +151,13 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         // Choose nodes depending on the selection strategy
         switch (scheduleJob.getStrategy()) {
             case INDEXED:
-                selectedNodes = selectJobNodesInIndexedOrder(clusterGroup);
+                selectedNodes = selectClusterNodesInIndexedOrder(clusterGroup);
                 break;
             case RANDOM:
-                selectedNodes = selectJobNodesInRandomOrder(clusterGroup);
+                selectedNodes = selectClusterNodesInRandomOrder(clusterGroup);
                 break;
             case CIRCULAR:
-                selectedNodes = selectJobNodesInCircularOrder(clusterGroup);
+                selectedNodes = selectClusterNodesInCircularOrder(clusterGroup);
                 break;
             default:
                 throw new IllegalStateException("Unknown strategy: " + scheduleJob.getStrategy());
@@ -148,7 +173,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         return selectedNodes;
     }
 
-    private List<ClusterNode> selectJobNodesInIndexedOrder(ClusterGroup clusterGroup) {
+    private List<ClusterNode> selectClusterNodesInIndexedOrder(ClusterGroup clusterGroup) {
         List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
         // "line" strategy - always start from the first active node
@@ -161,7 +186,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         return selectedNodes;
     }
 
-    private List<ClusterNode> selectJobNodesInRandomOrder(ClusterGroup clusterGroup) {
+    private List<ClusterNode> selectClusterNodesInRandomOrder(ClusterGroup clusterGroup) {
         List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
         // "random" strategy - choose active nodes in random order
@@ -176,7 +201,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         return selectedNodes;
     }
 
-    private List<ClusterNode> selectJobNodesInCircularOrder(ClusterGroup clusterGroup) {
+    private List<ClusterNode> selectClusterNodesInCircularOrder(ClusterGroup clusterGroup) {
         List<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(clusterGroup.getNodes().size());
 
         // "circle" strategy - step index in cluster and get all active nodes
@@ -290,9 +315,11 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     @Transactional(readOnly = true)
     public ScheduleExecution findExecution(long scheduleExecutionId) {
         ScheduleExecution scheduleExecution = businessEntityDao.findById(ScheduleExecution.class, scheduleExecutionId);
+
         Hibernate.initialize(scheduleExecution.getResults());
         Hibernate.initialize(scheduleExecution.getNodes());
         Hibernate.initialize(scheduleExecution.getAction());
+
         return scheduleExecution;
     }
 

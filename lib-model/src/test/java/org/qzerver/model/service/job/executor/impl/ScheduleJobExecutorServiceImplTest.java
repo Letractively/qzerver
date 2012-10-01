@@ -2,6 +2,7 @@ package org.qzerver.model.service.job.executor.impl;
 
 import com.gainmatrix.lib.time.ChronometerUtils;
 import com.gainmatrix.lib.time.impl.StubChronometer;
+import com.google.common.collect.Lists;
 import junit.framework.Assert;
 import org.easymock.*;
 import org.junit.Before;
@@ -15,6 +16,7 @@ import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
+import org.qzerver.model.service.job.executor.dto.ManualJobExecutionParameters;
 import org.qzerver.model.service.job.management.ScheduleJobManagementService;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.mail.MailService;
@@ -176,7 +178,11 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
         control.replay();
 
-        ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeManualJob(scheduleJob.getId());
+        ManualJobExecutionParameters jobExecutionParameters = new ManualJobExecutionParameters();
+        jobExecutionParameters.setComment("Test comment");
+
+        ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeManualJob(scheduleJob.getId(),
+            jobExecutionParameters);
         Assert.assertNotNull(scheduleExecution);
 
         control.verify();
@@ -186,6 +192,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
         scheduleExecution = scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertEquals(ScheduleExecutionStatus.SUCCEED, scheduleExecution.getStatus());
+        Assert.assertEquals("Test comment", scheduleExecution.getComment());
         Assert.assertEquals(2, scheduleExecution.getNodes().size());
         Assert.assertEquals(1, scheduleExecution.getResults().size());
 
@@ -199,6 +206,68 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleExecutionNode = scheduleExecution.getNodes().get(1);
         Assert.assertNotNull(scheduleExecutionNode);
         Assert.assertEquals(clusterNode1.getAddress(), scheduleExecutionNode.getAddress());
+        scheduleExecutionResult = scheduleExecutionNode.getResult();
+        Assert.assertNull(scheduleExecutionResult);
+    }
+
+    @Test
+    public void testNormalManualWithAddressSingleExecution() throws Exception {
+        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
+        jobCreateParameters.setName("Test Job");
+        jobCreateParameters.setDescription("Nothing to do");
+        jobCreateParameters.setTimezone("UTC");
+        jobCreateParameters.setCron("0 0 0 * * ?");
+        jobCreateParameters.setEnabled(true);
+        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        jobCreateParameters.setAllNodes(false);
+        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
+        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        quartzManagementService.disableJob(scheduleJob.getId());
+
+        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
+
+        control.reset();
+
+        EasyMock.expect(actionAgent.executeAction(
+            EasyMock.anyLong(),
+            EasyMock.capture(scheduleActionCapture),
+            EasyMock.eq("192.168.1.1")
+        )).andReturn(new ActionResultStub(true));
+
+        control.replay();
+
+        ManualJobExecutionParameters jobExecutionParameters = new ManualJobExecutionParameters();
+        jobExecutionParameters.setComment("Test comment");
+        jobExecutionParameters.setAddresses(Lists.newArrayList("192.168.1.1", "192.168.1.2"));
+
+        ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeManualJob(scheduleJob.getId(),
+            jobExecutionParameters);
+        Assert.assertNotNull(scheduleExecution);
+
+        control.verify();
+
+        ScheduleExecutionNode scheduleExecutionNode;
+        ScheduleExecutionResult scheduleExecutionResult;
+
+        scheduleExecution = scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
+        Assert.assertEquals(ScheduleExecutionStatus.SUCCEED, scheduleExecution.getStatus());
+        Assert.assertEquals("Test comment", scheduleExecution.getComment());
+        Assert.assertEquals(2, scheduleExecution.getNodes().size());
+        Assert.assertEquals(1, scheduleExecution.getResults().size());
+
+        scheduleExecutionNode = scheduleExecution.getNodes().get(0);
+        Assert.assertNotNull(scheduleExecutionNode);
+        Assert.assertEquals("192.168.1.1", scheduleExecutionNode.getAddress());
+        scheduleExecutionResult = scheduleExecutionNode.getResult();
+        Assert.assertNotNull(scheduleExecutionResult);
+        Assert.assertTrue(scheduleExecutionResult.isSucceed());
+
+        scheduleExecutionNode = scheduleExecution.getNodes().get(1);
+        Assert.assertNotNull(scheduleExecutionNode);
+        Assert.assertEquals("192.168.1.2", scheduleExecutionNode.getAddress());
         scheduleExecutionResult = scheduleExecutionNode.getResult();
         Assert.assertNull(scheduleExecutionResult);
     }

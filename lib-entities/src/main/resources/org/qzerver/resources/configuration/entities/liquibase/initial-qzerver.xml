@@ -228,6 +228,9 @@
             <column name="hostname" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
+            <column name="comment" type="VARCHAR(1024)">
+                <constraints nullable="true"/>
+            </column>
             <column name="schedule_job_id" type="BIGINT">
                 <constraints nullable="true"/>
             </column>

@@ -24,7 +24,7 @@ public abstract class AbstractModelTest {
     private StubChronometer chronometer;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUpModelTest() throws Exception {
         chronometer.now();
     }
 

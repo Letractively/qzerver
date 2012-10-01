@@ -27,7 +27,12 @@ public enum ScheduleExecutionStatus {
     /**
      * Duration of execution was limited and failed
      */
-    TIMEOUT(4);
+    TIMEOUT(4),
+
+    /**
+     * No nodes available (node list is empty because cluster is empty or all nodes are disabled)
+     */
+    EMPTYNODES(5);
 
     ScheduleExecutionStatus(int ordinal) {
         Preconditions.checkState(this.ordinal() == ordinal);

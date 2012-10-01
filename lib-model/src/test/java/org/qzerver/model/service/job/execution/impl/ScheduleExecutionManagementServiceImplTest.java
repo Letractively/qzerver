@@ -152,21 +152,21 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new StubActionResult(true));
+            new ActionResultStub(true));
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.startExecutionResult(scheduleExecutionNode2.getId());
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new StubActionResult(true));
+            new ActionResultStub(true));
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.startExecutionResult(scheduleExecutionNode3.getId());
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new StubActionResult(false));
+            new ActionResultStub(false));
         Assert.assertNotNull(scheduleExecutionResult);
 
         entityManager.flush();
@@ -271,11 +271,11 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
 
     }
 
-    private static class StubActionResult implements ActionResult {
+    private static class ActionResultStub implements ActionResult {
 
         private boolean succeed;
 
-        private StubActionResult(boolean succeed) {
+        private ActionResultStub(boolean succeed) {
             this.succeed = succeed;
         }
 

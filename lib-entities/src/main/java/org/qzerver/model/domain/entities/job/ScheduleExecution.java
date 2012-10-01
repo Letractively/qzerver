@@ -15,6 +15,8 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_NODE_LENGTH = 128;
 
+    public static final int MAX_COMMENT_LENGTH = 1024;
+
     private Long id;
 
     /**
@@ -114,6 +116,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     @NotBlank
     @Length(max = MAX_NODE_LENGTH)
     private String hostname;
+
+    /**
+     * Some comment on an execution (specially for manual execution)
+     */
+    @Length(max = MAX_COMMENT_LENGTH)
+    private String comment;
 
     public ScheduleExecution() {
         super(BusinessModelVersionHolder.VERSION);
@@ -270,6 +278,13 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.strategy = strategy;
     }
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }
 
 

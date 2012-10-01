@@ -5,6 +5,7 @@ import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.gainmatrix.lib.time.ChronometerTimer;
+import org.apache.commons.collections.CollectionUtils;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
@@ -15,6 +16,7 @@ import org.qzerver.model.service.job.execution.ScheduleExecutionManagementServic
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
+import org.qzerver.model.service.job.executor.dto.ManualJobExecutionParameters;
 import org.qzerver.model.service.mail.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +59,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         executionParameters.setScheduled(parameters.getScheduled());
         executionParameters.setFired(parameters.getFired());
         executionParameters.setManual(false);
+        executionParameters.setComment(null);
+        executionParameters.setAddresses(null);
 
         ScheduleExecution execution = executeJob(scheduleJobId, executionParameters);
 
@@ -68,7 +72,9 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     }
 
     @Override
-    public ScheduleExecution executeManualJob(long scheduleJobId) {
+    public ScheduleExecution executeManualJob(long scheduleJobId, ManualJobExecutionParameters parameters) {
+        BeanValidationUtils.checkValidity(parameters, beanValidator);
+
         LOGGER.debug("Job [id={}] will be executed (manual)", scheduleJobId);
 
         Date now = chronometer.getCurrentMoment();
@@ -77,6 +83,8 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         executionParameters.setScheduled(now);
         executionParameters.setFired(now);
         executionParameters.setManual(true);
+        executionParameters.setComment(parameters.getComment());
+        executionParameters.setAddresses(parameters.getAddresses());
 
         return executeJob(scheduleJobId, executionParameters);
     }
@@ -100,7 +108,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 scheduleExecution = executionManagementService.finishExecution(scheduleExecution.getId(), status);
             }
         } catch (AbstractServiceException e) {
-            throw new SystemIntegrityException("Fail to execute", e);
+            throw new SystemIntegrityException("Fail to finish execution", e);
         }
 
         return scheduleExecution;
@@ -109,6 +117,11 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution)
         throws AbstractServiceException
     {
+        // Check if node list not empty
+        if (CollectionUtils.isEmpty(scheduleExecution.getNodes())) {
+            return ScheduleExecutionStatus.EMPTYNODES;
+        }
+
         // Remember when the process started
         ChronometerTimer timer = new ChronometerTimer(chronometer);
 
@@ -124,7 +137,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
             ScheduleExecution scheduleExecutionReloaded =
                 executionManagementService.findExecution(scheduleExecution.getId());
             if (scheduleExecutionReloaded.isCancelled()) {
-                LOGGER.debug("Execution [{}] is cancelled", scheduleExecution.getName());
+                LOGGER.debug("Execution [{}] is cancelled", scheduleExecution.getId());
                 return ScheduleExecutionStatus.CANCELED;
             }
 
@@ -137,14 +150,14 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
             // If last action succeedes break the node loop
             if (scheduleExecutionResult.isSucceed()) {
                 LOGGER.debug("Success execution [{}] on node [{}]",
-                    scheduleExecution.getName(), currentNode.getAddress());
+                    scheduleExecution.getId(), currentNode.getAddress());
                 succeedNodes++;
                 if (!scheduleExecution.isAllNodes()) {
                     return ScheduleExecutionStatus.SUCCEED;
                 }
             } else {
                 LOGGER.debug("Failed execution [{}] on node [{}]",
-                    scheduleExecution.getName(), currentNode.getAddress());
+                    scheduleExecution.getId(), currentNode.getAddress());
             }
 
             // Are there any other pending nodes?
@@ -152,7 +165,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 // Check timeout
                 if (scheduleExecution.getTimeout() > 0) {
                     if (timer.elapsed() > scheduleExecution.getTimeout()) {
-                        LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getName());
+                        LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getId());
                         return ScheduleExecutionStatus.TIMEOUT;
                     }
                 }
@@ -171,7 +184,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     protected ScheduleExecutionResult executeJobNode(ScheduleExecution scheduleExecution, ScheduleExecutionNode node)
         throws AbstractServiceException
     {
-        LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getName(), node.getAddress());
+        LOGGER.debug("Start execution [{}] on node [{}]", scheduleExecution.getId(), node.getAddress());
 
         // Register node execution start, execute and register finish
         ScheduleExecutionResult scheduleExecutionResult =
