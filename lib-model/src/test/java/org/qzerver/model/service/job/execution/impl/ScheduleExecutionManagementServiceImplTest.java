@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import com.gainmatrix.lib.time.impl.StubChronometer;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -120,6 +121,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
             scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertNotNull(scheduleExecutionModified);
         Assert.assertEquals(scheduleExecution, scheduleExecutionModified);
+        Assert.assertEquals(ScheduleExecutionStatus.INPROGRESS, scheduleExecutionModified.getStatus());
         Assert.assertEquals(3, scheduleExecutionModified.getNodes().size());
 
         ScheduleExecutionNode scheduleExecutionNode1 = scheduleExecutionModified.getNodes().get(0);
@@ -254,6 +256,83 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         Assert.assertNotNull(scheduleExecutionModified);
         Assert.assertNotNull(scheduleExecutionModified.getFinished());
         Assert.assertFalse(scheduleExecutionModified.isCancelled());
+    }
+
+    @Test
+    public void testSpecifiedCreation() throws Exception {
+        StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
+        startExecutionParameters.setAddresses(Lists.newArrayList("192.168.1.1", "192.168.1.2"));
+
+        ScheduleExecution scheduleExecution =
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
+        Assert.assertNotNull(scheduleExecution);
+        Assert.assertNull(scheduleExecution.getFinished());
+
+        entityManager.flush();
+        entityManager.clear();
+
+        ScheduleExecution scheduleExecutionModified =
+            scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
+        Assert.assertNotNull(scheduleExecutionModified);
+        Assert.assertEquals(scheduleExecution, scheduleExecutionModified);
+        Assert.assertEquals("Test comment", scheduleExecutionModified.getComment());
+        Assert.assertEquals(ScheduleExecutionStatus.INPROGRESS, scheduleExecutionModified.getStatus());
+        Assert.assertEquals(2, scheduleExecutionModified.getNodes().size());
+
+        ScheduleExecutionNode scheduleExecutionNode;
+
+        scheduleExecutionNode = scheduleExecutionModified.getNodes().get(0);
+        Assert.assertEquals("192.168.1.1", scheduleExecutionNode.getAddress());
+
+        scheduleExecutionNode = scheduleExecutionModified.getNodes().get(1);
+        Assert.assertEquals("192.168.1.2", scheduleExecutionNode.getAddress());
+    }
+
+    @Test
+    public void testLocalhostCreation() throws Exception {
+        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
+        parameters.setName("Test Job");
+        parameters.setDescription("Nothing to do");
+        parameters.setTimezone("UTC");
+        parameters.setCron("0 0 0 * * ?");
+        parameters.setEnabled(true);
+        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
+        parameters.setClusterGroupId(null);
+        parameters.setScheduleGroupId(scheduleGroup.getId());
+        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+
+        ScheduleJob localhostScheduleJob = scheduleJobManagementService.createJob(parameters);
+
+        StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
+
+        ScheduleExecution scheduleExecution =
+            scheduleExecutionManagementService.startExecution(localhostScheduleJob.getId(), startExecutionParameters);
+        Assert.assertNotNull(scheduleExecution);
+        Assert.assertNull(scheduleExecution.getFinished());
+
+        entityManager.flush();
+        entityManager.clear();
+
+        ScheduleExecution scheduleExecutionModified =
+            scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
+        Assert.assertNotNull(scheduleExecutionModified);
+        Assert.assertEquals(scheduleExecution, scheduleExecutionModified);
+        Assert.assertEquals("Test comment", scheduleExecutionModified.getComment());
+        Assert.assertEquals(ScheduleExecutionStatus.INPROGRESS, scheduleExecutionModified.getStatus());
+        Assert.assertEquals(1, scheduleExecutionModified.getNodes().size());
+
+        ScheduleExecutionNode scheduleExecutionNode;
+
+        scheduleExecutionNode = scheduleExecutionModified.getNodes().get(0);
+        Assert.assertEquals("localhost", scheduleExecutionNode.getAddress());
     }
 
     @Test

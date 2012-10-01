@@ -10,29 +10,34 @@ public enum ScheduleExecutionStatus {
     SUCCEED(0),
 
     /**
+     * Execution is created and in progress
+     */
+    INPROGRESS(1),
+
+    /**
      * All nodes failed
      */
-    FAILED(1),
+    FAILED(2),
 
     /**
      * Execution was cancelled
      */
-    CANCELED(2),
+    CANCELED(3),
 
     /**
      * Unexpected exception was thrown (internal error)
      */
-    EXCEPTION(3),
+    EXCEPTION(4),
 
     /**
      * Duration of execution was limited and failed
      */
-    TIMEOUT(4),
+    TIMEOUT(5),
 
     /**
      * No nodes available (node list is empty because cluster is empty or all nodes are disabled)
      */
-    EMPTYNODES(5);
+    EMPTYNODES(6);
 
     ScheduleExecutionStatus(int ordinal) {
         Preconditions.checkState(this.ordinal() == ordinal);
