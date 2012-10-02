@@ -1,6 +1,7 @@
 package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
+import org.hibernate.validator.constraints.Length;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import javax.validation.constraints.NotNull;
@@ -11,13 +12,16 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
 
     public static final int MAX_DEFINITION_LENGTH = 8 * 1024 * 1024;
 
+    public static final int MAX_TYPE_LENGTH = 1024;
+
     private Long id;
 
     /**
      * Action type
      */
     @NotNull
-    private ScheduleActionType type = ScheduleActionType.LOCAL_COMMAND;
+    @Length(max = MAX_TYPE_LENGTH)
+    private String type;
 
     /**
      * Action configuration (XML or JSON)
@@ -57,11 +61,11 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
         this.definition = definition;
     }
 
-    public ScheduleActionType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(ScheduleActionType type) {
+    public void setType(String type) {
         this.type = type;
     }
 

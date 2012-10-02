@@ -13,8 +13,7 @@
                 <generated-value strategy="TABLE" generator="globalTableGenerator"/>
             </id>
             <basic name="type">
-                <column name="type" nullable="false"/>
-                <enumerated>ORDINAL</enumerated>
+                <column name="type" nullable="false" length="1024"/>
             </basic>
             <basic name="archived">
                 <column name="archived" nullable="false"/>

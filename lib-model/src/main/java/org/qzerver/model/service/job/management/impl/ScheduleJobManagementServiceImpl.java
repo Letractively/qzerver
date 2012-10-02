@@ -120,7 +120,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         ScheduleAction scheduleAction = new ScheduleAction();
         scheduleAction.setDefinition("<xml></xml>".getBytes());
-        scheduleAction.setType(parameters.getActionType());
+        scheduleAction.setType("none");
         scheduleAction.setCreated(now);
         scheduleAction.setArchived(false);
 

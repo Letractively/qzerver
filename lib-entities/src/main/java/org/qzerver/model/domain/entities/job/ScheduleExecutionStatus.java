@@ -5,14 +5,14 @@ import com.google.common.base.Preconditions;
 public enum ScheduleExecutionStatus {
 
     /**
-     * Execution succeed
-     */
-    SUCCEED(0),
-
-    /**
      * Execution is created and in progress
      */
-    INPROGRESS(1),
+    INPROGRESS(0),
+
+    /**
+     * Execution succeed
+     */
+    SUCCEED(1),
 
     /**
      * All nodes failed

@@ -86,7 +86,7 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      * Status of finished execution
      */
     @NotNull
-    private ScheduleExecutionStatus status = ScheduleExecutionStatus.SUCCEED;
+    private ScheduleExecutionStatus status = ScheduleExecutionStatus.INPROGRESS;
 
     /**
      * Flag indicates that execution must cancel all other pending nodes

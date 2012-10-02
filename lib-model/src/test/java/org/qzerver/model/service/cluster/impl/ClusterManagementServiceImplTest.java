@@ -12,7 +12,6 @@ import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.job.ScheduleActionType;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleGroup;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
@@ -278,7 +277,6 @@ public class ClusterManagementServiceImplTest extends AbstractTransactionalTest 
         parameters.setTimezone("UTC");
         parameters.setCron("0 0 0 * * ?");
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);

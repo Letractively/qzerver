@@ -4,7 +4,6 @@ import org.qzerver.model.domain.action.ActionDefinition;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.action.marshaller.ActionMarshaller;
 import org.qzerver.model.domain.action.marshaller.ActionMarshallerException;
-import org.qzerver.model.domain.entities.job.ScheduleActionType;
 
 public class ActionJsonMarshaller implements ActionMarshaller {
 
@@ -19,14 +18,14 @@ public class ActionJsonMarshaller implements ActionMarshaller {
     }
 
     @Override
-    public ActionDefinition unmarshallDefinition(ScheduleActionType type, byte[] definition)
+    public ActionDefinition unmarshallDefinition(String type, byte[] definition)
         throws ActionMarshallerException
     {
         return null;
     }
 
     @Override
-    public ActionResult unmarshallResult(ScheduleActionType type, byte[] result)
+    public ActionResult unmarshallResult(String type, byte[] result)
         throws ActionMarshallerException
     {
         return null;

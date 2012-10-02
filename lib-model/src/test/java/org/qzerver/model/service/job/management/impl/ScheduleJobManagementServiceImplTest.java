@@ -140,7 +140,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(null);
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -196,7 +195,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -252,7 +250,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -306,7 +303,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -374,7 +370,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -442,7 +437,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron1);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -507,7 +501,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         parameters.setTimezone(DEFAULT_TIMEZONE);
         parameters.setCron(cron1);
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);

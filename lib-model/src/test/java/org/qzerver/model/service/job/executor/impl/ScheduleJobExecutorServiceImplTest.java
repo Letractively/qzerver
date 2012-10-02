@@ -96,7 +96,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -157,7 +156,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -218,7 +216,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -280,7 +277,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setTimeout(1000);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -365,7 +361,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setTimeout(1000);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -434,7 +429,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setTimeout(1000);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -507,7 +501,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -580,7 +573,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -649,7 +641,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -722,7 +713,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -787,7 +777,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(false);
         jobCreateParameters.setTrials(1);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -847,7 +836,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -916,7 +904,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setTrials(1);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -972,7 +959,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -1045,7 +1031,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -1118,7 +1103,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
         jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
@@ -1183,7 +1167,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setTimeout(1000);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());
@@ -1256,7 +1239,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobCreateParameters.setTimezone("UTC");
         jobCreateParameters.setCron("0 0 0 * * ?");
         jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         jobCreateParameters.setTimeout(1000);
         jobCreateParameters.setAllNodes(true);
         jobCreateParameters.setClusterGroupId(clusterGroup.getId());

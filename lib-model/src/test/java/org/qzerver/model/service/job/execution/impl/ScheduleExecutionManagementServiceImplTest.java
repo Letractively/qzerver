@@ -89,7 +89,6 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         parameters.setTimezone("UTC");
         parameters.setCron("0 0 0 * * ?");
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(clusterGroup.getId());
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
@@ -300,7 +299,6 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         parameters.setTimezone("UTC");
         parameters.setCron("0 0 0 * * ?");
         parameters.setEnabled(true);
-        parameters.setActionType(ScheduleActionType.LOCAL_COMMAND);
         parameters.setClusterGroupId(null);
         parameters.setScheduleGroupId(scheduleGroup.getId());
         parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);

@@ -2,7 +2,6 @@ package org.qzerver.model.service.job.management.dto;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.entities.job.ScheduleActionType;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.system.validation.Cron;
@@ -30,9 +29,6 @@ public class ScheduleJobCreateParameters implements Serializable {
     private String timezone;
 
     @NotNull
-    private ScheduleActionType actionType;
-
-    @NotNull
     private ScheduleExecutionStrategy strategy = ScheduleExecutionStrategy.CIRCULAR;
 
     @Min(0)
@@ -48,14 +44,6 @@ public class ScheduleJobCreateParameters implements Serializable {
     private boolean enabled;
 
     private boolean allNodes;
-
-    public ScheduleActionType getActionType() {
-        return actionType;
-    }
-
-    public void setActionType(ScheduleActionType actionType) {
-        this.actionType = actionType;
-    }
 
     public String getCron() {
         return cron;
