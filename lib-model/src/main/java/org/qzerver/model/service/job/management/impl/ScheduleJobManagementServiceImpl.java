@@ -2,11 +2,13 @@ package org.qzerver.model.service.job.management.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
+import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
 import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
+import org.qzerver.model.dao.job.ScheduleGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.job.ScheduleAction;
@@ -26,6 +28,7 @@ import org.springframework.validation.Validator;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
 public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementService {
@@ -37,6 +40,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
     @NotNull
     private ScheduleJobDao scheduleJobDao;
+
+    @NotNull
+    private ScheduleGroupDao scheduleGroupDao;
 
     @NotNull
     private ScheduleExecutionDao scheduleExecutionDao;
@@ -74,6 +80,11 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
             Hibernate.initialize(scheduleGroup.getJobs());
         }
         return scheduleGroup;
+    }
+
+    @Override
+    public List<ScheduleGroup> findAllGroups(Extraction extraction) {
+        return scheduleGroupDao.findAll(extraction);
     }
 
     @Override
@@ -269,5 +280,10 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     @Required
     public void setQuartzManagementService(QuartzManagementService quartzManagementService) {
         this.quartzManagementService = quartzManagementService;
+    }
+
+    @Required
+    public void setScheduleGroupDao(ScheduleGroupDao scheduleGroupDao) {
+        this.scheduleGroupDao = scheduleGroupDao;
     }
 }

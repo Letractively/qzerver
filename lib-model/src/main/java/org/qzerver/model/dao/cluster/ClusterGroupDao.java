@@ -17,6 +17,6 @@ public interface ClusterGroupDao {
      * @param extraction Extraction
      * @return Group list
      */
-    List<ClusterGroup> findAllGroups(Extraction extraction);
+    List<ClusterGroup> findAll(Extraction extraction);
 
 }

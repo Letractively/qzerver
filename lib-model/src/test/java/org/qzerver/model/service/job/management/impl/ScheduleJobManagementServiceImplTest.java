@@ -2,6 +2,7 @@ package org.qzerver.model.service.job.management.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.time.impl.StubChronometer;
+import com.google.common.collect.Iterators;
 import junit.framework.Assert;
 import org.easymock.Capture;
 import org.easymock.CaptureType;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
+import org.qzerver.model.dao.job.ScheduleGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
@@ -24,6 +26,7 @@ import org.springframework.validation.Validator;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalTest {
 
@@ -50,6 +53,9 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
     @Resource
     private ScheduleJobDao scheduleJobDao;
 
+    @Resource
+    private ScheduleGroupDao scheduleGroupDao;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -66,10 +72,11 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         scheduleJobManagementService.setChronometer(chronometer);
         scheduleJobManagementService.setScheduleExecutionDao(scheduleExecutionDao);
         scheduleJobManagementService.setScheduleJobDao(scheduleJobDao);
+        scheduleJobManagementService.setScheduleGroupDao(scheduleGroupDao);
     }
 
     @Test
-    public void testClusters() {
+    public void testGroups() {
         // Create group
 
         ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
@@ -83,6 +90,11 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         scheduleGroupModified = scheduleJobManagementService.findGroup(scheduleGroup.getId());
         Assert.assertNotNull(scheduleGroupModified);
         Assert.assertEquals(scheduleGroup, scheduleGroupModified);
+
+        List<ScheduleGroup> scheduleGroups = scheduleJobManagementService.findAllGroups(null);
+        Assert.assertNotNull(scheduleGroups);
+        Assert.assertTrue(scheduleGroups.size() > 0);
+        Assert.assertTrue(Iterators.contains(scheduleGroups.iterator(), scheduleGroupModified));
 
         // Modify group
 

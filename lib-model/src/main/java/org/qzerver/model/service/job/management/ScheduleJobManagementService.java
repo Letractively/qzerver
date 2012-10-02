@@ -1,11 +1,14 @@
 package org.qzerver.model.service.job.management;
 
+import com.gainmatrix.lib.paging.Extraction;
 import org.qzerver.model.domain.entities.job.ScheduleGroup;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Schedule job management
@@ -32,6 +35,13 @@ public interface ScheduleJobManagementService {
      * @return Group entity
      */
     ScheduleGroup findGroup(long scheduleGroupId);
+
+    /**
+     * Find all groups
+     * @param extraction Extraction
+     * @return List of all groups
+     */
+    List<ScheduleGroup> findAllGroups(Extraction extraction);
 
     /**
      * Modify group

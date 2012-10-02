@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.sshcommand;
+package org.qzerver.model.domain.action.executor.sshcommand;
 
 import org.qzerver.model.domain.action.ActionDefinition;
 
@@ -67,6 +67,6 @@ public class SshCommandActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomethind() {
+    public void doSomething() {
     }
 }

@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.localcommand;
+package org.qzerver.model.domain.action.executor.localcommand;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

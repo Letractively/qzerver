@@ -13,4 +13,6 @@
 
     <bean id="scheduleExecutionDao" class="org.qzerver.model.dao.job.impl.ScheduleExecutionJpaDao"/>
 
+    <bean id="scheduleGroupDao" class="org.qzerver.model.dao.job.impl.ScheduleGroupJpaDao"/>
+
 </beans>

@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.localcommand;
+package org.qzerver.model.domain.action.executor.localcommand;
 
 import com.gainmatrix.lib.file.temporary.TemporaryFileFactory;
 import org.apache.commons.io.FileUtils;

@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.jmx;
+package org.qzerver.model.domain.action.executor.jmx;
 
 import org.qzerver.model.domain.action.ActionDefinition;
 
@@ -67,6 +67,6 @@ public class JmxActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomethind() {
+    public void doSomething() {
     }
 }

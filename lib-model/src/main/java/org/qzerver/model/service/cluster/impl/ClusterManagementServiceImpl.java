@@ -39,7 +39,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     @Override
     @Transactional(readOnly = true)
     public List<ClusterGroup> findAllGroups(Extraction extraction) {
-        return clusterGroupDao.findAllGroups(extraction);
+        return clusterGroupDao.findAll(extraction);
     }
 
     @Override

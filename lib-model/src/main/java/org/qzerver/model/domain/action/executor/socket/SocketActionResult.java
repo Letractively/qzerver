@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.socket;
+package org.qzerver.model.domain.action.executor.socket;
 
 import org.qzerver.model.domain.action.ActionResult;
 

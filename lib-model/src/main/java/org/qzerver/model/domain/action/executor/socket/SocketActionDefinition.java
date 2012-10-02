@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.socket;
+package org.qzerver.model.domain.action.executor.socket;
 
 import org.qzerver.model.domain.action.ActionDefinition;
 
@@ -25,6 +25,6 @@ public class SocketActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomethind() {
+    public void doSomething() {
     }
 }

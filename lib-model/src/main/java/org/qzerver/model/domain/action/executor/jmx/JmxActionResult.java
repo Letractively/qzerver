@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.jmx;
+package org.qzerver.model.domain.action.executor.jmx;
 
 import org.qzerver.model.domain.action.ActionResult;
 

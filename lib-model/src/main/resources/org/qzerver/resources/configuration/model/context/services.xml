@@ -4,6 +4,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
 
+    <!-- Domain -->
+
+    <bean id="actionMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionJsonMarshaller">
+    </bean>
+
+    <!-- Services -->
+
     <bean name="quartzManagementService" class="org.qzerver.model.service.quartz.management.impl.QuartzManagementServiceImpl">
         <property name="scheduler" ref="quartzScheduler"/>
     </bean>
@@ -28,6 +35,7 @@
         <property name="scheduleJobDao" ref="scheduleJobDao"/>
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
         <property name="quartzManagementService" ref="quartzManagementService"/>
+        <property name="scheduleGroupDao" ref="scheduleGroupDao"/>
         <property name="chronometer" ref="chronometer"/>
     </bean>
 

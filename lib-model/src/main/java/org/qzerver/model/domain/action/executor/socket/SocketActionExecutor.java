@@ -1,6 +1,6 @@
-package org.qzerver.model.domain.action.socket;
+package org.qzerver.model.domain.action.executor.socket;
 
-import org.qzerver.model.domain.action.ActionExecutor;
+import org.qzerver.model.domain.action.executor.ActionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

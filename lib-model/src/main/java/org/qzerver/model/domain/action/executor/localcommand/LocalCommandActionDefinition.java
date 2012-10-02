@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.localcommand;
+package org.qzerver.model.domain.action.executor.localcommand;
 
 import org.qzerver.model.domain.action.ActionDefinition;
 
@@ -98,6 +98,6 @@ public class LocalCommandActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomethind() {
+    public void doSomething() {
     }
 }

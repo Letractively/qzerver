@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.sshcommand;
+package org.qzerver.model.domain.action.executor.sshcommand;
 
 import org.qzerver.model.domain.action.ActionResult;
 

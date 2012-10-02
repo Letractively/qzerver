@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.http;
+package org.qzerver.model.domain.action.executor.http;
 
 import org.qzerver.model.domain.action.ActionDefinition;
 
@@ -83,6 +83,6 @@ public class HttpActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomethind() {
+    public void doSomething() {
     }
 }

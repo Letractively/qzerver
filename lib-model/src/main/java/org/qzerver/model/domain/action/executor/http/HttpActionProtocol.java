@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.http;
+package org.qzerver.model.domain.action.executor.http;
 
 public enum HttpActionProtocol {
 

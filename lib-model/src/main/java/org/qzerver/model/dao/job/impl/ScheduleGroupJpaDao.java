@@ -1,9 +1,9 @@
-package org.qzerver.model.dao.cluster.impl;
+package org.qzerver.model.dao.job.impl;
 
 import com.gainmatrix.lib.paging.Extraction;
-import org.qzerver.model.dao.cluster.ClusterGroupDao;
-import org.qzerver.model.domain.entities.cluster.ClusterGroup;
-import org.qzerver.model.domain.entities.cluster.ClusterGroup_;
+import org.qzerver.model.dao.job.ScheduleGroupDao;
+import org.qzerver.model.domain.entities.job.ScheduleGroup;
+import org.qzerver.model.domain.entities.job.ScheduleGroup_;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,25 +17,25 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Transactional(propagation = Propagation.MANDATORY)
-public class ClusterGroupJpaDao implements ClusterGroupDao {
+public class ScheduleGroupJpaDao implements ScheduleGroupDao {
 
     private EntityManager entityManager;
 
     @Override
-    public List<ClusterGroup> findAll(Extraction extraction) {
+    public List<ScheduleGroup> findAll(Extraction extraction) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<ClusterGroup> criteriaQuery = criteriaBuilder.createQuery(ClusterGroup.class);
-        Root<ClusterGroup> root = criteriaQuery.from(ClusterGroup.class);
-        root.fetch(ClusterGroup_.nodes, JoinType.LEFT);
+        CriteriaQuery<ScheduleGroup> criteriaQuery = criteriaBuilder.createQuery(ScheduleGroup.class);
+        Root<ScheduleGroup> root = criteriaQuery.from(ScheduleGroup.class);
+        root.fetch(ScheduleGroup_.jobs, JoinType.LEFT);
 
         // CHECKSTYLE-OFF: NestedMethodCall
         criteriaQuery.orderBy(
-            criteriaBuilder.asc(root.get(ClusterGroup_.name))
+            criteriaBuilder.asc(root.get(ScheduleGroup_.name))
         );
         // CHECKSTYLE-ON: NestedMethodCall
 
-        TypedQuery<ClusterGroup> typedQuery = entityManager.createQuery(criteriaQuery);
+        TypedQuery<ScheduleGroup> typedQuery = entityManager.createQuery(criteriaQuery);
         if (extraction != null) {
             typedQuery.setFirstResult(extraction.getOffset());
             typedQuery.setMaxResults(extraction.getCount());

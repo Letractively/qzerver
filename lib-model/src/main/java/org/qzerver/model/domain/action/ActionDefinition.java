@@ -5,6 +5,6 @@ package org.qzerver.model.domain.action;
  */
 public interface ActionDefinition {
 
-    void doSomethind();
+    void doSomething();
 
 }
