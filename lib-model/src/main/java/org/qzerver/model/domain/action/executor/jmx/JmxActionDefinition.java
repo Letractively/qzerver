@@ -6,6 +6,8 @@ import java.util.List;
 
 public class JmxActionDefinition implements ActionDefinition {
 
+    private static final String TYPE_IDENTIFIER = "http";
+
     private String url;
 
     private String username;
@@ -67,6 +69,7 @@ public class JmxActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomething() {
+    public String getType() {
+        return TYPE_IDENTIFIER;
     }
 }

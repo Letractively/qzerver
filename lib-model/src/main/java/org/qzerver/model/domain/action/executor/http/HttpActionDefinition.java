@@ -8,6 +8,8 @@ public class HttpActionDefinition implements ActionDefinition {
 
     private static final HttpActionProtocol DEFAULT_PROTOCOL = HttpActionProtocol.HTTP;
 
+    private static final String TYPE_IDENTIFIER = "http";
+
     private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 3000;
 
     private static final int DEFAULT_READ_TIMEOUT_MS = 600000;
@@ -83,6 +85,7 @@ public class HttpActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomething() {
+    public String getType() {
+        return TYPE_IDENTIFIER;
     }
 }

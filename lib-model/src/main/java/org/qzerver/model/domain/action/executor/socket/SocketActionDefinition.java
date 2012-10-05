@@ -4,6 +4,8 @@ import org.qzerver.model.domain.action.ActionDefinition;
 
 public class SocketActionDefinition implements ActionDefinition {
 
+    private static final String TYPE_IDENTIFIER = "socket";
+
     private byte[] message;
 
     private int port;
@@ -25,6 +27,8 @@ public class SocketActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomething() {
+    public String getType() {
+        return TYPE_IDENTIFIER;
     }
+
 }

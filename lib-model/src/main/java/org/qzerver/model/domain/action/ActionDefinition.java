@@ -5,6 +5,10 @@ package org.qzerver.model.domain.action;
  */
 public interface ActionDefinition {
 
-    void doSomething();
+    /**
+     * Return the unique string which describes this type of action
+     * @return Unique type identifier
+     */
+    String getType();
 
 }

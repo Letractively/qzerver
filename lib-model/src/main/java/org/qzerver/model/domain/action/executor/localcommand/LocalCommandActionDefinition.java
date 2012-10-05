@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class LocalCommandActionDefinition implements ActionDefinition {
 
+    private static final String TYPE_IDENTIFIER = "command.local";
+
     private String command;
 
     private List<String> parameters;
@@ -98,6 +100,7 @@ public class LocalCommandActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomething() {
+    public String getType() {
+        return TYPE_IDENTIFIER;
     }
 }

@@ -6,6 +6,8 @@ import java.util.List;
 
 public class SshCommandActionDefinition implements ActionDefinition {
 
+    private static final String TYPE_IDENTIFIER = "command.ssh";
+
     private int port;
 
     private String username;
@@ -67,6 +69,8 @@ public class SshCommandActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public void doSomething() {
+    public String getType() {
+        return TYPE_IDENTIFIER;
     }
+
 }
