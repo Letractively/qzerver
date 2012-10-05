@@ -1,6 +1,7 @@
 package org.qzerver.model.service.job.management.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
+import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.time.impl.StubChronometer;
 import com.google.common.collect.Iterators;
 import junit.framework.Assert;
@@ -91,7 +92,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         Assert.assertNotNull(scheduleGroupModified);
         Assert.assertEquals(scheduleGroup, scheduleGroupModified);
 
-        List<ScheduleGroup> scheduleGroups = scheduleJobManagementService.findAllGroups(null);
+        List<ScheduleGroup> scheduleGroups = scheduleJobManagementService.findAllGroups(Extraction.ALL);
         Assert.assertNotNull(scheduleGroups);
         Assert.assertTrue(scheduleGroups.size() > 0);
         Assert.assertTrue(Iterators.contains(scheduleGroups.iterator(), scheduleGroupModified));

@@ -1,6 +1,7 @@
 package org.qzerver.model.service.job.execution.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
+import com.gainmatrix.lib.paging.Extraction;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import com.gainmatrix.lib.time.impl.StubChronometer;
 import com.google.common.collect.Iterators;
@@ -140,7 +141,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
 
         // Search all executions
 
-        List<ScheduleExecution> scheduleExecutions = scheduleExecutionManagementService.findAll(null);
+        List<ScheduleExecution> scheduleExecutions = scheduleExecutionManagementService.findAll(Extraction.ALL);
         Assert.assertNotNull(scheduleExecutions);
         Assert.assertTrue(scheduleExecutions.size() > 0);
         Assert.assertTrue(Iterators.contains(scheduleExecutions.iterator(), scheduleExecution));
@@ -208,6 +209,12 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
             scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertNotNull(scheduleExecutionModified);
 
+        // Executions by job
+
+        scheduleExecutions = scheduleExecutionManagementService.findByJob(scheduleJob.getId(), Extraction.ALL);
+        Assert.assertNotNull(scheduleExecutions);
+        Assert.assertEquals(1, scheduleExecutions.size());
+        Assert.assertEquals(scheduleExecutionModified, scheduleExecutions.get(0));
     }
 
     @Test
@@ -335,17 +342,74 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
 
     @Test
     public void testFindFinished() throws Exception {
+        StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
 
+        // Execution 1 - finished
+
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
+
+        ScheduleExecution scheduleExecution1 =
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
+
+        scheduleExecutionManagementService.finishExecution(
+            scheduleExecution1.getId(), ScheduleExecutionStatus.SUCCEED);
+
+        // Execution 2 - non-finished
+
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:13.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:33:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
+
+        ScheduleExecution scheduleExecution2 =
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
+
+        // Check
+
+        List<ScheduleExecution> scheduleExecutions = scheduleExecutionManagementService.findFinished(Extraction.ALL);
+        Assert.assertNotNull(scheduleExecutions);
+        Assert.assertTrue(scheduleExecutions.size() > 0);
+        Assert.assertTrue(Iterators.contains(scheduleExecutions.iterator(), scheduleExecution1));
+        Assert.assertFalse(Iterators.contains(scheduleExecutions.iterator(), scheduleExecution2));
     }
 
     @Test
     public void testFindEngaged() throws Exception {
+        StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
 
-    }
+        // Execution 1 - finished
 
-    @Test
-    public void testFindByJob() throws Exception {
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:32:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
 
+        ScheduleExecution scheduleExecution1 =
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
+
+        scheduleExecutionManagementService.finishExecution(
+            scheduleExecution1.getId(), ScheduleExecutionStatus.SUCCEED);
+
+        // Execution 2 - non-finished
+
+        startExecutionParameters.setManual(false);
+        startExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-01-02 12:32:13.000 UTC"));
+        startExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-01-02 12:33:12.000 UTC"));
+        startExecutionParameters.setComment("Test comment");
+
+        ScheduleExecution scheduleExecution2 =
+            scheduleExecutionManagementService.startExecution(scheduleJob.getId(), startExecutionParameters);
+
+        // Check
+
+        List<ScheduleExecution> scheduleExecutions = scheduleExecutionManagementService.findEngaged(Extraction.ALL);
+        Assert.assertNotNull(scheduleExecutions);
+        Assert.assertTrue(scheduleExecutions.size() > 0);
+        Assert.assertFalse(Iterators.contains(scheduleExecutions.iterator(), scheduleExecution1));
+        Assert.assertTrue(Iterators.contains(scheduleExecutions.iterator(), scheduleExecution2));
     }
 
     private static class ActionResultStub implements ActionResult {

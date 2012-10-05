@@ -1,6 +1,7 @@
 package org.qzerver.model.service.cluster.impl;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
+import com.gainmatrix.lib.paging.Extraction;
 import com.google.common.collect.Iterators;
 import junit.framework.Assert;
 import org.easymock.EasyMock;
@@ -73,7 +74,7 @@ public class ClusterManagementServiceImplTest extends AbstractTransactionalTest 
         Assert.assertEquals("Test group", clusterGroupModified.getName());
         Assert.assertEquals(0, clusterGroupModified.getNodes().size());
 
-        List<ClusterGroup> allClusterGroups = clusterManagementService.findAllGroups(null);
+        List<ClusterGroup> allClusterGroups = clusterManagementService.findAllGroups(Extraction.ALL);
         Assert.assertNotNull(allClusterGroups);
         Assert.assertTrue(allClusterGroups.size() > 0);
         Assert.assertTrue(Iterators.contains(allClusterGroups.iterator(), clusterGroup));

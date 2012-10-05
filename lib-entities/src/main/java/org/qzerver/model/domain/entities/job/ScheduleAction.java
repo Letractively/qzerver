@@ -17,7 +17,7 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
     private Long id;
 
     /**
-     * Action type
+     * Action type (some kind of tag or class name which describes content in 'definition' property)
      */
     @NotNull
     @Length(max = MAX_TYPE_LENGTH)

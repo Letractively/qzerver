@@ -36,7 +36,7 @@ public class ClusterGroupJpaDao implements ClusterGroupDao {
         // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ClusterGroup> typedQuery = entityManager.createQuery(criteriaQuery);
-        if (extraction != null) {
+        if (Extraction.isRequired(extraction)) {
             typedQuery.setFirstResult(extraction.getOffset());
             typedQuery.setMaxResults(extraction.getCount());
         }

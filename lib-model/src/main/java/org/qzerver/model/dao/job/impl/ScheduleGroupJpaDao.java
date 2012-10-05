@@ -36,7 +36,7 @@ public class ScheduleGroupJpaDao implements ScheduleGroupDao {
         // CHECKSTYLE-ON: NestedMethodCall
 
         TypedQuery<ScheduleGroup> typedQuery = entityManager.createQuery(criteriaQuery);
-        if (extraction != null) {
+        if (Extraction.isRequired(extraction)) {
             typedQuery.setFirstResult(extraction.getOffset());
             typedQuery.setMaxResults(extraction.getCount());
         }

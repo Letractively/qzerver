@@ -20,5 +20,4 @@ public interface ActionAgent {
      */
     ActionResult executeAction(long scheduleExecutionId, ScheduleAction action, String address);
 
-
 }
