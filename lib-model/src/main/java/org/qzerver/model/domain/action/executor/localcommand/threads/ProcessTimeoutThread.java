@@ -1,4 +1,4 @@
-package org.qzerver.model.domain.action.executor.localcommand;
+package org.qzerver.model.domain.action.executor.localcommand.threads;
 
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;

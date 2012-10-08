@@ -1,5 +1,6 @@
-package org.qzerver.model.domain.action.executor.localcommand;
+package org.qzerver.model.domain.action.executor.localcommand.threads;
 
+import org.qzerver.model.domain.action.executor.localcommand.LocalCommandActionResultStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

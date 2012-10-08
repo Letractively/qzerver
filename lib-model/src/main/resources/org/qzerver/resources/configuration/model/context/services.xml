@@ -6,7 +6,10 @@
 
     <!-- Domain -->
 
-    <bean id="actionMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionJsonMarshaller">
+    <bean id="actionResultMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionResultJsonMarshaller">
+    </bean>
+
+    <bean id="actionDefinitionMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionDefinitionJsonMarshaller">
     </bean>
 
     <!-- Services -->
