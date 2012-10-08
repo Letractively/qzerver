@@ -8,6 +8,7 @@ import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
@@ -94,6 +95,18 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
      * Execute action on all nodes
      */
     private boolean allNodes;
+
+    /**
+     * When the job was created
+     */
+    @NotNull
+    private Date created;
+
+    /**
+     * When the job was modified
+     */
+    @NotNull
+    private Date modified;
 
     public ScheduleJob() {
         super(BusinessModelVersionHolder.VERSION);
@@ -210,5 +223,21 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
     }
 }

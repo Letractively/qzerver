@@ -42,6 +42,14 @@
             <basic name="strategy">
                 <column name="strategy" nullable="false"/>
             </basic>
+            <basic name="created">
+                <column name="created" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="modified">
+                <column name="modified" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
             <many-to-one name="cluster" fetch="LAZY" optional="true">
                 <join-column name="cluster_group_id" referenced-column-name="id" nullable="true"/>
             </many-to-one>

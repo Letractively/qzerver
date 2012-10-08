@@ -4,6 +4,7 @@ import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import org.hibernate.validator.constraints.Length;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -39,6 +40,18 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
      */
     @NotNull
     private Date created;
+
+    /**
+     * How many times the action was executed
+     */
+    @Min(0)
+    private int usedCount;
+
+    /**
+     * The last time the action was executed
+     */
+    @NotNull
+    private Date usedDate;
 
     public ScheduleAction() {
         super(BusinessModelVersionHolder.VERSION);
@@ -85,8 +98,25 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
         this.created = created;
     }
 
-    @Override
-    public String toString() {
-        return "ScheduleAction{}";
+    public int getUsedCount() {
+        return usedCount;
     }
+
+    public void setUsedCount(int usedCount) {
+        this.usedCount = usedCount;
+    }
+
+    public int incrementUsedCount() {
+        usedCount = usedCount + 1;
+        return usedCount;
+    }
+
+    public Date getUsedDate() {
+        return usedDate;
+    }
+
+    public void setUsedDate(Date usedDate) {
+        this.usedDate = usedDate;
+    }
+
 }

@@ -2,13 +2,14 @@ package org.qzerver.model.service.job.management.dto;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.qzerver.model.domain.entities.job.ScheduleAction;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.system.validation.Cron;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class ScheduleJobCreateParameters implements Serializable {
@@ -47,8 +48,11 @@ public class ScheduleJobCreateParameters implements Serializable {
     private boolean allNodes;
 
     @NotNull
-    @Valid
-    private ScheduleJobActionParameters action;
+    @Length(max = ScheduleAction.MAX_TYPE_LENGTH)
+    private String actionType;
+
+    @Size(max = ScheduleAction.MAX_DEFINITION_LENGTH)
+    private byte[] actionDefinition;
 
     public String getCron() {
         return cron;
@@ -138,12 +142,20 @@ public class ScheduleJobCreateParameters implements Serializable {
         this.timeout = timeout;
     }
 
-    public ScheduleJobActionParameters getAction() {
-        return action;
+    public String getActionType() {
+        return actionType;
     }
 
-    public void setAction(ScheduleJobActionParameters action) {
-        this.action = action;
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public byte[] getActionDefinition() {
+        return actionDefinition;
+    }
+
+    public void setActionDefinition(byte[] actionDefinition) {
+        this.actionDefinition = actionDefinition;
     }
 }
 

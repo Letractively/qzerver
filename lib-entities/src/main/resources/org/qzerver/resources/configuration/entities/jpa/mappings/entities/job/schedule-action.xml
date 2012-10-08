@@ -5,6 +5,17 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
         version="2.0">
 
+    <named-query name="ScheduleAction.removeOrphaned">
+        <query>
+            <![CDATA[
+
+                DELETE FROM ScheduleAction sa
+                    WHERE (sa.archived = true) AND (sa.usedCount = 0)
+
+        ]]>
+        </query>
+    </named-query>
+
     <entity name="ScheduleAction" class="org.qzerver.model.domain.entities.job.ScheduleAction">
         <table name="qz_action"/>
         <attributes>
@@ -24,6 +35,14 @@
             </basic>
             <basic name="created">
                 <column name="created" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="usedDate">
+                <column name="used_date" nullable="false"/>
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="usedCount">
+                <column name="used_count" nullable="false"/>
             </basic>
         </attributes>
     </entity>

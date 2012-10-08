@@ -35,6 +35,8 @@ public class JobDaoTest extends AbstractTransactionalTest {
         scheduleAction.setCreated(new Date(300000000000L));
         scheduleAction.setType("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
+        scheduleAction.setUsedDate(new Date(300000000000L));
+        scheduleAction.setUsedCount(2);
 
         BusinessEntityJpaDaoChecker.checkBusinessEntityDao(entityManager, businessEntityDao,
                 ScheduleAction.class, scheduleAction);
@@ -51,9 +53,13 @@ public class JobDaoTest extends AbstractTransactionalTest {
         scheduleAction.setCreated(new Date(300000000000L));
         scheduleAction.setType("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
+        scheduleAction.setUsedDate(new Date(300000000000L));
+        scheduleAction.setUsedCount(2);
         businessEntityDao.save(scheduleAction);
 
         ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setCreated(new Date(300000000000L));
+        scheduleJob.setModified(new Date(300000000000L));
         scheduleJob.setName("dgfsrgw");
         scheduleJob.setDescription("wgwrgwg");
         scheduleJob.setCron("0 * * * * ?");
@@ -83,9 +89,13 @@ public class JobDaoTest extends AbstractTransactionalTest {
         scheduleAction.setCreated(ChronometerUtils.parseMoment("2011-01-01 12:00:00.000 UTC"));
         scheduleAction.setType("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
+        scheduleAction.setUsedDate(new Date(300000000000L));
+        scheduleAction.setUsedCount(2);
         businessEntityDao.save(scheduleAction);
 
         ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setCreated(new Date(300000000000L));
+        scheduleJob.setModified(new Date(300000000000L));
         scheduleJob.setName("dgfsrgw");
         scheduleJob.setDescription("wgwrgwg");
         scheduleJob.setCron("0 * * * * ?");

@@ -4,13 +4,15 @@ import com.gainmatrix.lib.time.ChronometerUtils;
 import com.gainmatrix.lib.time.impl.StubChronometer;
 import com.google.common.collect.Lists;
 import junit.framework.Assert;
-import org.easymock.*;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IAnswer;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.agent.action.ActionAgentResult;
-import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
@@ -19,13 +21,13 @@ import org.qzerver.model.service.job.execution.ScheduleExecutionManagementServic
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
 import org.qzerver.model.service.job.executor.dto.ManualJobExecutionParameters;
 import org.qzerver.model.service.job.management.ScheduleJobManagementService;
+import org.qzerver.model.service.job.management.dto.ScheduleJobActionParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.mail.MailService;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.springframework.validation.Validator;
 
 import javax.annotation.Resource;
-import java.util.concurrent.Callable;
 
 public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
@@ -91,18 +93,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testNormalAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -150,18 +154,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testNormalManualSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -209,18 +215,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testNormalManualWithAddressSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -269,19 +277,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testSucceedTimeoutAutomaticSingleExecution1() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setTimeout(1000);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setTimeout(1000);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         IAnswer<ActionAgentResult> actionAgentAnswer1 = new IAnswer<ActionAgentResult>() {
@@ -353,19 +363,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testSucceedTimeoutAutomaticSingleExecution2() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setTimeout(1000);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setTimeout(1000);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
@@ -421,19 +433,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testFailedTimeoutAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setTimeout(1000);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setTimeout(1000);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
@@ -493,18 +507,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testCancelledTimeoutAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         final Capture<Long> scheduleExecutionCapture = new Capture<Long>();
@@ -566,18 +582,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testOneFailedAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -633,18 +651,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testAllFailedAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -704,18 +724,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testExceptionAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -767,19 +789,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testLimitedAutomaticSingleExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(false);
-        jobCreateParameters.setTrials(1);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setTrials(1);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -825,18 +849,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testNormalAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -892,19 +918,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testLimitedAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setTrials(1);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(true);
+        jobParameters.setTrials(1);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -946,18 +974,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testOneFailedAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -1017,18 +1047,20 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testAllFailedAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -1088,18 +1120,24 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testExceptionAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobActionParameters actionParameters = new ScheduleJobActionParameters();
+        actionParameters.setType("action.type");
+        actionParameters.setDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
+
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         control.reset();
@@ -1151,19 +1189,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testFailedTimeoutAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setTimeout(1000);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setTimeout(1000);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
@@ -1223,19 +1263,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
     @Test
     public void testCancelledTimeoutAutomaticAllExecution() throws Exception {
-        ScheduleJobCreateParameters jobCreateParameters = new ScheduleJobCreateParameters();
-        jobCreateParameters.setName("Test Job");
-        jobCreateParameters.setDescription("Nothing to do");
-        jobCreateParameters.setTimezone("UTC");
-        jobCreateParameters.setCron("0 0 0 * * ?");
-        jobCreateParameters.setEnabled(true);
-        jobCreateParameters.setTimeout(1000);
-        jobCreateParameters.setAllNodes(true);
-        jobCreateParameters.setClusterGroupId(clusterGroup.getId());
-        jobCreateParameters.setScheduleGroupId(scheduleGroup.getId());
-        jobCreateParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setTimeout(1000);
+        jobParameters.setAllNodes(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
         final Capture<Long> scheduleExecutionCapture = new Capture<Long>();
@@ -1293,38 +1335,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         Assert.assertEquals(clusterNode1.getAddress(), scheduleExecutionNode.getAddress());
         scheduleExecutionResult = scheduleExecutionNode.getResult();
         Assert.assertNull(scheduleExecutionResult);
-    }
-
-    private static class ActionResultStub implements ActionResult {
-
-        private boolean succeed;
-
-        private ActionResultStub(boolean succeed) {
-            this.succeed = succeed;
-        }
-
-        @Override
-        public boolean isSucceed() {
-            return succeed;
-        }
-    }
-
-    private static class ActionResultStubAnswer implements IAnswer<ActionResult> {
-
-        private boolean succeed;
-
-        private Callable callable;
-
-        private ActionResultStubAnswer(boolean succeed, Callable callable) {
-            this.callable = callable;
-            this.succeed = succeed;
-        }
-
-        @Override
-        public ActionResult answer() throws Throwable {
-            callable.call();
-            return new ActionResultStub(succeed);
-        }
     }
 
 }

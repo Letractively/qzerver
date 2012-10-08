@@ -84,17 +84,19 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         clusterNode2 = clusterManagementService.createNode(clusterGroup.getId(), "10.2.0.2", "Node 2", true);
         clusterNode3 = clusterManagementService.createNode(clusterGroup.getId(), "10.2.0.3", "Node 3", true);
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone("UTC");
-        parameters.setCron("0 0 0 * * ?");
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        scheduleJob = scheduleJobManagementService.createJob(parameters);
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
 
         // Disable Quartz job manually to prevent the firing from Quartz
         quartzManagementService.disableJob(scheduleJob.getId());
@@ -300,17 +302,19 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
 
     @Test
     public void testLocalhostCreation() throws Exception {
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone("UTC");
-        parameters.setCron("0 0 0 * * ?");
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(null);
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(null);
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob localhostScheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob localhostScheduleJob = scheduleJobManagementService.createJob(jobParameters);
 
         StartExecutionParameters startExecutionParameters = new StartExecutionParameters();
         startExecutionParameters.setManual(false);

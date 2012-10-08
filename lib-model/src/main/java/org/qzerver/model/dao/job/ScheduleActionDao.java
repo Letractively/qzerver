@@ -10,7 +10,8 @@ public interface ScheduleActionDao {
 
     /**
      * Remove all orphaned actions (i.e all action with archived=true and no executions connected in)
+     * @return Number of deleted records
      */
-    void removeOrphanedActions();
+    int deleteOrphaned();
 
 }

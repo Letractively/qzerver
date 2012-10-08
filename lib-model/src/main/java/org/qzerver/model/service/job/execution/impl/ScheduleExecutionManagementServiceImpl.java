@@ -71,7 +71,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
 
         // Action
         ScheduleAction scheduleAction = scheduleJob.getAction();
-        Hibernate.initialize(scheduleAction);
+        scheduleAction.setUsedDate(now);
+        scheduleAction.incrementUsedCount();
 
         // Create new execution
         ScheduleExecution scheduleExecution = new ScheduleExecution();

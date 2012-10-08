@@ -19,6 +19,7 @@ import org.qzerver.model.dao.job.ScheduleJobDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
+import org.qzerver.model.service.job.management.dto.ScheduleJobActionParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
@@ -140,17 +141,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(null);
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(null);
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         control.verify();
@@ -195,17 +198,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         control.verify();
@@ -250,17 +255,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         scheduleJobManagementService.deleteJob(scheduleJob.getId());
@@ -303,17 +310,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         ScheduleJobModifyParameters modifyParameters = new ScheduleJobModifyParameters();
@@ -370,17 +379,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         ScheduleJob scheduleJobModified;
@@ -437,17 +448,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron1);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron1);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         ScheduleJobRescheduleParameters rescheduleParameters = new ScheduleJobRescheduleParameters();
@@ -501,17 +514,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         control.replay();
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone(DEFAULT_TIMEZONE);
-        parameters.setCron(cron1);
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron1);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         ScheduleJob scheduleJobModified;

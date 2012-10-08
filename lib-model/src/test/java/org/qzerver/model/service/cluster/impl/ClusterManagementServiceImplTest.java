@@ -272,17 +272,19 @@ public class ClusterManagementServiceImplTest extends AbstractTransactionalTest 
         ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("Test group");
         Assert.assertNotNull(scheduleGroup);
 
-        ScheduleJobCreateParameters parameters = new ScheduleJobCreateParameters();
-        parameters.setName("Test Job");
-        parameters.setDescription("Nothing to do");
-        parameters.setTimezone("UTC");
-        parameters.setCron("0 0 0 * * ?");
-        parameters.setEnabled(true);
-        parameters.setClusterGroupId(clusterGroup.getId());
-        parameters.setScheduleGroupId(scheduleGroup.getId());
-        parameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
 
-        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(parameters);
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
         // Try to delete assigned jobs

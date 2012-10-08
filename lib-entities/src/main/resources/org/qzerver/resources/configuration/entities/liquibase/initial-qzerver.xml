@@ -114,6 +114,12 @@
             <column name="strategy" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
             <column name="cluster_group_id" type="BIGINT">
                 <constraints nullable="true"/>
             </column>
@@ -170,6 +176,12 @@
                 <constraints nullable="true"/>
             </column>
             <column name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used_count" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
         </createTable>

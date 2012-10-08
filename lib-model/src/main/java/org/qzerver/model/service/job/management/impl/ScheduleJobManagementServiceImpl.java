@@ -124,12 +124,16 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         Date now = chronometer.getCurrentMoment();
 
         ScheduleAction scheduleAction = new ScheduleAction();
-        scheduleAction.setType(parameters.getAction().getType());
-        scheduleAction.setDefinition(parameters.getAction().getDefinition());
+        scheduleAction.setType(parameters.getActionType());
+        scheduleAction.setDefinition(parameters.getActionDefinition());
         scheduleAction.setCreated(now);
         scheduleAction.setArchived(false);
+        scheduleAction.setUsedDate(now);
+        scheduleAction.setUsedCount(0);
 
         ScheduleJob scheduleJob = new ScheduleJob();
+        scheduleJob.setCreated(now);
+        scheduleJob.setModified(now);
         scheduleJob.setGroup(scheduleGroup);
         scheduleJob.setCluster(clusterGroup);
         scheduleJob.setAction(scheduleAction);
@@ -182,8 +186,11 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
+        Date now = chronometer.getCurrentMoment();
+
         scheduleJob.setName(parameters.getName());
         scheduleJob.setDescription(parameters.getDescription());
+        scheduleJob.setModified(now);
 
         return scheduleJob;
     }
@@ -197,20 +204,21 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
-        scheduleActionDao.removeOrphanedActions();
+        scheduleActionDao.deleteOrphaned();
 
         Date now = chronometer.getCurrentMoment();
 
-        ScheduleAction previousScheduleAction = scheduleJob.getAction();
-        previousScheduleAction.setArchived(true);
+        ScheduleAction currentScheduleAction = scheduleJob.getAction();
+        currentScheduleAction.setArchived(true);
 
-        ScheduleAction scheduleAction = new ScheduleAction();
-        scheduleAction.setType(parameters.getType());
-        scheduleAction.setDefinition(parameters.getDefinition());
-        scheduleAction.setCreated(now);
-        scheduleAction.setArchived(false);
+        ScheduleAction newScheduleAction = new ScheduleAction();
+        newScheduleAction.setType(parameters.getType());
+        newScheduleAction.setDefinition(parameters.getDefinition());
+        newScheduleAction.setCreated(now);
+        newScheduleAction.setArchived(false);
 
-        scheduleJob.setAction(scheduleAction);
+        scheduleJob.setAction(newScheduleAction);
+        scheduleJob.setModified(now);
 
         return scheduleJob;
     }
@@ -224,11 +232,15 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
+        Date now = chronometer.getCurrentMoment();
+
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
+        scheduleJob.setModified(now);
 
         if (scheduleJob.isEnabled()) {
-            quartzManagementService.rescheduleJob(scheduleJob.getId(), scheduleJob.getCron(), parameters.getTimezone());
+            quartzManagementService.rescheduleJob(scheduleJob.getId(),
+                scheduleJob.getCron(), parameters.getTimezone());
         }
 
         return scheduleJob;

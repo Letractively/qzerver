@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public class ScheduleActionJpaDao implements ScheduleActionDao {
@@ -13,7 +14,10 @@ public class ScheduleActionJpaDao implements ScheduleActionDao {
     private EntityManager entityManager;
 
     @Override
-    public void removeOrphanedActions() {
+    public int deleteOrphaned() {
+        Query query = entityManager.createNamedQuery("ScheduleAction.removeOrphaned");
+
+        return query.executeUpdate();
     }
 
     @PersistenceContext
