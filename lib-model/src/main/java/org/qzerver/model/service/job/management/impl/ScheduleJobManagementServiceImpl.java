@@ -7,6 +7,7 @@ import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.gainmatrix.lib.time.Chronometer;
 import com.google.common.base.Preconditions;
 import org.hibernate.Hibernate;
+import org.qzerver.model.dao.job.ScheduleActionDao;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
@@ -15,6 +16,7 @@ import org.qzerver.model.domain.entities.job.ScheduleAction;
 import org.qzerver.model.domain.entities.job.ScheduleGroup;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.job.management.ScheduleJobManagementService;
+import org.qzerver.model.service.job.management.dto.ScheduleJobActionParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
@@ -46,6 +48,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
     @NotNull
     private ScheduleExecutionDao scheduleExecutionDao;
+
+    @NotNull
+    private ScheduleActionDao scheduleActionDao;
 
     @NotNull
     private QuartzManagementService quartzManagementService;
@@ -119,8 +124,8 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         Date now = chronometer.getCurrentMoment();
 
         ScheduleAction scheduleAction = new ScheduleAction();
-        scheduleAction.setDefinition("<xml></xml>".getBytes());
-        scheduleAction.setType("none");
+        scheduleAction.setType(parameters.getAction().getType());
+        scheduleAction.setDefinition(parameters.getAction().getDefinition());
         scheduleAction.setCreated(now);
         scheduleAction.setArchived(false);
 
@@ -179,6 +184,33 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         scheduleJob.setName(parameters.getName());
         scheduleJob.setDescription(parameters.getDescription());
+
+        return scheduleJob;
+    }
+
+    @Override
+    public ScheduleJob changeJobAction(long scheduleJobId, ScheduleJobActionParameters parameters) {
+        BeanValidationUtils.checkValidity(parameters, beanValidator);
+
+        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
+        if (scheduleJob == null) {
+            throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
+        }
+
+        scheduleActionDao.removeOrphanedActions();
+
+        Date now = chronometer.getCurrentMoment();
+
+        ScheduleAction previousScheduleAction = scheduleJob.getAction();
+        previousScheduleAction.setArchived(true);
+
+        ScheduleAction scheduleAction = new ScheduleAction();
+        scheduleAction.setType(parameters.getType());
+        scheduleAction.setDefinition(parameters.getDefinition());
+        scheduleAction.setCreated(now);
+        scheduleAction.setArchived(false);
+
+        scheduleJob.setAction(scheduleAction);
 
         return scheduleJob;
     }
@@ -285,5 +317,10 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
     @Required
     public void setScheduleGroupDao(ScheduleGroupDao scheduleGroupDao) {
         this.scheduleGroupDao = scheduleGroupDao;
+    }
+
+    @Required
+    public void setScheduleActionDao(ScheduleActionDao scheduleActionDao) {
+        this.scheduleActionDao = scheduleActionDao;
     }
 }

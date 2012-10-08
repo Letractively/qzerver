@@ -23,7 +23,7 @@
                 <column name="finished" nullable="true"/>
                 <temporal>TIMESTAMP</temporal>
             </basic>
-            <basic name="payload" fetch="LAZY" optional="true">
+            <basic name="payload" optional="true">
                 <column name="payload" nullable="true" length="16777216"/>
                 <lob/>
             </basic>

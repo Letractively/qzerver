@@ -2,7 +2,6 @@ package org.qzerver.model.service.job.execution;
 
 import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.paging.Extraction;
-import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
 import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
@@ -40,7 +39,8 @@ public interface ScheduleExecutionManagementService {
     /**
      * Register finish of node execution
      * @param scheduleExecutionResultId Schedule execution result identifier
-     * @param actionResult Payload of execution
+     * @param succeed Does the action succeed
+     * @param data Result
      * @return Schedule execution entity
      * @throws AbstractServiceException Exception on error, includes:
      * <ul>
@@ -48,7 +48,7 @@ public interface ScheduleExecutionManagementService {
      *     finish result registration on already finished result</li>
      * </ul>
      */
-    ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, ActionResult actionResult)
+    ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, boolean succeed, byte[] data)
         throws AbstractServiceException;
 
     /**

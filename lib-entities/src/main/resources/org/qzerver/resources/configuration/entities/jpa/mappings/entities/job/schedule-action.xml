@@ -18,7 +18,7 @@
             <basic name="archived">
                 <column name="archived" nullable="false"/>
             </basic>
-            <basic name="definition" fetch="LAZY" optional="true">
+            <basic name="definition" optional="true">
                 <column name="definition" nullable="true" length="16777216"/>
                 <lob/>
             </basic>

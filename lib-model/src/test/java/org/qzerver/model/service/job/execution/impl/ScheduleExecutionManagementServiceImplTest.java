@@ -154,21 +154,21 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new ActionResultStub(true));
+            true, null);
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.startExecutionResult(scheduleExecutionNode2.getId());
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new ActionResultStub(true));
+            true, null);
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.startExecutionResult(scheduleExecutionNode3.getId());
         Assert.assertNotNull(scheduleExecutionResult);
 
         scheduleExecutionResult = scheduleExecutionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-            new ActionResultStub(false));
+            false, null);
         Assert.assertNotNull(scheduleExecutionResult);
 
         entityManager.flush();

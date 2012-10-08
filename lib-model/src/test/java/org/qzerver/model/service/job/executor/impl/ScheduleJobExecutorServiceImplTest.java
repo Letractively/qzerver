@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
 import org.qzerver.model.agent.action.ActionAgent;
+import org.qzerver.model.agent.action.ActionAgentResult;
 import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
@@ -104,15 +105,14 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -164,15 +164,14 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -224,15 +223,14 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq("192.168.1.1")
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -286,37 +284,37 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        ActionResultStubAnswer actionResultStub1Answer = new ActionResultStubAnswer(false, new Callable<Void>() {
+        IAnswer<ActionAgentResult> actionAgentAnswer1 = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 chronometer.shiftTick(900);
-                return null;
+                return new ActionAgentResult(false, null);
             }
-        });
+        };
 
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-        ActionResultStubAnswer actionResultStub2Answer = new ActionResultStubAnswer(true, new Callable<Void>() {
+        IAnswer<ActionAgentResult> actionAgentAnswer2 = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 chronometer.shiftTick(200);
-                return null;
+                return new ActionAgentResult(true, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStub1Answer);
+        )).andStubAnswer(actionAgentAnswer1);
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andAnswer(actionResultStub2Answer);
+        )).andStubAnswer(actionAgentAnswer2);
 
         control.replay();
 
@@ -370,22 +368,22 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-        ActionResultStubAnswer actionResultStubAnswer = new ActionResultStubAnswer(true, new Callable<Void>() {
+        IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 chronometer.shiftTick(1500);
-                return null;
+                return new ActionAgentResult(true, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStubAnswer);
+        )).andStubAnswer(actionAgentAnswer);
 
         control.replay();
 
@@ -438,22 +436,22 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-        ActionResultStubAnswer actionResultStubAnswer = new ActionResultStubAnswer(false, new Callable<Void>() {
+        IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 chronometer.shiftTick(1100);
-                return null;
+                return new ActionAgentResult(false, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStubAnswer);
+        )).andStubAnswer(actionAgentAnswer);
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -510,22 +508,23 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         quartzManagementService.disableJob(scheduleJob.getId());
 
         final Capture<Long> scheduleExecutionCapture = new Capture<Long>();
-        final Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-        final ActionResultStubAnswer actionResultStubAnswer = new ActionResultStubAnswer(false, new Callable<Void>() {
+
+        IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 scheduleExecutionManagementService.cancelExecution(scheduleExecutionCapture.getValue());
-                return null;
+                return new ActionAgentResult(false, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.capture(scheduleExecutionCapture),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStubAnswer);
+        )).andStubAnswer(actionAgentAnswer);
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -581,22 +580,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -649,22 +647,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -721,13 +718,12 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
         )).andThrow(new IllegalStateException("Test exception"));
 
@@ -786,15 +782,14 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -844,22 +839,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -913,15 +907,14 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         control.replay();
 
@@ -967,22 +960,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andReturn(new ActionResultStub(true));
+        )).andReturn(new ActionAgentResult(true, null));
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -1039,22 +1031,21 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleAction1Capture = new ScheduleActionCapture();
-        Capture<ScheduleAction> scheduleAction2Capture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction1Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleAction2Capture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode1.getAddress())
-        )).andReturn(new ActionResultStub(false));
+        )).andReturn(new ActionAgentResult(false, null));
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -1111,13 +1102,12 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
         )).andThrow(new IllegalStateException("Test exception"));
 
@@ -1176,22 +1166,22 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         scheduleJob = scheduleJobManagementService.createJob(jobCreateParameters);
         quartzManagementService.disableJob(scheduleJob.getId());
 
-        Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-        ActionResultStubAnswer actionResultStubAnswer = new ActionResultStubAnswer(false, new Callable<Void>() {
+        IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 chronometer.shiftTick(1100);
-                return null;
+                return new ActionAgentResult(false, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.anyLong(),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStubAnswer);
+        )).andStubAnswer(actionAgentAnswer);
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -1249,22 +1239,23 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         quartzManagementService.disableJob(scheduleJob.getId());
 
         final Capture<Long> scheduleExecutionCapture = new Capture<Long>();
-        final Capture<ScheduleAction> scheduleActionCapture = new ScheduleActionCapture();
-        final ActionResultStubAnswer actionResultStubAnswer = new ActionResultStubAnswer(false, new Callable<Void>() {
+
+        IAnswer<ActionAgentResult> actionAgentAnswer = new IAnswer<ActionAgentResult>() {
             @Override
-            public Void call() throws Exception {
+            public ActionAgentResult answer() throws Throwable {
                 scheduleExecutionManagementService.cancelExecution(scheduleExecutionCapture.getValue());
-                return null;
+                return new ActionAgentResult(false, null);
             }
-        });
+        };
 
         control.reset();
 
         EasyMock.expect(actionAgent.executeAction(
             EasyMock.capture(scheduleExecutionCapture),
-            EasyMock.capture(scheduleActionCapture),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
             EasyMock.eq(clusterNode2.getAddress())
-        )).andAnswer(actionResultStubAnswer);
+        )).andStubAnswer(actionAgentAnswer);
 
         mailService.notifyJobExecutionFailed(
             EasyMock.<ScheduleExecution>anyObject()
@@ -1333,19 +1324,6 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         public ActionResult answer() throws Throwable {
             callable.call();
             return new ActionResultStub(succeed);
-        }
-    }
-
-    private static class ScheduleActionCapture extends Capture<ScheduleAction> {
-
-        private ScheduleActionCapture() {
-            super(CaptureType.FIRST);
-        }
-
-        @Override
-        public String toString() {
-            // return nothing due to org.hibernate.LazyInitializationException on detached object's toString()
-            return "<object>";
         }
     }
 

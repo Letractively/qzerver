@@ -11,7 +11,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
-import org.qzerver.model.domain.action.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
@@ -70,10 +69,14 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
             throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
         }
 
+        // Action
+        ScheduleAction scheduleAction = scheduleJob.getAction();
+        Hibernate.initialize(scheduleAction);
+
         // Create new execution
         ScheduleExecution scheduleExecution = new ScheduleExecution();
         scheduleExecution.setJob(scheduleJob);
-        scheduleExecution.setAction(scheduleJob.getAction());
+        scheduleExecution.setAction(scheduleAction);
         scheduleExecution.setCron(scheduleJob.getCron());
         scheduleExecution.setName(scheduleJob.getName());
         scheduleExecution.setStrategy(scheduleJob.getStrategy());
@@ -257,7 +260,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
     }
 
     @Override
-    public ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, ActionResult actionResult)
+    public ScheduleExecutionResult finishExecutionResult(long scheduleExecutionResultId, boolean succeed, byte[] data)
         throws AbstractServiceException
     {
         ScheduleExecutionResult result =
@@ -272,14 +275,8 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         }
 
         result.setFinished(chronometer.getCurrentMoment());
-
-        if (actionResult != null) {
-            result.setSucceed(actionResult.isSucceed());
-            result.setPayload("<xml></xml>".getBytes());
-        } else {
-            result.setSucceed(false);
-            result.setPayload(null);
-        }
+        result.setSucceed(succeed);
+        result.setPayload(data);
 
         return result;
     }

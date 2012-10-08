@@ -12,6 +12,7 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractTransactionalTest;
+import org.qzerver.model.dao.job.ScheduleActionDao;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.dao.job.ScheduleGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
@@ -57,6 +58,9 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
     @Resource
     private ScheduleGroupDao scheduleGroupDao;
 
+    @Resource
+    private ScheduleActionDao scheduleActionDao;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -74,6 +78,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         scheduleJobManagementService.setScheduleExecutionDao(scheduleExecutionDao);
         scheduleJobManagementService.setScheduleJobDao(scheduleJobDao);
         scheduleJobManagementService.setScheduleGroupDao(scheduleGroupDao);
+        scheduleJobManagementService.setScheduleActionDao(scheduleActionDao);
     }
 
     @Test

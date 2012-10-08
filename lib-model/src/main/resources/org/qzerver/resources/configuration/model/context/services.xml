@@ -39,6 +39,7 @@
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
         <property name="quartzManagementService" ref="quartzManagementService"/>
         <property name="scheduleGroupDao" ref="scheduleGroupDao"/>
+        <property name="scheduleActionDao" ref="scheduleActionDao"/>
         <property name="chronometer" ref="chronometer"/>
     </bean>
 

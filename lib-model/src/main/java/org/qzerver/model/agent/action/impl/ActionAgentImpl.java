@@ -1,8 +1,7 @@
 package org.qzerver.model.agent.action.impl;
 
 import org.qzerver.model.agent.action.ActionAgent;
-import org.qzerver.model.domain.action.ActionResult;
-import org.qzerver.model.domain.entities.job.ScheduleAction;
+import org.qzerver.model.agent.action.ActionAgentResult;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ActionAgentImpl implements ActionAgent {
 
     @Override
-    public ActionResult executeAction(long scheduleExecutionId, ScheduleAction action, String address) {
-        return null;
+    public ActionAgentResult executeAction(long scheduleExecutionId,
+        String actionType, byte[] actionDefinition, String address)
+    {
+        ActionAgentResult actionAgentResult = new ActionAgentResult();
+        actionAgentResult.setSucceed(false);
+        actionAgentResult.setData("<xml></xml>".getBytes());
+
+        return actionAgentResult;
     }
+
 }

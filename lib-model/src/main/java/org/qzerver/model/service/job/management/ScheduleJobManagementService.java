@@ -3,6 +3,7 @@ package org.qzerver.model.service.job.management;
 import com.gainmatrix.lib.paging.Extraction;
 import org.qzerver.model.domain.entities.job.ScheduleGroup;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
+import org.qzerver.model.service.job.management.dto.ScheduleJobActionParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobModifyParameters;
 import org.qzerver.model.service.job.management.dto.ScheduleJobRescheduleParameters;
@@ -65,6 +66,14 @@ public interface ScheduleJobManagementService {
      * @return Job entity
      */
     ScheduleJob modifyJob(long scheduleJobId, ScheduleJobModifyParameters parameters);
+
+    /**
+     * Change the action for the job
+     * @param scheduleJobId Job identifier
+     * @param parameters Action parameters
+     * @return Job entity
+     */
+    ScheduleJob changeJobAction(long scheduleJobId, ScheduleJobActionParameters parameters);
 
     /**
      * Reschedule job

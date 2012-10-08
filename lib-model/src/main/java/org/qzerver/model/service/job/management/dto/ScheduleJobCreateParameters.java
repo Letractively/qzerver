@@ -6,6 +6,7 @@ import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.system.validation.Cron;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -44,6 +45,10 @@ public class ScheduleJobCreateParameters implements Serializable {
     private boolean enabled;
 
     private boolean allNodes;
+
+    @NotNull
+    @Valid
+    private ScheduleJobActionParameters action;
 
     public String getCron() {
         return cron;
@@ -131,6 +136,14 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    public ScheduleJobActionParameters getAction() {
+        return action;
+    }
+
+    public void setAction(ScheduleJobActionParameters action) {
+        this.action = action;
     }
 }
 

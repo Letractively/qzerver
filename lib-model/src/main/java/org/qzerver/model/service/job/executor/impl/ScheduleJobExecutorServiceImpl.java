@@ -7,11 +7,8 @@ import com.gainmatrix.lib.time.Chronometer;
 import com.gainmatrix.lib.time.ChronometerTimer;
 import org.apache.commons.collections.CollectionUtils;
 import org.qzerver.model.agent.action.ActionAgent;
-import org.qzerver.model.domain.action.ActionResult;
-import org.qzerver.model.domain.entities.job.ScheduleExecution;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
-import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
+import org.qzerver.model.agent.action.ActionAgentResult;
+import org.qzerver.model.domain.entities.job.*;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
@@ -190,13 +187,20 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         ScheduleExecutionResult scheduleExecutionResult =
             executionManagementService.startExecutionResult(node.getId());
 
-        ActionResult actionResult = null;
+        ScheduleAction scheduleAction = scheduleExecution.getAction();
+
+        // Execute action
+        boolean succeed = false;
+        byte[] data = null;
+
         try {
-            actionResult = actionAgent.executeAction(scheduleExecution.getId(),
-                scheduleExecution.getAction(), node.getAddress());
+            ActionAgentResult actionAgentResult = actionAgent.executeAction(scheduleExecution.getId(),
+                scheduleAction.getType(), scheduleAction.getDefinition(), node.getAddress());
+            succeed = actionAgentResult.isSucceed();
+            data = actionAgentResult.getData();
         } finally {
-            scheduleExecutionResult = executionManagementService.finishExecutionResult(scheduleExecutionResult.getId(),
-                actionResult);
+            scheduleExecutionResult = executionManagementService.finishExecutionResult(
+                scheduleExecutionResult.getId(), succeed, data);
         }
 
         return scheduleExecutionResult;
