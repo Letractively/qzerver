@@ -1,4 +1,4 @@
-package org.qzerver.dao.job;
+package org.qzerver.model.dao.job;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.jpa.BusinessEntityJpaDaoChecker;
@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 
+@Deprecated
 public class JobDaoTest extends AbstractTransactionalTest {
 
     @PersistenceContext

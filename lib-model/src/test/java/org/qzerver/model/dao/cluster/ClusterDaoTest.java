@@ -1,4 +1,4 @@
-package org.qzerver.dao.cluster;
+package org.qzerver.model.dao.cluster;
 
 import com.gainmatrix.lib.business.entity.BusinessEntityDao;
 import com.gainmatrix.lib.jpa.BusinessEntityJpaDaoChecker;
@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+@Deprecated
 public class ClusterDaoTest extends AbstractTransactionalTest {
 
     @PersistenceContext
