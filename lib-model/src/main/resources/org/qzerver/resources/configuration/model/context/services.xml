@@ -4,16 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        xmlns:aop="http://www.springframework.org/schema/aop">
 
-    <!-- Domain -->
-
-    <bean id="actionResultMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionResultJsonMarshaller">
-    </bean>
-
-    <bean id="actionDefinitionMarshaller" class="org.qzerver.model.domain.action.marshaller.impl.ActionDefinitionJsonMarshaller">
-    </bean>
-
-    <!-- Services -->
-
     <bean name="quartzManagementService" class="org.qzerver.model.service.quartz.management.impl.QuartzManagementServiceImpl">
         <property name="scheduler" ref="quartzScheduler"/>
     </bean>
@@ -60,9 +50,6 @@
         <property name="enabled" value="${app.mail.enabled}"/>
         <property name="locale" value="${app.view.locale}"/>
         <property name="timezone" value="${app.view.timezone}"/>
-    </bean>
-
-    <bean name="actionAgent" class="org.qzerver.model.agent.action.impl.ActionAgentImpl">
     </bean>
 
 </beans>

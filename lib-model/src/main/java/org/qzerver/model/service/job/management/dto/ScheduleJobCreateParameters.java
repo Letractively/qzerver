@@ -49,7 +49,7 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     @NotNull
     @Length(max = ScheduleAction.MAX_TYPE_LENGTH)
-    private String actionType;
+    private String actionIdentifier;
 
     @Size(max = ScheduleAction.MAX_DEFINITION_LENGTH)
     private byte[] actionDefinition;
@@ -142,12 +142,12 @@ public class ScheduleJobCreateParameters implements Serializable {
         this.timeout = timeout;
     }
 
-    public String getActionType() {
-        return actionType;
+    public String getActionIdentifier() {
+        return actionIdentifier;
     }
 
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
+    public void setActionIdentifier(String actionIdentifier) {
+        this.actionIdentifier = actionIdentifier;
     }
 
     public byte[] getActionDefinition() {

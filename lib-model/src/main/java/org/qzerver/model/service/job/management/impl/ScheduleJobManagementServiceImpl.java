@@ -124,7 +124,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         Date now = chronometer.getCurrentMoment();
 
         ScheduleAction scheduleAction = new ScheduleAction();
-        scheduleAction.setType(parameters.getActionType());
+        scheduleAction.setIdentifier(parameters.getActionIdentifier());
         scheduleAction.setDefinition(parameters.getActionDefinition());
         scheduleAction.setCreated(now);
         scheduleAction.setArchived(false);
@@ -212,7 +212,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         currentScheduleAction.setArchived(true);
 
         ScheduleAction newScheduleAction = new ScheduleAction();
-        newScheduleAction.setType(parameters.getType());
+        newScheduleAction.setIdentifier(parameters.getIdentifier());
         newScheduleAction.setDefinition(parameters.getDefinition());
         newScheduleAction.setCreated(now);
         newScheduleAction.setArchived(false);

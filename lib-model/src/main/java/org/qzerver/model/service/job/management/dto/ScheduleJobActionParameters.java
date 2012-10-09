@@ -11,7 +11,7 @@ public class ScheduleJobActionParameters implements Serializable {
 
     @NotNull
     @Length(max = ScheduleAction.MAX_TYPE_LENGTH)
-    private String type;
+    private String identifier;
 
     @Size(max = ScheduleAction.MAX_DEFINITION_LENGTH)
     private byte[] definition;
@@ -24,11 +24,11 @@ public class ScheduleJobActionParameters implements Serializable {
         this.definition = definition;
     }
 
-    public String getType() {
-        return type;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 }

@@ -103,7 +103,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -164,7 +164,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -225,7 +225,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -288,7 +288,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -374,7 +374,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -444,7 +444,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -517,7 +517,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -592,7 +592,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -661,7 +661,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -734,7 +734,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -800,7 +800,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -859,7 +859,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -929,7 +929,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -984,7 +984,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -1057,7 +1057,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -1121,7 +1121,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
     @Test
     public void testExceptionAutomaticAllExecution() throws Exception {
         ScheduleJobActionParameters actionParameters = new ScheduleJobActionParameters();
-        actionParameters.setType("action.type");
+        actionParameters.setIdentifier("action.type");
         actionParameters.setDefinition("action.data".getBytes());
 
         ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
@@ -1134,7 +1134,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -1200,7 +1200,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -1274,7 +1274,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);

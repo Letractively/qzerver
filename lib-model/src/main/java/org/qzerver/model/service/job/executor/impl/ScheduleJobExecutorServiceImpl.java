@@ -195,7 +195,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
         try {
             ActionAgentResult actionAgentResult = actionAgent.executeAction(scheduleExecution.getId(),
-                scheduleAction.getType(), scheduleAction.getDefinition(), node.getAddress());
+                scheduleAction.getIdentifier(), scheduleAction.getDefinition(), node.getAddress());
             succeed = actionAgentResult.isSucceed();
             data = actionAgentResult.getData();
         } finally {

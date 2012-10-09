@@ -166,7 +166,7 @@
             <column name="version" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="VARCHAR(1024)">
+            <column name="identifier" type="VARCHAR(1024)">
                 <constraints nullable="false"/>
             </column>
             <column name="archived" type="BOOLEAN">

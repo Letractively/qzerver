@@ -22,7 +22,7 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
      */
     @NotNull
     @Length(max = MAX_TYPE_LENGTH)
-    private String type;
+    private String identifier;
 
     /**
      * Action configuration (XML or JSON)
@@ -74,12 +74,12 @@ public class ScheduleAction extends AbstractBusinessEntity<Long> {
         this.definition = definition;
     }
 
-    public String getType() {
-        return type;
+    public String getIdentifier() {
+        return identifier;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public boolean isArchived() {

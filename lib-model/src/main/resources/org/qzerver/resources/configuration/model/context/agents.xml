@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="mailAgent" class="org.qzerver.model.agent.mail.impl.MailAgentImpl">
+        <property name="javaMailSender" ref="mailSender"/>
+        <property name="emailFrom" value="${app.mail.email.from}"/>
+    </bean>
+
+    <bean name="actionAgent" class="org.qzerver.model.agent.action.impl.ActionAgentImpl">
+        <property name="actionDefinitionMarshaller" ref="actionDefinitionMarshaller"/>
+        <property name="actionResultMarshaller" ref="actionResultMarshaller"/>
+        <property name="executors">
+            <map>
+                <entry key="LOCAL_COMMAND" value-ref="localCommandActionExecutor"/>
+                <entry key="SSH_COMMAND" value-ref="sshCommandActionExecutor"/>
+                <entry key="JMX" value-ref="jmxActionExecutor"/>
+                <entry key="HTTP" value-ref="httpActionExecutor"/>
+                <entry key="SOCKET" value-ref="socketActionExecutor"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- Action result and definition marshallers -->
+
+    <bean id="actionResultMarshaller" class="org.qzerver.model.agent.action.providers.marshaller.impl.ActionResultJsonMarshaller">
+    </bean>
+
+    <bean id="actionDefinitionMarshaller" class="org.qzerver.model.agent.action.providers.marshaller.impl.ActionDefinitionJsonMarshaller">
+    </bean>
+
+    <!-- Action executors -->
+
+    <bean id="httpActionExecutor" class="org.qzerver.model.agent.action.providers.executor.http.HttpActionExecutor">
+    </bean>
+
+    <bean id="jmxActionExecutor" class="org.qzerver.model.agent.action.providers.executor.jmx.JmxActionExecutor">
+    </bean>
+
+    <bean id="localCommandActionExecutor" class="org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionExecutor">
+    </bean>
+
+    <bean id="sshCommandActionExecutor" class="org.qzerver.model.agent.action.providers.executor.sshcommand.SshCommandActionExecutor">
+    </bean>
+
+    <bean id="socketActionExecutor" class="org.qzerver.model.agent.action.providers.executor.socket.SocketActionExecutor">
+    </bean>
+
+</beans>

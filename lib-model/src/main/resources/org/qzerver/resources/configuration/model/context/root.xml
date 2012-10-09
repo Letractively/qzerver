@@ -10,6 +10,7 @@
     <import resource="jpa.xml"/>
     <import resource="dao.xml"/>
     <import resource="mail.xml"/>
+    <import resource="agents.xml"/>
     <import resource="services.xml"/>
     <import resource="tasks.xml"/>
     <import resource="quartz.xml"/>

@@ -20,11 +20,6 @@
         </property>
     </bean>
 
-    <bean id="mailAgent" class="org.qzerver.model.agent.mail.impl.MailAgentImpl">
-        <property name="javaMailSender" ref="mailSender"/>
-        <property name="emailFrom" value="${app.mail.email.from}"/>
-    </bean>
-
     <bean id="mailFreemarkerConfigurationFactory" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactory">
         <property name="preTemplateLoaders">
             <array>

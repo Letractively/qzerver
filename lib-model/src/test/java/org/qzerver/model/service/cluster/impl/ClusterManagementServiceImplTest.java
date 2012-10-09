@@ -281,7 +281,7 @@ public class ClusterManagementServiceImplTest extends AbstractTransactionalTest 
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);

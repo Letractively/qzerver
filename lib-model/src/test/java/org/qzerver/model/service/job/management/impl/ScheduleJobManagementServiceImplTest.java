@@ -151,7 +151,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(null);
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -208,7 +208,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -265,7 +265,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -346,7 +346,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -415,7 +415,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -484,7 +484,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -543,7 +543,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -551,12 +551,12 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         ScheduleAction currentScheduleAction = scheduleJob.getAction();
         Assert.assertNotNull(currentScheduleAction);
-        Assert.assertEquals("action.type", currentScheduleAction.getType());
+        Assert.assertEquals("action.type", currentScheduleAction.getIdentifier());
         Assert.assertTrue(Arrays.equals("action.data".getBytes(), currentScheduleAction.getDefinition()));
         Assert.assertFalse(currentScheduleAction.isArchived());
 
         ScheduleJobActionParameters actionParameters = new ScheduleJobActionParameters();
-        actionParameters.setType("action.type.2");
+        actionParameters.setIdentifier("action.type.2");
         actionParameters.setDefinition("action.data.2".getBytes());
 
         ScheduleJob scheduleJobModified = scheduleJobManagementService.changeJobAction(scheduleJob.getId(), actionParameters);
@@ -564,7 +564,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         ScheduleAction newScheduleAction = scheduleJobModified.getAction();
         Assert.assertNotNull(newScheduleAction);
-        Assert.assertEquals("action.type.2", newScheduleAction.getType());
+        Assert.assertEquals("action.type.2", newScheduleAction.getIdentifier());
         Assert.assertTrue(Arrays.equals("action.data.2".getBytes(), newScheduleAction.getDefinition()));
         Assert.assertFalse(newScheduleAction.isArchived());
         Assert.assertTrue(currentScheduleAction.isArchived());
@@ -617,7 +617,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);

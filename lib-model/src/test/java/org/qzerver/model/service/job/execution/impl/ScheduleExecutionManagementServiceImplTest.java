@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractTransactionalTest;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
-import org.qzerver.model.domain.action.ActionResult;
+import org.qzerver.model.agent.action.providers.ActionResult;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.*;
@@ -93,7 +93,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         scheduleJob = scheduleJobManagementService.createJob(jobParameters);
@@ -311,7 +311,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
         jobParameters.setClusterGroupId(null);
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
-        jobParameters.setActionType("action.type");
+        jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
         ScheduleJob localhostScheduleJob = scheduleJobManagementService.createJob(jobParameters);

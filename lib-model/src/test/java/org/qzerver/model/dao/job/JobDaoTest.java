@@ -34,7 +34,7 @@ public class JobDaoTest extends AbstractTransactionalTest {
         ScheduleAction scheduleAction = new ScheduleAction();
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(new Date(300000000000L));
-        scheduleAction.setType("none");
+        scheduleAction.setIdentifier("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
         scheduleAction.setUsedDate(new Date(300000000000L));
         scheduleAction.setUsedCount(2);
@@ -52,7 +52,7 @@ public class JobDaoTest extends AbstractTransactionalTest {
         ScheduleAction scheduleAction = new ScheduleAction();
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(new Date(300000000000L));
-        scheduleAction.setType("none");
+        scheduleAction.setIdentifier("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
         scheduleAction.setUsedDate(new Date(300000000000L));
         scheduleAction.setUsedCount(2);
@@ -88,7 +88,7 @@ public class JobDaoTest extends AbstractTransactionalTest {
         ScheduleAction scheduleAction = new ScheduleAction();
         scheduleAction.setArchived(true);
         scheduleAction.setCreated(ChronometerUtils.parseMoment("2011-01-01 12:00:00.000 UTC"));
-        scheduleAction.setType("none");
+        scheduleAction.setIdentifier("none");
         scheduleAction.setDefinition("<xml></xml>".getBytes());
         scheduleAction.setUsedDate(new Date(300000000000L));
         scheduleAction.setUsedCount(2);
