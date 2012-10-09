@@ -29,6 +29,7 @@ import org.springframework.validation.Validator;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
 import java.util.List;
 
 public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalTest {
@@ -270,6 +271,24 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
         Assert.assertNotNull(scheduleJob);
 
+        ScheduleExecution scheduleExecution = new ScheduleExecution();
+        scheduleExecution.setJob(scheduleJob);
+        scheduleExecution.setAction(scheduleJob.getAction());
+        scheduleExecution.setCron(scheduleJob.getCron());
+        scheduleExecution.setName(scheduleJob.getName());
+        scheduleExecution.setStrategy(scheduleJob.getStrategy());
+        scheduleExecution.setTimeout(scheduleJob.getTimeout());
+        scheduleExecution.setAllNodes(scheduleJob.isAllNodes());
+        scheduleExecution.setScheduled(chronometer.getCurrentMoment());
+        scheduleExecution.setFired(chronometer.getCurrentMoment());
+        scheduleExecution.setForced(false);
+        scheduleExecution.setComment("Test execution");
+        scheduleExecution.setStatus(ScheduleExecutionStatus.INPROGRESS);
+        scheduleExecution.setStarted(chronometer.getCurrentMoment());
+        scheduleExecution.setFinished(null);
+        scheduleExecution.setHostname("localhost");
+        businessEntityDao.save(scheduleExecution);
+
         scheduleJobManagementService.deleteJob(scheduleJob.getId());
 
         control.verify();
@@ -279,6 +298,14 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
 
         ScheduleAction action = scheduleJob.getAction();
         Assert.assertNotNull(action);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        scheduleExecution = businessEntityDao.findById(ScheduleExecution.class, scheduleExecution.getId());
+        Assert.assertNotNull(scheduleExecution);
+        Assert.assertNotNull(scheduleExecution.getAction());
+        Assert.assertNull(scheduleExecution.getJob());
     }
 
     @Test
@@ -476,6 +503,73 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         control.verify();
 
         Assert.assertEquals(scheduleJobModified.getId(), idCapture.getValue());
+    }
+
+    @Test
+    public void testModifyJobActionTest() throws Exception {
+        String cron = "0 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
+        Assert.assertNotNull(scheduleGroup);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionType("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleAction currentScheduleAction = scheduleJob.getAction();
+        Assert.assertNotNull(currentScheduleAction);
+        Assert.assertEquals("action.type", currentScheduleAction.getType());
+        Assert.assertTrue(Arrays.equals("action.data".getBytes(), currentScheduleAction.getDefinition()));
+        Assert.assertFalse(currentScheduleAction.isArchived());
+
+        ScheduleJobActionParameters actionParameters = new ScheduleJobActionParameters();
+        actionParameters.setType("action.type.2");
+        actionParameters.setDefinition("action.data.2".getBytes());
+
+        ScheduleJob scheduleJobModified = scheduleJobManagementService.changeJobAction(scheduleJob.getId(), actionParameters);
+        Assert.assertNotNull(scheduleJobModified);
+
+        ScheduleAction newScheduleAction = scheduleJobModified.getAction();
+        Assert.assertNotNull(newScheduleAction);
+        Assert.assertEquals("action.type.2", newScheduleAction.getType());
+        Assert.assertTrue(Arrays.equals("action.data.2".getBytes(), newScheduleAction.getDefinition()));
+        Assert.assertFalse(newScheduleAction.isArchived());
+        Assert.assertTrue(currentScheduleAction.isArchived());
+
+        control.verify();
     }
 
     @Test
