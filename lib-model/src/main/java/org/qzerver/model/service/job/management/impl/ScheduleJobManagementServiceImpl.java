@@ -145,8 +145,9 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
         scheduleJob.setStrategy(parameters.getStrategy());
-        scheduleJob.setTrials(parameters.getTrials());
+        scheduleJob.setNodesLimit(parameters.getNodesLimit());
         scheduleJob.setTimeout(parameters.getTimeout());
+        scheduleJob.setNotifyOnFailure(parameters.isNotifyOnFailure());
 
         businessEntityDao.save(scheduleJob);
 
@@ -190,6 +191,10 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
 
         scheduleJob.setName(parameters.getName());
         scheduleJob.setDescription(parameters.getDescription());
+        scheduleJob.setNotifyOnFailure(parameters.isNotifyOnFailure());
+        scheduleJob.setNodesLimit(parameters.getNodesLimit());
+        scheduleJob.setTimeout(parameters.getTimeout());
+        scheduleJob.setAllNodes(parameters.isAllNodes());
         scheduleJob.setModified(now);
 
         return scheduleJob;
@@ -218,6 +223,33 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         newScheduleAction.setArchived(false);
 
         scheduleJob.setAction(newScheduleAction);
+        scheduleJob.setModified(now);
+
+        return scheduleJob;
+    }
+
+    @Override
+    public ScheduleJob changeJobGroup(long scheduleJobId, long scheduleGroupId) {
+        ScheduleJob scheduleJob = businessEntityDao.lockById(ScheduleJob.class, scheduleJobId);
+        if (scheduleJob == null) {
+            throw new MissingEntityException(ScheduleJob.class, scheduleJobId);
+        }
+
+        ScheduleGroup newScheduleGroup = businessEntityDao.lockById(ScheduleGroup.class, scheduleGroupId);
+        if (newScheduleGroup == null) {
+            throw new MissingEntityException(ScheduleGroup.class, scheduleGroupId);
+        }
+
+        Date now = chronometer.getCurrentMoment();
+
+        ScheduleGroup oldScheduleGroup = scheduleJob.getGroup();
+
+        oldScheduleGroup.getJobs().remove(scheduleJob);
+        scheduleJob.setGroup(null);
+
+        newScheduleGroup.getJobs().add(scheduleJob);
+        scheduleJob.setGroup(newScheduleGroup);
+
         scheduleJob.setModified(now);
 
         return scheduleJob;

@@ -7,7 +7,6 @@ import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameter
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@PersistJobDataAfterExecution
 @DisallowConcurrentExecution
 public class QzerverJob implements Job {
 
@@ -34,8 +33,9 @@ public class QzerverJob implements Job {
         long scheduleJobId = QzerverKeyUtils.parseJobName(jobKey);
 
         AutomaticJobExecutionParameters parameters = new AutomaticJobExecutionParameters();
-        parameters.setFired(context.getFireTime());
-        parameters.setScheduled(context.getScheduledFireTime());
+        parameters.setFiredTime(context.getFireTime());
+        parameters.setScheduledTime(context.getScheduledFireTime());
+        parameters.setNextFireTime(context.getNextFireTime());
 
         try {
             executorService.executeAutomaticJob(scheduleJobId, parameters);

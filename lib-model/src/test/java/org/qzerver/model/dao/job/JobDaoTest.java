@@ -70,7 +70,7 @@ public class JobDaoTest extends AbstractTransactionalTest {
         scheduleJob.setAllNodes(true);
         scheduleJob.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
         scheduleJob.setTimeout(1000);
-        scheduleJob.setTrials(1);
+        scheduleJob.setNodesLimit(1);
         scheduleJob.setAction(scheduleAction);
         scheduleJob.setGroup(scheduleGroup);
         scheduleGroup.getJobs().add(scheduleJob);
@@ -106,7 +106,7 @@ public class JobDaoTest extends AbstractTransactionalTest {
         scheduleJob.setAllNodes(true);
         scheduleJob.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
         scheduleJob.setTimeout(1000);
-        scheduleJob.setTrials(1);
+        scheduleJob.setNodesLimit(1);
         scheduleJob.setAction(scheduleAction);
         scheduleJob.setGroup(scheduleGroup);
         scheduleGroup.getJobs().add(scheduleJob);

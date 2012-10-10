@@ -31,10 +31,19 @@ public class ScheduleJobCreateParameters implements Serializable {
     private String timezone;
 
     @NotNull
+    @Length(max = ScheduleAction.MAX_TYPE_LENGTH)
+    private String actionIdentifier;
+
+    @Size(max = ScheduleAction.MAX_DEFINITION_LENGTH)
+    private byte[] actionDefinition;
+
+    @NotNull
     private ScheduleExecutionStrategy strategy = ScheduleExecutionStrategy.CIRCULAR;
 
+    private boolean notifyOnFailure;
+
     @Min(0)
-    private int trials;
+    private int nodesLimit;
 
     @Min(0)
     private int timeout;
@@ -46,13 +55,6 @@ public class ScheduleJobCreateParameters implements Serializable {
     private boolean enabled;
 
     private boolean allNodes;
-
-    @NotNull
-    @Length(max = ScheduleAction.MAX_TYPE_LENGTH)
-    private String actionIdentifier;
-
-    @Size(max = ScheduleAction.MAX_DEFINITION_LENGTH)
-    private byte[] actionDefinition;
 
     public String getCron() {
         return cron;
@@ -118,12 +120,12 @@ public class ScheduleJobCreateParameters implements Serializable {
         this.strategy = strategy;
     }
 
-    public int getTrials() {
-        return trials;
+    public int getNodesLimit() {
+        return nodesLimit;
     }
 
-    public void setTrials(int trials) {
-        this.trials = trials;
+    public void setNodesLimit(int nodesLimit) {
+        this.nodesLimit = nodesLimit;
     }
 
     public boolean isAllNodes() {
@@ -156,6 +158,14 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setActionDefinition(byte[] actionDefinition) {
         this.actionDefinition = actionDefinition;
+    }
+
+    public boolean isNotifyOnFailure() {
+        return notifyOnFailure;
+    }
+
+    public void setNotifyOnFailure(boolean notifyOnFailure) {
+        this.notifyOnFailure = notifyOnFailure;
     }
 }
 

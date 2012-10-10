@@ -53,19 +53,22 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         LOGGER.debug("Job [id={}] will be executed (auto)", scheduleJobId);
 
         StartExecutionParameters executionParameters = new StartExecutionParameters();
-        executionParameters.setScheduled(parameters.getScheduled());
-        executionParameters.setFired(parameters.getFired());
+        executionParameters.setScheduled(parameters.getScheduledTime());
+        executionParameters.setFired(parameters.getFiredTime());
         executionParameters.setManual(false);
         executionParameters.setComment(null);
         executionParameters.setAddresses(null);
 
-        ScheduleExecution execution = executeJob(scheduleJobId, executionParameters);
+        ScheduleExecution scheduleExecution = executeJob(scheduleJobId, executionParameters);
 
-        if (execution.getStatus() != ScheduleExecutionStatus.SUCCEED) {
-            mailService.notifyJobExecutionFailed(execution);
+        if (scheduleExecution.getStatus() != ScheduleExecutionStatus.SUCCEED) {
+            ScheduleJob scheduleJob = scheduleExecution.getJob();
+            if (scheduleJob.isNotifyOnFailure()) {
+                mailService.notifyJobExecutionFailed(scheduleExecution);
+            }
         }
 
-        return execution;
+        return scheduleExecution;
     }
 
     @Override

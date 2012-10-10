@@ -168,9 +168,9 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         }
 
         // Limit node count if trial count is set
-        if (scheduleJob.getTrials() > 0) {
-            if (scheduleJob.getTrials() < selectedNodes.size()) {
-                selectedNodes = selectedNodes.subList(0, scheduleJob.getTrials());
+        if (scheduleJob.getNodesLimit() > 0) {
+            if (scheduleJob.getNodesLimit() < selectedNodes.size()) {
+                selectedNodes = selectedNodes.subList(0, scheduleJob.getNodesLimit());
             }
         }
 

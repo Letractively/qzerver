@@ -355,11 +355,19 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         ScheduleJobModifyParameters modifyParameters = new ScheduleJobModifyParameters();
         modifyParameters.setName("Name2");
         modifyParameters.setDescription("Description2");
+        modifyParameters.setAllNodes(true);
+        modifyParameters.setNotifyOnFailure(false);
+        modifyParameters.setTimeout(1000);
+        modifyParameters.setNodesLimit(4);
 
         ScheduleJob scheduleJobModified = scheduleJobManagementService.modifyJob(scheduleJob.getId(), modifyParameters);
         Assert.assertNotNull(scheduleJobModified);
         Assert.assertEquals("Name2", scheduleJobModified.getName());
         Assert.assertEquals("Description2", scheduleJobModified.getDescription());
+        Assert.assertEquals(true, scheduleJobModified.isAllNodes());
+        Assert.assertEquals(false, scheduleJobModified.isNotifyOnFailure());
+        Assert.assertEquals(1000, scheduleJobModified.getTimeout());
+        Assert.assertEquals(4, scheduleJobModified.getNodesLimit());
 
         control.verify();
     }
@@ -506,7 +514,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
     }
 
     @Test
-    public void testModifyJobActionTest() throws Exception {
+    public void testChangeJobActionTest() throws Exception {
         String cron = "0 0 0 * * ?";
 
         ScheduleGroup scheduleGroup = scheduleJobManagementService.createGroup("test group");
@@ -570,6 +578,76 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         Assert.assertTrue(currentScheduleAction.isArchived());
 
         control.verify();
+    }
+
+    @Test
+    public void testChangeJobGroupTest() throws Exception {
+        String cron = "0 0 0 * * ?";
+
+        ScheduleGroup scheduleGroup1 = scheduleJobManagementService.createGroup("test group 1");
+        Assert.assertNotNull(scheduleGroup1);
+
+        ScheduleGroup scheduleGroup2 = scheduleJobManagementService.createGroup("test group 2");
+        Assert.assertNotNull(scheduleGroup2);
+
+        ClusterGroup clusterGroup = new ClusterGroup();
+        clusterGroup.setName("Test cluster group");
+        businessEntityDao.save(clusterGroup);
+
+        ClusterNode clusterNode = new ClusterNode();
+        clusterNode.setAddress("10.2.0.1");
+        clusterNode.setDescription("test node");
+        clusterNode.setEnabled(true);
+        clusterNode.setGroup(clusterGroup);
+        clusterGroup.getNodes().add(clusterNode);
+
+        control.reset();
+
+        quartzManagementService.createJob(
+            EasyMock.anyLong(),
+            EasyMock.eq(cron),
+            EasyMock.eq(DEFAULT_TIMEZONE),
+            EasyMock.eq(true)
+        );
+
+        control.replay();
+
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone(DEFAULT_TIMEZONE);
+        jobParameters.setCron(cron);
+        jobParameters.setEnabled(true);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup2.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setActionIdentifier("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
+
+        ScheduleJob scheduleJob = scheduleJobManagementService.createJob(jobParameters);
+        Assert.assertNotNull(scheduleJob);
+
+        ScheduleAction currentScheduleAction = scheduleJob.getAction();
+        Assert.assertNotNull(currentScheduleAction);
+        Assert.assertEquals("action.type", currentScheduleAction.getIdentifier());
+        Assert.assertTrue(Arrays.equals("action.data".getBytes(), currentScheduleAction.getDefinition()));
+        Assert.assertFalse(currentScheduleAction.isArchived());
+
+        ScheduleJob scheduleJobModified = scheduleJobManagementService.changeJobGroup(scheduleJob.getId(), scheduleGroup2.getId());
+        Assert.assertNotNull(scheduleJobModified);
+
+        control.verify();
+
+        entityManager.flush();
+        entityManager.clear();
+
+        scheduleJobModified = scheduleJobManagementService.findJob(scheduleJob.getId());
+        Assert.assertNotNull(scheduleJobModified);
+        Assert.assertEquals("test group 2", scheduleJobModified.getGroup().getName());
+
+        ScheduleGroup scheduleGroupModified = scheduleJobManagementService.findGroup(scheduleGroup1.getId());
+        Assert.assertNotNull(scheduleGroupModified);
+        Assert.assertEquals(0, scheduleGroupModified.getJobs().size());
     }
 
     @Test

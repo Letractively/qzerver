@@ -30,8 +30,8 @@
             <basic name="standby">
                 <column name="standby" nullable="false"/>
             </basic>
-            <basic name="trials">
-                <column name="limit_trials" nullable="false"/>
+            <basic name="nodesLimit">
+                <column name="limit_nodes" nullable="false"/>
             </basic>
             <basic name="timeout">
                 <column name="limit_timeout" nullable="false"/>
@@ -49,6 +49,9 @@
             <basic name="modified">
                 <column name="modified" nullable="false"/>
                 <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="notifyOnFailure">
+                <column name="notify_failure" nullable="false"/>
             </basic>
             <many-to-one name="cluster" fetch="LAZY" optional="true">
                 <join-column name="cluster_group_id" referenced-column-name="id" nullable="true"/>

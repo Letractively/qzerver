@@ -76,6 +76,14 @@ public interface ScheduleJobManagementService {
     ScheduleJob changeJobAction(long scheduleJobId, ScheduleJobActionParameters parameters);
 
     /**
+     * Move the job to other group
+     * @param scheduleJobId Job identifier
+     * @param scheduleGroupId Schedule group id
+     * @return Job entity
+     */
+    ScheduleJob changeJobGroup(long scheduleJobId, long scheduleGroupId);
+
+    /**
      * Reschedule job
      * @param scheduleJobId Job identifier
      * @param parameters Job reschedule parameters

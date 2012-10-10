@@ -10,28 +10,40 @@ public class AutomaticJobExecutionParameters implements Serializable {
      * Scheduled time for the job
      */
     @NotNull
-    private Date scheduled;
+    private Date scheduledTime;
 
     /**
      * Actual firing time for the job
      */
     @NotNull
-    private Date fired;
+    private Date firedTime;
 
-    public Date getFired() {
-        return fired;
+    /**
+     * Next firing time if it exists
+     */
+    private Date nextFireTime;
+
+    public Date getScheduledTime() {
+        return scheduledTime;
     }
 
-    public void setFired(Date fired) {
-        this.fired = fired;
+    public void setScheduledTime(Date scheduledTime) {
+        this.scheduledTime = scheduledTime;
     }
 
-    public Date getScheduled() {
-        return scheduled;
+    public Date getFiredTime() {
+        return firedTime;
     }
 
-    public void setScheduled(Date scheduled) {
-        this.scheduled = scheduled;
+    public void setFiredTime(Date firedTime) {
+        this.firedTime = firedTime;
     }
 
+    public Date getNextFireTime() {
+        return nextFireTime;
+    }
+
+    public void setNextFireTime(Date nextFireTime) {
+        this.nextFireTime = nextFireTime;
+    }
 }

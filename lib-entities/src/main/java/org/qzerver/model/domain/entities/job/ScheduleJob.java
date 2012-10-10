@@ -83,7 +83,7 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
      * Limit the number of node trials. Value 0 means no limit
      */
     @Min(0)
-    private int trials;
+    private int nodesLimit;
 
     /**
      * Limit the duration of all trials in milliseconds. Value 0 means no limit
@@ -107,6 +107,11 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
      */
     @NotNull
     private Date modified;
+
+    /**
+     * Notify when failure occurs
+     */
+    private boolean notifyOnFailure;
 
     public ScheduleJob() {
         super(BusinessModelVersionHolder.VERSION);
@@ -185,12 +190,12 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
         this.cluster = cluster;
     }
 
-    public int getTrials() {
-        return trials;
+    public int getNodesLimit() {
+        return nodesLimit;
     }
 
-    public void setTrials(int trials) {
-        this.trials = trials;
+    public void setNodesLimit(int nodesLimit) {
+        this.nodesLimit = nodesLimit;
     }
 
     public int getTimeout() {
@@ -239,5 +244,13 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> {
 
     public void setModified(Date modified) {
         this.modified = modified;
+    }
+
+    public boolean isNotifyOnFailure() {
+        return notifyOnFailure;
+    }
+
+    public void setNotifyOnFailure(boolean notifyOnFailure) {
+        this.notifyOnFailure = notifyOnFailure;
     }
 }

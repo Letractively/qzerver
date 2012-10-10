@@ -103,6 +103,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -121,8 +122,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -164,6 +166,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -225,6 +228,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -288,6 +292,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -329,8 +334,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -374,6 +380,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -400,8 +407,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -444,6 +452,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -474,8 +483,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -517,6 +527,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -549,8 +560,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -592,6 +604,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -617,8 +630,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -661,6 +675,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -690,8 +705,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -734,6 +750,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -756,8 +773,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -796,10 +814,11 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setCron("0 0 0 * * ?");
         jobParameters.setEnabled(true);
         jobParameters.setAllNodes(false);
-        jobParameters.setTrials(1);
+        jobParameters.setNodesLimit(1);
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -822,8 +841,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -859,6 +879,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -884,8 +905,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -925,10 +947,11 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setCron("0 0 0 * * ?");
         jobParameters.setEnabled(true);
         jobParameters.setAllNodes(true);
-        jobParameters.setTrials(1);
+        jobParameters.setNodesLimit(1);
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -947,8 +970,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -984,6 +1008,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -1013,8 +1038,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -1057,6 +1083,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -1086,8 +1113,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -1134,6 +1162,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -1156,8 +1185,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -1200,6 +1230,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -1230,8 +1261,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
@@ -1274,6 +1306,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         jobParameters.setClusterGroupId(clusterGroup.getId());
         jobParameters.setScheduleGroupId(scheduleGroup.getId());
         jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
         jobParameters.setActionIdentifier("action.type");
         jobParameters.setActionDefinition("action.data".getBytes());
 
@@ -1306,8 +1339,9 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
         control.replay();
 
         AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
-        jobExecutionParameters.setScheduled(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
-        jobExecutionParameters.setFired(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
 
         ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
             jobExecutionParameters);
