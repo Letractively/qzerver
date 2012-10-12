@@ -4,6 +4,8 @@ import org.qzerver.model.agent.action.providers.ActionResult;
 
 public class HttpActionResult implements ActionResult {
 
+    private static final int HTTP_SUCCESS_CODE = 200;
+
     private int status;
 
     private String mime;
@@ -36,6 +38,6 @@ public class HttpActionResult implements ActionResult {
 
     @Override
     public boolean isSucceed() {
-        return false;
+        return status == HTTP_SUCCESS_CODE;
     }
 }

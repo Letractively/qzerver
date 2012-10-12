@@ -1,7 +1,6 @@
 package org.qzerver.model.agent.action.providers.marshaller;
 
 import org.qzerver.model.agent.action.providers.ActionDefinition;
-import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 /**
  * Marshaller for action definition
@@ -17,12 +16,12 @@ public interface ActionDefinitionMarshaller {
 
     /**
      * Unmarshall action definition
-     * @param actionIdentifier Action identifier
+     * @param actionDefinitionClass Action definition class
      * @param definition Seriailized data
      * @return Action definition object
      * @throws ActionDefinitionMarshallerException Exception on error
      */
-    ActionDefinition unmarshall(ActionIdentifier actionIdentifier, byte[] definition)
+    ActionDefinition unmarshall(Class<? extends ActionDefinition> actionDefinitionClass, byte[] definition)
         throws ActionDefinitionMarshallerException;
 
 }

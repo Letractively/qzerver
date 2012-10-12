@@ -1,6 +1,5 @@
 package org.qzerver.model.agent.action.providers.marshaller;
 
-import org.qzerver.model.agent.action.providers.ActionIdentifier;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
 /**
@@ -13,16 +12,16 @@ public interface ActionResultMarshaller {
      * @param actionResult Action result object
      * @return Serialized data
      */
-    byte[] marshallResult(ActionResult actionResult);
+    byte[] marshall(ActionResult actionResult);
 
     /**
      * Unmarshall action result
-     * @param actionIdentifier Action identifier
+     * @param actionResultClass Action result class
      * @param result Serialized data
      * @return Action result object
      * @throws ActionResultMarshallerException Exception on error
      */
-    ActionResult unmarshallResult(ActionIdentifier actionIdentifier, byte[] result)
+    ActionResult unmarshall(Class<? extends ActionResult> actionResultClass, byte[] result)
         throws ActionResultMarshallerException;
 
 }

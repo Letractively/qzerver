@@ -806,6 +806,73 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
     }
 
     @Test
+    public void testNoResultAutomaticSingleExecution() throws Exception {
+        ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
+        jobParameters.setName("Test Job");
+        jobParameters.setDescription("Nothing to do");
+        jobParameters.setTimezone("UTC");
+        jobParameters.setCron("0 0 0 * * ?");
+        jobParameters.setEnabled(true);
+        jobParameters.setAllNodes(false);
+        jobParameters.setClusterGroupId(clusterGroup.getId());
+        jobParameters.setScheduleGroupId(scheduleGroup.getId());
+        jobParameters.setStrategy(ScheduleExecutionStrategy.CIRCULAR);
+        jobParameters.setNotifyOnFailure(true);
+        jobParameters.setActionIdentifier("action.type");
+        jobParameters.setActionDefinition("action.data".getBytes());
+
+        scheduleJob = scheduleJobManagementService.createJob(jobParameters);
+        quartzManagementService.disableJob(scheduleJob.getId());
+
+        control.reset();
+
+        EasyMock.expect(actionAgent.executeAction(
+            EasyMock.anyLong(),
+            EasyMock.<String>anyObject(),
+            EasyMock.<byte[]>anyObject(),
+            EasyMock.eq(clusterNode2.getAddress())
+        )).andReturn(null);
+
+        mailService.notifyJobExecutionFailed(
+            EasyMock.<ScheduleExecution>anyObject()
+        );
+
+        control.replay();
+
+        AutomaticJobExecutionParameters jobExecutionParameters = new AutomaticJobExecutionParameters();
+        jobExecutionParameters.setScheduledTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.000 UTC"));
+        jobExecutionParameters.setFiredTime(ChronometerUtils.parseMoment("2012-02-20 10:00:00.231 UTC"));
+        jobExecutionParameters.setNextFireTime(null);
+
+        ScheduleExecution scheduleExecution = scheduleJobExecutorService.executeAutomaticJob(scheduleJob.getId(),
+            jobExecutionParameters);
+        Assert.assertNotNull(scheduleExecution);
+
+        control.verify();
+
+        ScheduleExecutionNode scheduleExecutionNode;
+        ScheduleExecutionResult scheduleExecutionResult;
+
+        scheduleExecution = scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
+        Assert.assertEquals(ScheduleExecutionStatus.EXCEPTION, scheduleExecution.getStatus());
+        Assert.assertEquals(2, scheduleExecution.getNodes().size());
+        Assert.assertEquals(1, scheduleExecution.getResults().size());
+
+        scheduleExecutionNode = scheduleExecution.getNodes().get(0);
+        Assert.assertNotNull(scheduleExecutionNode);
+        Assert.assertEquals(clusterNode2.getAddress(), scheduleExecutionNode.getAddress());
+        scheduleExecutionResult = scheduleExecutionNode.getResult();
+        Assert.assertNotNull(scheduleExecutionResult);
+        Assert.assertFalse(scheduleExecutionResult.isSucceed());
+
+        scheduleExecutionNode = scheduleExecution.getNodes().get(1);
+        Assert.assertNotNull(scheduleExecutionNode);
+        Assert.assertEquals(clusterNode1.getAddress(), scheduleExecutionNode.getAddress());
+        scheduleExecutionResult = scheduleExecutionNode.getResult();
+        Assert.assertNull(scheduleExecutionResult);
+    }
+
+    @Test
     public void testLimitedAutomaticSingleExecution() throws Exception {
         ScheduleJobCreateParameters jobParameters = new ScheduleJobCreateParameters();
         jobParameters.setName("Test Job");

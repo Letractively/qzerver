@@ -24,10 +24,15 @@
 
     <!-- Action result and definition marshallers -->
 
+    <bean id="marshallerMapper" class="org.codehaus.jackson.map.ObjectMapper">
+    </bean>
+
     <bean id="actionResultMarshaller" class="org.qzerver.model.agent.action.providers.marshaller.impl.ActionResultJsonMarshaller">
+        <property name="objectMapper" ref="marshallerMapper"/>
     </bean>
 
     <bean id="actionDefinitionMarshaller" class="org.qzerver.model.agent.action.providers.marshaller.impl.ActionDefinitionJsonMarshaller">
+        <property name="objectMapper" ref="marshallerMapper"/>
     </bean>
 
     <!-- Action executors -->

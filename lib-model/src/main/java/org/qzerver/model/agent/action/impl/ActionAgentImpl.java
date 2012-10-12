@@ -2,6 +2,7 @@ package org.qzerver.model.agent.action.impl;
 
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.google.common.base.Preconditions;
+import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.agent.action.ActionAgentResult;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Transactional(propagation = Propagation.NEVER)
-public class ActionAgentImpl implements org.qzerver.model.agent.action.ActionAgent {
+public class ActionAgentImpl implements ActionAgent {
 
     @NotNull
     private ActionResultMarshaller actionResultMarshaller;
@@ -42,15 +43,25 @@ public class ActionAgentImpl implements org.qzerver.model.agent.action.ActionAge
         ActionDefinition actionDefinition;
 
         try {
-            actionDefinition = actionDefinitionMarshaller.unmarshall(actionIdentifier, definition);
+            actionDefinition = actionDefinitionMarshaller.unmarshall(actionIdentifier.getActionDefinitionClass(),
+                definition);
         } catch (ActionDefinitionMarshallerException e) {
             throw new SystemIntegrityException("Fail to unmarshall definition", e);
         }
 
         ActionExecutor actionExecutor = executors.get(actionIdentifier);
+        if (actionExecutor == null) {
+            throw new NullPointerException("Executor is not found for identifier " + identifier);
+        }
 
         ActionResult actionResult = actionExecutor.execute(actionDefinition, scheduleExecutionId, address);
-        byte[] actionResultData = actionResultMarshaller.marshallResult(actionResult);
+        if (actionResult == null) {
+            String message = String.format("Action result in null for execution=[%d] and node=[%s]",
+                scheduleExecutionId, address);
+            throw new NullPointerException(message);
+        }
+
+        byte[] actionResultData = actionResultMarshaller.marshall(actionResult);
 
         ActionAgentResult actionAgentResult = new ActionAgentResult();
         actionAgentResult.setSucceed(actionResult.isSucceed());
