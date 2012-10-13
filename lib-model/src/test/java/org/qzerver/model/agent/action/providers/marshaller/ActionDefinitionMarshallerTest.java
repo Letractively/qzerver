@@ -22,7 +22,6 @@ public class ActionDefinitionMarshallerTest extends AbstractModelTest {
         definition.setValue1("test1");
         definition.setValue2(13445);
         definition.setValue3(ChronometerUtils.parseMoment("2010-02-12 12:32:10.000 UTC"));
-        definition.setIdentifier(ActionIdentifier.HTTP);
 
         byte[] data = actionDefinitionMarshaller.marshall(definition);
         Assert.assertNotNull(data);
@@ -42,15 +41,9 @@ public class ActionDefinitionMarshallerTest extends AbstractModelTest {
 
         private Date value3;
 
-        private ActionIdentifier identifier;
-
-        public void setIdentifier(ActionIdentifier identifier) {
-            this.identifier = identifier;
-        }
-
         @Override
         public ActionIdentifier getIdentifier() {
-            return identifier;
+            return ActionIdentifier.HTTP;
         }
 
         public String getValue1() {

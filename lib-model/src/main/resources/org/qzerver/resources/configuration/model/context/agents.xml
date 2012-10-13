@@ -24,7 +24,36 @@
 
     <!-- Action result and definition marshallers -->
 
-    <bean id="marshallerMapper" class="org.codehaus.jackson.map.ObjectMapper">
+    <bean id="marshallerMapper" class="org.qzerver.system.jackson.JacksonObjectMapperFactoryBean">
+        <property name="serializationFeatures">
+            <map key-type="org.codehaus.jackson.map.SerializationConfig$Feature" value-type="java.lang.Boolean">
+                <entry key="FAIL_ON_EMPTY_BEANS" value="false"/>
+                <entry key="WRITE_ENUMS_USING_TO_STRING" value="false"/>
+                <entry key="WRAP_ROOT_VALUE" value="false"/>
+                <entry key="AUTO_DETECT_FIELDS" value="true"/>
+                <entry key="AUTO_DETECT_GETTERS" value="true"/>
+                <entry key="AUTO_DETECT_IS_GETTERS" value="true"/>
+                <entry key="WRITE_DATES_AS_TIMESTAMPS" value="true"/>
+                <entry key="WRITE_DATE_KEYS_AS_TIMESTAMPS" value="true"/>
+                <entry key="WRITE_EMPTY_JSON_ARRAYS" value="true"/>
+                <entry key="WRITE_NULL_MAP_VALUES" value="true"/>
+            </map>
+        </property>
+        <property name="deserializationFeatures">
+            <map key-type="org.codehaus.jackson.map.DeserializationConfig$Feature" value-type="java.lang.Boolean">
+                <entry key="AUTO_DETECT_CREATORS" value="true"/>
+                <entry key="AUTO_DETECT_FIELDS" value="true"/>
+                <entry key="AUTO_DETECT_SETTERS" value="true"/>
+                <entry key="ACCEPT_EMPTY_STRING_AS_NULL_OBJECT" value="true"/>
+                <entry key="ACCEPT_SINGLE_VALUE_AS_ARRAY" value="true"/>
+                <entry key="UNWRAP_ROOT_VALUE" value="false"/>
+                <entry key="USE_JAVA_ARRAY_FOR_JSON_ARRAY" value="false"/>
+                <entry key="READ_ENUMS_USING_TO_STRING" value="false"/>
+                <entry key="FAIL_ON_NULL_FOR_PRIMITIVES" value="false"/>
+                <entry key="FAIL_ON_UNKNOWN_PROPERTIES" value="false"/>
+                <entry key="FAIL_ON_NUMBERS_FOR_ENUMS" value="false"/>
+            </map>
+        </property>
     </bean>
 
     <bean id="actionResultMarshaller" class="org.qzerver.model.agent.action.providers.marshaller.impl.ActionResultJsonMarshaller">

@@ -21,7 +21,6 @@ public class ActionResultMarshallerTest extends AbstractModelTest {
         result.setValue1("test1");
         result.setValue2(13445);
         result.setValue3(ChronometerUtils.parseMoment("2010-02-12 12:32:10.000 UTC"));
-        result.setSucceed(true);
 
         byte[] data = actionResultMarshaller.marshall(result);
         Assert.assertNotNull(data);
@@ -41,15 +40,9 @@ public class ActionResultMarshallerTest extends AbstractModelTest {
 
         private Date value3;
 
-        private boolean succeed;
-
         @Override
         public boolean isSucceed() {
-            return succeed;
-        }
-
-        public void setSucceed(boolean succeed) {
-            this.succeed = succeed;
+            return true;
         }
 
         public String getValue1() {
