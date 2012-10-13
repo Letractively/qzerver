@@ -80,8 +80,8 @@
             <basic name="hostname">
                 <column name="hostname" nullable="false" length="128"/>
             </basic>
-            <basic name="comment">
-                <column name="comment" nullable="true" length="1024"/>
+            <basic name="description">
+                <column name="description" nullable="true" length="1024"/>
             </basic>
             <many-to-one name="job" fetch="LAZY" optional="true">
                 <join-column name="schedule_job_id" referenced-column-name="id" nullable="true"/>

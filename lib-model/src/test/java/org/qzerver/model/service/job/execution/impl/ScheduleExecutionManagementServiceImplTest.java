@@ -287,7 +287,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
             scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertNotNull(scheduleExecutionModified);
         Assert.assertEquals(scheduleExecution, scheduleExecutionModified);
-        Assert.assertEquals("Test comment", scheduleExecutionModified.getComment());
+        Assert.assertEquals("Test comment", scheduleExecutionModified.getDescription());
         Assert.assertEquals(ScheduleExecutionStatus.INPROGRESS, scheduleExecutionModified.getStatus());
         Assert.assertEquals(2, scheduleExecutionModified.getNodes().size());
 
@@ -334,7 +334,7 @@ public class ScheduleExecutionManagementServiceImplTest extends AbstractTransact
             scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertNotNull(scheduleExecutionModified);
         Assert.assertEquals(scheduleExecution, scheduleExecutionModified);
-        Assert.assertEquals("Test comment", scheduleExecutionModified.getComment());
+        Assert.assertEquals("Test comment", scheduleExecutionModified.getDescription());
         Assert.assertEquals(ScheduleExecutionStatus.INPROGRESS, scheduleExecutionModified.getStatus());
         Assert.assertEquals(1, scheduleExecutionModified.getNodes().size());
 

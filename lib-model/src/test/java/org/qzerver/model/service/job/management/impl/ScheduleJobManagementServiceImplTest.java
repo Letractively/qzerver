@@ -282,7 +282,7 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         scheduleExecution.setScheduled(chronometer.getCurrentMoment());
         scheduleExecution.setFired(chronometer.getCurrentMoment());
         scheduleExecution.setForced(false);
-        scheduleExecution.setComment("Test execution");
+        scheduleExecution.setDescription("Test execution");
         scheduleExecution.setStatus(ScheduleExecutionStatus.INPROGRESS);
         scheduleExecution.setStarted(chronometer.getCurrentMoment());
         scheduleExecution.setFinished(null);

@@ -198,7 +198,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
         scheduleExecution = scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertEquals(ScheduleExecutionStatus.SUCCEED, scheduleExecution.getStatus());
-        Assert.assertEquals("Test comment", scheduleExecution.getComment());
+        Assert.assertEquals("Test comment", scheduleExecution.getDescription());
         Assert.assertEquals(2, scheduleExecution.getNodes().size());
         Assert.assertEquals(1, scheduleExecution.getResults().size());
 
@@ -261,7 +261,7 @@ public class ScheduleJobExecutorServiceImplTest extends AbstractModelTest {
 
         scheduleExecution = scheduleExecutionManagementService.findExecution(scheduleExecution.getId());
         Assert.assertEquals(ScheduleExecutionStatus.SUCCEED, scheduleExecution.getStatus());
-        Assert.assertEquals("Test comment", scheduleExecution.getComment());
+        Assert.assertEquals("Test comment", scheduleExecution.getDescription());
         Assert.assertEquals(2, scheduleExecution.getNodes().size());
         Assert.assertEquals(1, scheduleExecution.getResults().size());
 

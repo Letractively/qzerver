@@ -121,7 +121,7 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
      * Some comment on an execution (specially for manual execution)
      */
     @Length(max = MAX_COMMENT_LENGTH)
-    private String comment;
+    private String description;
 
     public ScheduleExecution() {
         super(BusinessModelVersionHolder.VERSION);
@@ -278,12 +278,12 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.strategy = strategy;
     }
 
-    public String getComment() {
-        return comment;
+    public String getDescription() {
+        return description;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 

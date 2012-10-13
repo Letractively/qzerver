@@ -86,7 +86,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
         scheduleExecution.setForced(parameters.isManual());
-        scheduleExecution.setComment(parameters.getComment());
+        scheduleExecution.setDescription(parameters.getComment());
         scheduleExecution.setStatus(ScheduleExecutionStatus.INPROGRESS);
         scheduleExecution.setStarted(now);
         scheduleExecution.setFinished(null);
