@@ -1,4 +1,4 @@
-package org.qzerver.system.quartz;
+package org.qzerver.model.service.job.executor.quartz;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.listeners.JobListenerSupport;

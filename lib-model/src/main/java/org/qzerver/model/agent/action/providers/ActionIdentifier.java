@@ -1,5 +1,7 @@
 package org.qzerver.model.agent.action.providers;
 
+import org.qzerver.model.agent.action.providers.executor.clazz.ClazzActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.clazz.ClazzActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionResult;
 import org.qzerver.model.agent.action.providers.executor.jmx.JmxActionDefinition;
@@ -36,6 +38,11 @@ public enum ActionIdentifier {
     JMX("action.jmx",
         JmxActionDefinition.class,
         JmxActionResult.class
+    ),
+
+    CLASS("action.class",
+        ClazzActionDefinition.class,
+        ClazzActionResult.class
     );
 
     private final String identifier;

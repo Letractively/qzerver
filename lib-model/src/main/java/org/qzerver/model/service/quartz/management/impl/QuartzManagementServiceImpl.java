@@ -3,7 +3,7 @@ package org.qzerver.model.service.quartz.management.impl;
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import org.quartz.*;
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
-import org.qzerver.system.quartz.QzerverJob;
+import org.qzerver.model.service.job.executor.quartz.QzerverJob;
 import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

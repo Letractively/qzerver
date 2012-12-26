@@ -31,7 +31,7 @@
         <property name="scheduler" ref="quartzScheduler"/>
         <property name="jobListeners">
             <array>
-                <bean class="org.qzerver.system.quartz.QzerverJobListener">
+                <bean class="org.qzerver.model.service.job.executor.quartz.QzerverJobListener">
                     <property name="executorService" ref="scheduleJobExecutorService"/>
                 </bean>
             </array>

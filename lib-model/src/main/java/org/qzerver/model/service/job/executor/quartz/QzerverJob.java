@@ -1,9 +1,10 @@
-package org.qzerver.system.quartz;
+package org.qzerver.model.service.job.executor.quartz;
 
 import com.google.common.base.Preconditions;
 import org.quartz.*;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
 import org.qzerver.model.service.job.executor.dto.AutomaticJobExecutionParameters;
+import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
