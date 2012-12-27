@@ -5,9 +5,5 @@
 
 /target
 
-/*.sh
-/*.bat
-/*.cmd
-
 /release.properties
 *.releaseBackup

@@ -16,6 +16,22 @@
 
     <mvc:annotation-driven validator="mvcBeanValidator"/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <array>
+                <value>classpath:/org/qzerver/resources/configuration/model/settings.properties</value>
+                <value>classpath:/org/qzerver/resources/configuration/servlet/settings.properties</value>
+            </array>
+        </property>
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+        <property name="searchSystemEnvironment" value="true"/>
+        <property name="ignoreResourceNotFound" value="false"/>
+        <property name="ignoreUnresolvablePlaceholders" value="false"/>
+        <property name="fileEncoding" value="utf-8"/>
+        <property name="localOverride" value="true"/>
+        <property name="properties" ref="localProperties"/>
+    </bean>
+
     <!--suppress SpringModelInspection -->
     <mvc:view-controller path="/error/403" view-name="error/403"/>
     <!--suppress SpringModelInspection -->
@@ -33,27 +49,17 @@
     <mvc:view-controller path="/info/license" view-name="info/license"/>
 
     <!--suppress SpringModelInspection -->
-    <mvc:resources mapping="/css/**" location="/css/" cache-period="31536000"/>
+    <mvc:resources mapping="/css/**"
+                   location="${app.servlet.static.resource}${app.servlet.static.prefix}css/"
+                   cache-period="31536000"/>
     <!--suppress SpringModelInspection -->
-    <mvc:resources mapping="/i/**" location="/i/" cache-period="31536000"/>
+    <mvc:resources mapping="/i/**"
+                   location="${app.servlet.static.resource}${app.servlet.static.prefix}i/"
+                   cache-period="31536000"/>
     <!--suppress SpringModelInspection -->
-    <mvc:resources mapping="/js/**" location="/js/" cache-period="31536000"/>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <array>
-                <value>classpath:/org/qzerver/resources/configuration/model/settings.properties</value>
-                <value>classpath:/org/qzerver/resources/configuration/servlet/settings.properties</value>
-            </array>
-        </property>
-        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        <property name="searchSystemEnvironment" value="true"/>
-        <property name="ignoreResourceNotFound" value="false"/>
-        <property name="ignoreUnresolvablePlaceholders" value="false"/>
-        <property name="fileEncoding" value="utf-8"/>
-        <property name="localOverride" value="true"/>
-        <property name="properties" ref="localProperties"/>
-    </bean>
+    <mvc:resources mapping="/js/**"
+                   location="${app.servlet.static.resource}${app.servlet.static.prefix}js/"
+                   cache-period="31536000"/>
 
     <!-- Paging strategies -->
 

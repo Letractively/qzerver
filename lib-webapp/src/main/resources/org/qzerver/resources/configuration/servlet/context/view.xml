@@ -6,11 +6,16 @@
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-    <bean id="viewFreemarkerConfigurationFactory" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+    <bean id="viewFreemarkerConfigurationFactory" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactory">
         <property name="preTemplateLoaders">
             <array>
                 <bean class="com.gainmatrix.lib.freemarker.core.SpringContextTemplateLoader">
-                    <property name="templateLoaderPath" value="classpath:/"/>
+                    <property name="templateLoaderPaths">
+                        <list>
+                            <value>${app.view.templates.resource}</value>
+                            <value>classpath:/</value>
+                        </list>
+                    </property>
                 </bean>
             </array>
         </property>
@@ -26,19 +31,19 @@
         </property>
     </bean>
 
-    <bean id="viewFreemarkerConfiguration" factory-bean="viewFreemarkerConfigurationFactory" factory-method="getConfiguration"/>
+    <bean id="viewFreemarkerConfiguration" factory-bean="viewFreemarkerConfigurationFactory" factory-method="createConfiguration"/>
 
     <bean id="viewResolver" class="com.gainmatrix.lib.freemarker.web.view.ConfigurableFreeMarkerViewResolver">
         <property name="configuration" ref="viewFreemarkerConfiguration"/>
-        <property name="cache" value="true"/>
-        <property name="prefix" value="/org/qzerver/resources/configuration/servlet/freemarker/view/"/>
+        <property name="cacheLimit" value="${app.view.templates.cache.size}"/>
+        <property name="prefix" value="${app.view.templates.prefix}"/>
         <property name="suffix" value=".ftl"/>
         <property name="requestContextAttribute" value="requestContext"/>
         <property name="contentType" value="text/html; charset=UTF-8"/>
-        <property name="exposeRequestAttributes" value="true"/>
-        <property name="allowRequestOverride" value="true"/>
-        <property name="exposeSessionAttributes" value="true"/>
-        <property name="allowSessionOverride" value="true"/>
+        <property name="exposeRequestAttributes" value="false"/>
+        <property name="allowRequestOverride" value="false"/>
+        <property name="exposeSessionAttributes" value="false"/>
+        <property name="allowSessionOverride" value="false"/>
         <property name="exposeSpringMacroHelpers" value="false"/>
     </bean>
 

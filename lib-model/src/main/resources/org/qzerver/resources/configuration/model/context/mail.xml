@@ -24,7 +24,12 @@
         <property name="preTemplateLoaders">
             <array>
                 <bean class="com.gainmatrix.lib.freemarker.core.SpringContextTemplateLoader">
-                    <property name="templateLoaderPath" value="classpath:/"/>
+                    <property name="templateLoaderPaths">
+                        <list>
+                            <value>${app.mail.templates.resource}</value>
+                            <value>classpath:/</value>
+                        </list>
+                    </property>
                 </bean>
             </array>
         </property>
@@ -44,7 +49,7 @@
 
     <bean id="mailFreemarkerTemplateFactory" class="com.gainmatrix.lib.freemarker.core.template.FreemarkerTextTemplateFactory">
         <property name="configuration" ref="mailFreemarkerConfiguration"/>
-        <property name="prefix" value="/org/qzerver/resources/configuration/model/freemarker/mail/"/>
+        <property name="prefix" value="${app.mail.templates.prefix}"/>
         <property name="suffix" value=".ftl"/>
     </bean>
 

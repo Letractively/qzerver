@@ -31,6 +31,12 @@
             <version>0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.qzerver</groupId>
+            <artifactId>qzerver-lib-webapp-static</artifactId>
+            <version>0.1-SNAPSHOT</version>
+            <scope>runtime</scope>
+        </dependency>
         <!-- GainMatrix -->
         <dependency>
             <groupId>com.gainmatrix</groupId>
