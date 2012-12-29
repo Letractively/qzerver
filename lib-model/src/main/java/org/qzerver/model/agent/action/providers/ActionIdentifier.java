@@ -1,7 +1,7 @@
 package org.qzerver.model.agent.action.providers;
 
-import org.qzerver.model.agent.action.providers.executor.clazz.ClazzActionDefinition;
-import org.qzerver.model.agent.action.providers.executor.clazz.ClazzActionResult;
+import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionResult;
 import org.qzerver.model.agent.action.providers.executor.jmx.JmxActionDefinition;
@@ -41,8 +41,8 @@ public enum ActionIdentifier {
     ),
 
     CLASS("action.class",
-        ClazzActionDefinition.class,
-        ClazzActionResult.class
+        ClassActionDefinition.class,
+        ClassActionResult.class
     );
 
     private final String identifier;
@@ -74,12 +74,12 @@ public enum ActionIdentifier {
 
     public static ActionIdentifier findByIdentifier(String identifier) {
         for (ActionIdentifier actionIdentifier : ActionIdentifier.values()) {
-            if (actionIdentifier.getIdentifier().equals(identifier)) {
+            if (actionIdentifier.getIdentifier().equalsIgnoreCase(identifier)) {
                 return actionIdentifier;
             }
         }
 
-        throw new IllegalArgumentException("Can't fing action identifier by specified itentifier: " + identifier);
+        throw new IllegalArgumentException("Can't find action identifier by specified itentifier: " + identifier);
     }
 
 }

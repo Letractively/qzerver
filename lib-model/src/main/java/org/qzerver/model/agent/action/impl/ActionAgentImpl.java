@@ -56,7 +56,7 @@ public class ActionAgentImpl implements ActionAgent {
 
         ActionResult actionResult = actionExecutor.execute(actionDefinition, scheduleExecutionId, address);
         if (actionResult == null) {
-            String message = String.format("Action result in null for execution=[%d] and node=[%s]",
+            String message = String.format("Action result is null for execution=[%d] and node=[%s]",
                 scheduleExecutionId, address);
             throw new NullPointerException(message);
         }

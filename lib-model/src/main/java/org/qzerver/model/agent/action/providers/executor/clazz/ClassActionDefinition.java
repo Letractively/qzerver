@@ -1,0 +1,55 @@
+package org.qzerver.model.agent.action.providers.executor.clazz;
+
+import org.qzerver.model.agent.action.providers.ActionDefinition;
+import org.qzerver.model.agent.action.providers.ActionIdentifier;
+
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+public class ClassActionDefinition implements ActionDefinition {
+
+    /**
+     * Class name of the agent which implements java.util.concurrent.Callable interface
+     */
+    private String callableClassName;
+
+    /**
+     * Properties of the agent to be set
+     */
+    private Map<String, String> parameters;
+
+    /**
+     * A real instance of Callable - this property is not used on production and used in tests only. If this property
+     * is set then callableClassName is ignored and new bean is not instantiated
+     */
+    private Callable<?> callableInstance;
+
+    @Override
+    public ActionIdentifier getIdentifier() {
+        return ActionIdentifier.CLASS;
+    }
+
+    public String getCallableClassName() {
+        return callableClassName;
+    }
+
+    public void setCallableClassName(String callableClassName) {
+        this.callableClassName = callableClassName;
+    }
+
+    public Map<String, String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(Map<String, String> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Callable<?> getCallableInstance() {
+        return callableInstance;
+    }
+
+    public void setCallableInstance(Callable<?> callableInstance) {
+        this.callableInstance = callableInstance;
+    }
+}

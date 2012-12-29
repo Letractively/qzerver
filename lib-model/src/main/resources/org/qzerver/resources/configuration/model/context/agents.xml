@@ -18,6 +18,7 @@
                 <entry key="JMX" value-ref="jmxActionExecutor"/>
                 <entry key="HTTP" value-ref="httpActionExecutor"/>
                 <entry key="SOCKET" value-ref="socketActionExecutor"/>
+                <entry key="CLASS" value-ref="classActionExecutor"/>
             </map>
         </property>
     </bean>
@@ -79,6 +80,9 @@
     </bean>
 
     <bean id="socketActionExecutor" class="org.qzerver.model.agent.action.providers.executor.socket.SocketActionExecutor">
+    </bean>
+
+    <bean id="classActionExecutor" class="org.qzerver.model.agent.action.providers.executor.clazz.ClassActionExecutor">
     </bean>
 
 </beans>
