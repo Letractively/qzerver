@@ -7,63 +7,63 @@ import org.qzerver.model.agent.action.providers.ActionResult;
  */
 public class LocalCommandActionResult implements ActionResult {
 
-    private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
+    /**
+     * Is operation succeeded
+     */
+    private boolean succeed;
 
     /**
      * Actual exit code we get from a program
      */
-    private int actualExitCode;
-
-    /**
-     * Expected exit code. This code means success
-     */
-    private int expectedExitCode = DEFAULT_EXPECTED_EXIT_CODE;
+    private int exitCode;
 
     /**
      * What we got from standard output (or both from standard output and error output). May be null if output is
      * not required
      */
-    private byte[] stdout;
+    private LocalCommandActionOutput stdout;
 
     /**
      * What we got from error output. May be null if output is not required.
      */
-    private byte[] stderr;
+    private LocalCommandActionOutput stderr;
 
     /**
      * Status of execution
      */
-    private LocalCommandActionResultStatus status = LocalCommandActionResultStatus.NORMAL;
+    private LocalCommandActionResultStatus status = LocalCommandActionResultStatus.EXECUTED;
 
-    public int getExpectedExitCode() {
-        return expectedExitCode;
+    /**
+     * Class of the exception (when the status is EXCEPTION)
+     */
+    private String exceptionClass;
+
+    /**
+     * Message of the exception (when the status is EXCEPTION)
+     */
+    private String exceptionMessage;
+
+    public int getExitCode() {
+        return exitCode;
     }
 
-    public void setExpectedExitCode(int expectedExitCode) {
-        this.expectedExitCode = expectedExitCode;
+    public void setExitCode(int exitCode) {
+        this.exitCode = exitCode;
     }
 
-    public int getActualExitCode() {
-        return actualExitCode;
-    }
-
-    public void setActualExitCode(int actualExitCode) {
-        this.actualExitCode = actualExitCode;
-    }
-
-    public byte[] getStderr() {
+    public LocalCommandActionOutput getStderr() {
         return stderr;
     }
 
-    public void setStderr(byte[] stderr) {
+    public void setStderr(LocalCommandActionOutput stderr) {
         this.stderr = stderr;
     }
 
-    public byte[] getStdout() {
+    public LocalCommandActionOutput getStdout() {
         return stdout;
     }
 
-    public void setStdout(byte[] stdout) {
+    public void setStdout(LocalCommandActionOutput stdout) {
         this.stdout = stdout;
     }
 
@@ -75,9 +75,28 @@ public class LocalCommandActionResult implements ActionResult {
         this.status = status;
     }
 
-    @Override
-    public boolean isSucceed() {
-        return actualExitCode == expectedExitCode;
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
     }
 
+    @Override
+    public boolean isSucceed() {
+        return succeed;
+    }
+
+    public String getExceptionClass() {
+        return exceptionClass;
+    }
+
+    public void setExceptionClass(String exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
+    }
+
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
 }

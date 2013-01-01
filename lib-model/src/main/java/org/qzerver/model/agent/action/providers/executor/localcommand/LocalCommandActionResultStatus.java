@@ -5,7 +5,7 @@ public enum LocalCommandActionResultStatus {
     /**
      * Command has been executed and exit code is obtained
      */
-    NORMAL,
+    EXECUTED,
 
     /**
      * Command was terminated due to timeout or manual termination

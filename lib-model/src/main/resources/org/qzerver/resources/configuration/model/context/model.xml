@@ -121,4 +121,10 @@
 
     <task:annotation-driven mode="proxy" proxy-target-class="false" executor="taskExecutor"/>
 
+    <!-- Temporary file factory -->
+
+    <bean id="temporaryFileFactory" class="com.gainmatrix.lib.file.temporary.impl.TemporaryFileFactoryImpl">
+
+    </bean>
+
 </beans>

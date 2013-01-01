@@ -1,7 +1,9 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand;
 
-import com.gainmatrix.lib.file.temporary.TemporaryFileFactory;
+import com.gainmatrix.lib.business.exception.SystemIntegrityException;
+import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.google.common.base.Preconditions;
+import org.apache.commons.io.IOUtils;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
 import org.qzerver.model.agent.action.providers.executor.localcommand.threads.ProcessExecutionThread;
@@ -9,9 +11,10 @@ import org.qzerver.model.agent.action.providers.executor.localcommand.threads.Pr
 import org.qzerver.model.agent.action.providers.executor.localcommand.threads.ProcessTimeoutThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.Validator;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,11 +23,11 @@ public class LocalCommandActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandActionExecutor.class);
 
-    private static final String PARAM_NODE = "${node}";
+    private static final String PARAM_NODE = "${nodeAddress}";
 
-    private static final long MAX_OUTPUT_SIZE = 1024 * 1024;
+    private long maxCaptureSize;
 
-    private TemporaryFileFactory temporaryFileFactory;
+    private Validator beanValidator;
 
     @Override
     public LocalCommandActionResult execute(ActionDefinition actionDefinition,
@@ -32,16 +35,15 @@ public class LocalCommandActionExecutor implements ActionExecutor {
     {
         Preconditions.checkNotNull(actionDefinition, "Definition is null");
         Preconditions.checkNotNull(nodeAddress, "Node is not specified");
+        BeanValidationUtils.checkValidity(actionDefinition, beanValidator);
 
         LocalCommandActionDefinition definition = (LocalCommandActionDefinition) actionDefinition;
 
         LOGGER.debug("Execute local command action on node [{}]", nodeAddress);
 
-        // Result container
-        LocalCommandActionResult result = new LocalCommandActionResult();
-
         // Process builder
         ProcessBuilder pb = new ProcessBuilder();
+
         File workingFolder = new File(definition.getDirectory());
         pb.directory(workingFolder);
         pb.redirectErrorStream(definition.isCombineOutput());
@@ -58,7 +60,7 @@ public class LocalCommandActionExecutor implements ActionExecutor {
 
         }
 
-        // Command list
+        // Parameters list
         List<String> commands = new ArrayList<String>();
         commands.add(definition.getCommand());
 
@@ -77,62 +79,109 @@ public class LocalCommandActionExecutor implements ActionExecutor {
 
         try {
             process = pb.start();
-        } catch (IOException e) {
-            LOGGER.warn("Fail to start process", e);
-            result.setStatus(LocalCommandActionResultStatus.EXCEPTION);
-            return result;
+        } catch (Exception e) {
+            LOGGER.warn("Failed to start a process", e);
+            return produceExceptionalResult(e);
         }
 
-        executeProcess(process, definition, result);
+        // Wait while process exits and grab all the result
+        return executeProcess(process, definition);
+    }
+
+    private LocalCommandActionResult produceExceptionalResult(Exception e) {
+        LocalCommandActionResult result = new LocalCommandActionResult();
+
+        result.setStatus(LocalCommandActionResultStatus.EXCEPTION);
+        result.setExitCode(-1);
+        result.setExceptionClass(e.getClass().getCanonicalName());
+        result.setExceptionMessage(e.getLocalizedMessage());
+        result.setSucceed(false);
+
+        LocalCommandActionOutput standardOutput = new LocalCommandActionOutput();
+        standardOutput.setStatus(LocalCommandActionOutputStatus.IDLE);
+        result.setStdout(standardOutput);
+
+        LocalCommandActionOutput standardError = new LocalCommandActionOutput();
+        standardError.setStatus(LocalCommandActionOutputStatus.IDLE);
+        result.setStderr(standardError);
 
         return result;
     }
 
-    private void executeProcess(Process process, LocalCommandActionDefinition definition,
-        LocalCommandActionResult result)
+    private LocalCommandActionResult executeProcess(Process process, LocalCommandActionDefinition definition)
     {
-        //
+        // Start process thread
         ProcessExecutionThread processExecutionThread = new ProcessExecutionThread(process);
         processExecutionThread.start();
 
+        // Start standard output copier
         ProcessOutputThread processStandardOutputThread = new ProcessOutputThread(
-            process.getInputStream(),
-            temporaryFileFactory,
-            MAX_OUTPUT_SIZE);
+            process.getInputStream(), maxCaptureSize, definition.isSkipStdOutput());
         processStandardOutputThread.start();
 
-        ProcessOutputThread processErrorOutputThread = new ProcessOutputThread(
-            process.getErrorStream(),
-            temporaryFileFactory,
-            MAX_OUTPUT_SIZE);
-        processErrorOutputThread.start();
+        // Start error output copier
+        ProcessOutputThread processStandardErrorThread = new ProcessOutputThread(
+            process.getErrorStream(), maxCaptureSize, definition.isSkipStdError());
+        processStandardErrorThread.start();
 
+        // If timeout is set start watchdog thread. It terminates process thread after timeout exceeds
         if (definition.getTimeoutMs() > 0) {
-            ProcessTimeoutThread processTimeoutThread =
-                new ProcessTimeoutThread(processExecutionThread, definition.getTimeoutMs());
+            ProcessTimeoutThread processTimeoutThread = new ProcessTimeoutThread(
+                processExecutionThread, definition.getTimeoutMs());
             processTimeoutThread.start();
         }
 
-        //
+        // Wait while process thread exits
         try {
             processExecutionThread.join();
         } catch (InterruptedException e) {
-            LOGGER.warn("Unexpected interruption of joining process execution thread");
+            throw new SystemIntegrityException("Unexpected interruption of joining process execution thread");
         }
 
-        try {
-            processStandardOutputThread.join();
-        } catch (InterruptedException e) {
-            LOGGER.warn("Unexpected interruption of joining process output thread");
+        // Release all resources - even the process is not alive (http://kylecartmell.com/?p=9)
+        IOUtils.closeQuietly(process.getErrorStream());
+        IOUtils.closeQuietly(process.getInputStream());
+        IOUtils.closeQuietly(process.getOutputStream());
+        process.destroy();
+
+        // Wait while output copiers exit
+        processStandardOutputThread.shutdownCapture();
+        processStandardErrorThread.shutdownCapture();
+
+        // Compose the result
+        LocalCommandActionResult result = new LocalCommandActionResult();
+        result.setStatus(processExecutionThread.getStatus());
+        result.setExitCode(processExecutionThread.getExitCode());
+        result.setStdout(processStandardOutputThread.getActionOutput());
+        result.setStderr(processStandardErrorThread.getActionOutput());
+
+        // In case of the process termination change "success" status to "terminated"
+        if (result.getStatus() == LocalCommandActionResultStatus.TERMINATED) {
+            LocalCommandActionOutput stdout = result.getStdout();
+            if (stdout.getStatus() == LocalCommandActionOutputStatus.CAPTURED) {
+                stdout.setStatus(LocalCommandActionOutputStatus.TERMINATED);
+            }
+            LocalCommandActionOutput stderr = result.getStderr();
+            if (stderr.getStatus() == LocalCommandActionOutputStatus.CAPTURED) {
+                stderr.setStatus(LocalCommandActionOutputStatus.TERMINATED);
+            }
         }
 
-        try {
-            processErrorOutputThread.join();
-        } catch (InterruptedException e) {
-            LOGGER.warn("Unexpected interruption of joining process error thread");
-        }
+        // Succeed status
+        boolean succeed = (result.getStatus() == LocalCommandActionResultStatus.EXECUTED) &&
+            (result.getExitCode() == definition.getExpectedExitCode());
+        result.setSucceed(succeed);
+
+        return result;
     }
 
+    @Required
+    public void setMaxCaptureSize(long maxCaptureSize) {
+        this.maxCaptureSize = maxCaptureSize;
+    }
 
-
+    @Required
+    public void setBeanValidator(Validator beanValidator) {
+        this.beanValidator = beanValidator;
+    }
 }

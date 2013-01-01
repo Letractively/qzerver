@@ -1,30 +1,75 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
+import javax.validation.constraints.Min;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
 public class LocalCommandActionDefinition implements ActionDefinition {
 
+    private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
+
+    /**
+     * Command to execute
+     */
+    @NotBlank
     private String command;
 
+    /**
+     * Additional parameters for command
+     */
     private List<String> parameters;
 
+    /**
+     * Working folder
+     */
     private String directory;
 
+    /**
+     * Additional environment variables
+     */
     private Map<String, String> environmentVariables;
 
+    /**
+     * Wether to inherit current environment variable
+     */
     private boolean environmentInherit;
 
-    private boolean catchStdOutput;
+    /**
+     * Do we need to capture standard output ('true' means we would skip output)
+     */
+    private boolean skipStdOutput;
 
-    private boolean catchStdError;
+    /**
+     * Do we need to capture error output ('true' means we would skip output)
+     */
+    private boolean skipStdError;
 
+    /**
+     * If 'true' then error ouput will be redirected to standard output
+     */
     private boolean combineOutput;
 
+    /**
+     * Timeout for command. If execution time of command exceeds this timeout the command will be forcibly terminated.
+     * Value 0 means no timeout at all.
+     */
+    @Min(0)
     private int timeoutMs;
+
+    /**
+     * Expected 'success' exit code
+     */
+    private int expectedExitCode = DEFAULT_EXPECTED_EXIT_CODE;
+
+    /**
+     * Charset of standard and error output. Value 'null' means that both outputs are binary.
+     */
+    private Charset charset;
 
     public String getCommand() {
         return command;
@@ -66,20 +111,20 @@ public class LocalCommandActionDefinition implements ActionDefinition {
         this.environmentVariables = environmentVariables;
     }
 
-    public boolean isCatchStdError() {
-        return catchStdError;
+    public boolean isSkipStdError() {
+        return skipStdError;
     }
 
-    public void setCatchStdError(boolean catchStdError) {
-        this.catchStdError = catchStdError;
+    public void setSkipStdError(boolean skipStdError) {
+        this.skipStdError = skipStdError;
     }
 
-    public boolean isCatchStdOutput() {
-        return catchStdOutput;
+    public boolean isSkipStdOutput() {
+        return skipStdOutput;
     }
 
-    public void setCatchStdOutput(boolean catchStdOutput) {
-        this.catchStdOutput = catchStdOutput;
+    public void setSkipStdOutput(boolean skipStdOutput) {
+        this.skipStdOutput = skipStdOutput;
     }
 
     public boolean isCombineOutput() {
@@ -96,6 +141,22 @@ public class LocalCommandActionDefinition implements ActionDefinition {
 
     public void setTimeoutMs(int timeoutMs) {
         this.timeoutMs = timeoutMs;
+    }
+
+    public int getExpectedExitCode() {
+        return expectedExitCode;
+    }
+
+    public void setExpectedExitCode(int expectedExitCode) {
+        this.expectedExitCode = expectedExitCode;
+    }
+
+    public Charset getCharset() {
+        return charset;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
     }
 
     @Override

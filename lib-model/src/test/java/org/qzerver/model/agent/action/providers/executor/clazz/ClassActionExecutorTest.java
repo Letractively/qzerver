@@ -54,6 +54,7 @@ public class ClassActionExecutorTest extends AbstractModelTest {
             .build();
 
         ClassActionDefinition definition = new ClassActionDefinition();
+        definition.setCallableClassName("dummy - live instance is provided");
         definition.setCallableInstance(someCallable);
         definition.setParameters(parameters);
 

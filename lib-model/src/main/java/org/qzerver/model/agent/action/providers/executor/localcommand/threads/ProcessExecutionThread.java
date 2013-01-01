@@ -14,28 +14,34 @@ public class ProcessExecutionThread extends Thread {
 
     private final Process process;
 
-    private volatile int exitCode;
+    private int exitCode;
 
-    private volatile LocalCommandActionResultStatus status;
+    private LocalCommandActionResultStatus status;
 
     public ProcessExecutionThread(Process process) {
-        super(THREAD_NAME);
         this.process = process;
         this.exitCode = DEFAULT_EXIT_CODE;
-        this.status = LocalCommandActionResultStatus.NORMAL;
+        this.status = LocalCommandActionResultStatus.EXECUTED;
+
+        setDaemon(false);
+        setName(THREAD_NAME);
     }
 
     @Override
     public void run() {
-        LOGGER.debug("Start waiting for process");
+        LOGGER.debug("Local process thread is started");
+
+        // Some nice tips about process termination are noted here: http://kylecartmell.com/?p=9
 
         try {
             exitCode = process.waitFor();
         } catch (InterruptedException e) {
+            LOGGER.debug("Local process thread has been interrupted - process will be destroyed");
             status = LocalCommandActionResultStatus.TERMINATED;
+            exitCode = -1;
         }
 
-        LOGGER.debug("Finish waiting for process with exit code [{}] and status [{}]", exitCode, status);
+        LOGGER.debug("Local process thread is finishing with exit code [{}] and status [{}]", exitCode, status);
     }
 
     public int getExitCode() {

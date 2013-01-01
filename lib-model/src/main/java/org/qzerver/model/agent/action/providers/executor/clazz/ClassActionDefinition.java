@@ -1,8 +1,10 @@
 package org.qzerver.model.agent.action.providers.executor.clazz;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -11,6 +13,8 @@ public class ClassActionDefinition implements ActionDefinition {
     /**
      * Class name of the agent which implements java.util.concurrent.Callable interface
      */
+    @NotNull
+    @NotBlank
     private String callableClassName;
 
     /**

@@ -1,23 +1,43 @@
 package org.qzerver.model.agent.action.providers.executor.clazz;
 
+import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.google.common.base.Preconditions;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
 import org.qzerver.model.agent.action.providers.ActionResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.*;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+/**
+ * Executor allows to specify any user-defined class as an action. Specified class must be available in classpath and
+ * must implement Callable interface. On success Callable.call() method must returns any object which is converted to a
+ * string or even might return null. On error it must throw any kind of exception which would be stored as an error
+ * information in ClassActionResult instance.
+ * @see java.util.concurrent.Callable
+ */
 public class ClassActionExecutor implements ActionExecutor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClassActionExecutor.class);
+
+    private Validator beanValidator;
 
     @Override
     public ActionResult execute(ActionDefinition actionDefinition, long scheduleExecutionId, String nodeAddress) {
         Preconditions.checkNotNull(actionDefinition, "Action definition is not set");
         Preconditions.checkNotNull(nodeAddress, "Node address is not set");
 
+        BeanValidationUtils.checkValidity(actionDefinition, beanValidator);
+
         ClassActionDefinition classActionDefinition = (ClassActionDefinition) actionDefinition;
+
+        LOGGER.debug("Callable instance will be executed. Class [{}]", classActionDefinition.getCallableClassName());
 
         Object callable;
 
@@ -68,16 +88,20 @@ public class ClassActionExecutor implements ActionExecutor {
     }
 
     private ActionResult executeCallableInitialized(Callable<?> callable) {
-        Object result;
+        Object resultAsObject;
 
         try {
-            result = callable.call();
+            resultAsObject = callable.call();
         } catch (Exception e) {
             return new ClassActionResult(e);
         }
 
-        String resultAsText = String.valueOf(result);
+        String resultAsText = String.valueOf(resultAsObject);
         return new ClassActionResult(resultAsText);
     }
 
+    @Required
+    public void setBeanValidator(Validator beanValidator) {
+        this.beanValidator = beanValidator;
+    }
 }

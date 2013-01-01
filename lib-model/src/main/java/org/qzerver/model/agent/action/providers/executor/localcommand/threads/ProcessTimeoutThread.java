@@ -1,5 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand.threads;
 
+import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,24 +16,32 @@ public class ProcessTimeoutThread extends Thread {
     private final int timeoutMs;
 
     public ProcessTimeoutThread(Thread watched, int timeoutMs) {
-        super(THREAD_NAME);
         Preconditions.checkNotNull(watched, "Watched thread is not set");
         Preconditions.checkArgument(timeoutMs > 0, "Timeout must be positive");
+
         this.watched = watched;
         this.timeoutMs = timeoutMs;
+
+        setName(THREAD_NAME);
+        setDaemon(true);
     }
 
     @Override
     public void run() {
+        LOGGER.debug("Watchog thread is started");
+
         try {
             watched.join(timeoutMs);
         } catch (InterruptedException e) {
-            LOGGER.warn("Watchdog thread is unexpectedly interrupted");
+            throw new SystemIntegrityException("Watchdog thread is unexpectedly interrupted");
         }
 
         if (watched.isAlive()) {
+            LOGGER.debug("Local process will be interrupted because of timeout");
             watched.interrupt();
         }
+
+        LOGGER.debug("Watchdog thread is exiting");
     }
 
 }
