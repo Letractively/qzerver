@@ -34,7 +34,7 @@ public class ClassActionResult implements ActionResult {
 
     @Override
     public boolean isSucceed() {
-        return exceptionClass != null;
+        return exceptionClass == null;
     }
 
     public String getResult() {

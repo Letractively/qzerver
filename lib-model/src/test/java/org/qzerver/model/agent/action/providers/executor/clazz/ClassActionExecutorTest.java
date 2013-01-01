@@ -41,8 +41,8 @@ public class ClassActionExecutorTest extends AbstractModelTest {
     }
 
     @Test
-    public void testCallable1() throws Exception {
-        SomeCallable1 someCallable = new SomeCallable1();
+    public void testCallableSucceed() throws Exception {
+        SomeCallable someCallable = new SomeCallable(true);
 
         Map<String, String> parameters = ImmutableMap.<String, String>builder()
             .put("key1", "value1")
@@ -60,8 +60,12 @@ public class ClassActionExecutorTest extends AbstractModelTest {
 
         ClassActionResult result = (ClassActionResult) classActionExecutor.execute(definition, 12, "127.1.2.3");
         Assert.assertNotNull(result);
-        Assert.assertNull(result.getExceptionClass());
+        Assert.assertEquals(true, result.isSucceed());
         Assert.assertEquals("72632", result.getResult());
+        Assert.assertNull(result.getExceptionClass());
+        Assert.assertNull(result.getExceptionMessage());
+        Assert.assertNull(result.getExceptionStacktrace());
+
         Assert.assertEquals("value1", someCallable.getKey1());
         Assert.assertEquals(132, someCallable.getKey2());
         Assert.assertEquals(TimeZone.getTimeZone("Europe/Moscow"), someCallable.getKey3());
@@ -71,7 +75,42 @@ public class ClassActionExecutorTest extends AbstractModelTest {
         Assert.assertEquals("127.1.2.3", someCallable.getNodeAddress());
     }
 
-    public static class SomeCallable1 implements Callable<Long> {
+    @Test
+    public void testCallableFailed() throws Exception {
+        SomeCallable someCallable = new SomeCallable(false);
+
+        Map<String, String> parameters = ImmutableMap.<String, String>builder()
+            .put("key1", "value1")
+            .put("key2", "132")
+            .put("key3", "Europe/Moscow")
+            .put("key4", "en_GB")
+            .put("key5", "true")
+            .put("key9", "there is no such a key")
+            .build();
+
+        ClassActionDefinition definition = new ClassActionDefinition();
+        definition.setCallableClassName("dummy - live instance is provided");
+        definition.setCallableInstance(someCallable);
+        definition.setParameters(parameters);
+
+        ClassActionResult result = (ClassActionResult) classActionExecutor.execute(definition, 12, "127.1.2.3");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(false, result.isSucceed());
+        Assert.assertNull(result.getResult());
+        Assert.assertEquals("java.lang.IllegalStateException", result.getExceptionClass());
+        Assert.assertEquals("Some error happened", result.getExceptionMessage());
+        Assert.assertNotNull(result.getExceptionStacktrace());
+
+        Assert.assertEquals("value1", someCallable.getKey1());
+        Assert.assertEquals(132, someCallable.getKey2());
+        Assert.assertEquals(TimeZone.getTimeZone("Europe/Moscow"), someCallable.getKey3());
+        Assert.assertEquals(new Locale("en", "GB"), someCallable.getKey4());
+        Assert.assertEquals(true, someCallable.isKey5());
+        Assert.assertNull(someCallable.getKey6());
+        Assert.assertEquals("127.1.2.3", someCallable.getNodeAddress());
+    }
+
+    public static class SomeCallable implements Callable<Long> {
 
         private String key1;
 
@@ -87,9 +126,19 @@ public class ClassActionExecutorTest extends AbstractModelTest {
 
         private String nodeAddress;
 
+        private boolean success;
+
+        public SomeCallable(boolean success) {
+            this.success = success;
+        }
+
         @Override
         public Long call() throws Exception {
-            return 72632L;
+            if (success) {
+                return 72632L;
+            } else {
+                throw new IllegalStateException("Some error happened");
+            }
         }
 
         public String getKey1() {

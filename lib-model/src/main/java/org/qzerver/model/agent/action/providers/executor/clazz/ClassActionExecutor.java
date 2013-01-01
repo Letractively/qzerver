@@ -37,7 +37,8 @@ public class ClassActionExecutor implements ActionExecutor {
 
         ClassActionDefinition classActionDefinition = (ClassActionDefinition) actionDefinition;
 
-        LOGGER.debug("Callable instance will be executed. Class [{}]", classActionDefinition.getCallableClassName());
+        LOGGER.debug("Callable instance will be executed. Class [{}] on node [{}]",
+            classActionDefinition.getCallableClassName(), nodeAddress);
 
         Object callable;
 

@@ -35,6 +35,7 @@ public class LocalCommandActionExecutor implements ActionExecutor {
     {
         Preconditions.checkNotNull(actionDefinition, "Definition is null");
         Preconditions.checkNotNull(nodeAddress, "Node is not specified");
+
         BeanValidationUtils.checkValidity(actionDefinition, beanValidator);
 
         LocalCommandActionDefinition definition = (LocalCommandActionDefinition) actionDefinition;
