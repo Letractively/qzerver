@@ -56,7 +56,8 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
         String effectiveCommand = definition.getCommand();
         effectiveCommand = effectiveCommand.replaceAll(CMD_PARAM_NODE, nodeAddress);
-        effectiveCommand = effectiveCommand.replaceAll(CMD_PARAM_EXECUTION, Long.toString(scheduleExecutionId));
+        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
+        effectiveCommand = effectiveCommand.replaceAll(CMD_PARAM_EXECUTION, scheduleExecutionIdText);
 
         try {
             if (definition.getKnownHostPath() != null) {
@@ -167,7 +168,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
             // Check is channel already closed
             if (channel.isClosed()) {
                 int exitCode = channel.getExitStatus();
-                boolean succeed = (exitCode == definition.getExpectedExitCode());
+                boolean succeed = exitCode == definition.getExpectedExitCode();
                 return produceSuccessResult(stdOutCapturer, stdErrCapturer, exitCode, succeed);
             }
 
@@ -224,7 +225,22 @@ public class SshCommandActionExecutor implements ActionExecutor {
         return result;
     }
 
-    private class OutputCapturer {
+    @Required
+    public void setBeanValidator(Validator beanValidator) {
+        this.beanValidator = beanValidator;
+    }
+
+    @Required
+    public void setChronometer(Chronometer chronometer) {
+        this.chronometer = chronometer;
+    }
+
+    @Required
+    public void setMaxCaptureSize(long maxCaptureSize) {
+        this.maxCaptureSize = maxCaptureSize;
+    }
+
+    private final class OutputCapturer {
 
         private InputStream inputStream;
 
@@ -287,21 +303,6 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
             return output;
         }
-    }
-
-    @Required
-    public void setBeanValidator(Validator beanValidator) {
-        this.beanValidator = beanValidator;
-    }
-
-    @Required
-    public void setChronometer(Chronometer chronometer) {
-        this.chronometer = chronometer;
-    }
-
-    @Required
-    public void setMaxCaptureSize(long maxCaptureSize) {
-        this.maxCaptureSize = maxCaptureSize;
     }
 
 }

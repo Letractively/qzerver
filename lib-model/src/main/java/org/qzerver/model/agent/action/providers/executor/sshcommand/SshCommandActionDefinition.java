@@ -12,12 +12,16 @@ import java.util.Map;
 
 public class SshCommandActionDefinition implements ActionDefinition, Serializable {
 
+    public static final int MIN_PORT_NUMBER = 0;
+
+    public static final int MAX_PORT_NUMBER = 65535;
+
     private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
 
     private static final int DEFAULT_SSH_PORT = 22;
 
-    @Min(0)
-    @Max(65535)
+    @Min(MIN_PORT_NUMBER)
+    @Max(MAX_PORT_NUMBER)
     private int port = DEFAULT_SSH_PORT;
 
     @NotNull

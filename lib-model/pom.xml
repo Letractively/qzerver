@@ -132,9 +132,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>${org.apache.commons.httpclient.version}</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${org.apache.httpcomponents.client.version}</version>
             <scope>compile</scope>
         </dependency>
         <!-- Database -->

@@ -71,7 +71,8 @@ public class ClassActionExecutor implements ActionExecutor {
         // Set object properties
         Map<String, String> properties = new HashMap<String, String>(classActionDefinition.getParameters());
         properties.put("nodeAddress", nodeAddress);
-        properties.put("executionId", Long.toString(scheduleExecutionId));
+        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
+        properties.put("executionId", scheduleExecutionIdText);
 
         return executeCallable((Callable<?>) callable, properties);
     }

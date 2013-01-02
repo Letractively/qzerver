@@ -69,11 +69,13 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         List<String> commands = new ArrayList<String>();
         commands.add(definition.getCommand());
 
+        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
+
         for (String parameter : definition.getParameters()) {
             if (CMD_PARAM_NODE.equals(parameter)) {
                 commands.add(nodeAddress);
             } else if (CMD_PARAM_EXECUTION.equals(parameter)) {
-                commands.add(Long.toString(scheduleExecutionId));
+                commands.add(scheduleExecutionIdText);
             } else {
                 commands.add(parameter);
             }
