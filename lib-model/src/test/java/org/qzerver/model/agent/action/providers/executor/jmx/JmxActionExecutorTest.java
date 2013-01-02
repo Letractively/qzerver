@@ -26,7 +26,9 @@ import java.util.Map;
 
 public class JmxActionExecutorTest extends AbstractModelTest {
 
-    private static final String MBEAN_NAME = "org.qzerver:type=SampleJmx";
+    private static final int JMX_SERVER_PORT = 3000;
+
+    private static final String JMX_MBEAN_NAME = "org.qzerver:type=SampleJmx";
 
     @Resource
     private ActionExecutor jmxActionExecutor;
@@ -35,7 +37,7 @@ public class JmxActionExecutorTest extends AbstractModelTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        LocateRegistry.createRegistry(3000);
+        LocateRegistry.createRegistry(JMX_SERVER_PORT);
     }
 
     @Before
@@ -45,16 +47,16 @@ public class JmxActionExecutorTest extends AbstractModelTest {
         environment.put("com.sun.management.jmxremote.local.only", "false");
         environment.put(JMXConnectorServer.AUTHENTICATOR, new JmxAuthenticator("user", "pass"));
 
-        JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:3000/server");
+        JMXServiceURL jmxUrl = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:" + JMX_SERVER_PORT + "/server");
 
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
         SampleJmxService mbean = new SampleJmxService();
 
-        ObjectName mbeanName = new ObjectName(MBEAN_NAME);
+        ObjectName mbeanName = new ObjectName(JMX_MBEAN_NAME);
         mBeanServer.registerMBean(mbean, mbeanName);
 
-        connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, environment, mBeanServer);
+        connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(jmxUrl, environment, mBeanServer);
         connectorServer.start();
 
     }
@@ -65,19 +67,19 @@ public class JmxActionExecutorTest extends AbstractModelTest {
 
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
-        ObjectName mbeanName = new ObjectName(MBEAN_NAME);
+        ObjectName mbeanName = new ObjectName(JMX_MBEAN_NAME);
         mBeanServer.unregisterMBean(mbeanName);
     }
 
     @Test
     public void testNormal() throws Exception {
         JmxActionDefinition definition = new JmxActionDefinition();
-        definition.setBean(MBEAN_NAME);
+        definition.setBean(JMX_MBEAN_NAME);
         definition.setMethod("method1");
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user");
         definition.setPassword("pass");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:3000/server");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/server");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
@@ -91,12 +93,12 @@ public class JmxActionExecutorTest extends AbstractModelTest {
     @Test
     public void testException() throws Exception {
         JmxActionDefinition definition = new JmxActionDefinition();
-        definition.setBean(MBEAN_NAME);
+        definition.setBean(JMX_MBEAN_NAME);
         definition.setMethod("method1");
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user");
         definition.setPassword("pass");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:3000/nonexisting");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/nonexisting");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
@@ -110,12 +112,12 @@ public class JmxActionExecutorTest extends AbstractModelTest {
     @Test
     public void testAuthentication() throws Exception {
         JmxActionDefinition definition = new JmxActionDefinition();
-        definition.setBean(MBEAN_NAME);
+        definition.setBean(JMX_MBEAN_NAME);
         definition.setMethod("method1");
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user123");
         definition.setPassword("pass123");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:3000/server");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/server");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
