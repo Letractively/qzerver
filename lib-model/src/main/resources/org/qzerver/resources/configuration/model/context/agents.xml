@@ -71,16 +71,17 @@
     </bean>
 
     <bean id="jmxActionExecutor" class="org.qzerver.model.agent.action.providers.executor.jmx.JmxActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
     </bean>
 
     <bean id="localCommandActionExecutor" class="org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionExecutor">
-        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
         <property name="beanValidator" ref="modelBeanValidator"/>
+        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
     </bean>
 
     <bean id="sshCommandActionExecutor" class="org.qzerver.model.agent.action.providers.executor.sshcommand.SshCommandActionExecutor">
-        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
         <property name="beanValidator" ref="modelBeanValidator"/>
+        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
         <property name="chronometer" ref="chronometer"/>
     </bean>
 

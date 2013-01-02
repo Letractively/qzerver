@@ -4,18 +4,49 @@ import org.qzerver.model.agent.action.providers.ActionResult;
 
 public class JmxActionResult implements ActionResult {
 
-    private String exception;
+    private String result;
 
-    public String getException() {
-        return exception;
+    private String exceptionClass;
+
+    private String exceptionMessage;
+
+    private JmxActionResultStatus status;
+
+    public String getExceptionClass() {
+        return exceptionClass;
     }
 
-    public void setException(String exception) {
-        this.exception = exception;
+    public void setExceptionClass(String exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
+    }
+
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+    public JmxActionResultStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(JmxActionResultStatus status) {
+        this.status = status;
     }
 
     @Override
     public boolean isSucceed() {
-        return false;
+        return exceptionClass == null;
     }
+
 }

@@ -26,7 +26,6 @@
     <properties>
         <jetty.http.port>8180</jetty.http.port>
         <jetty.stop.port>8181</jetty.stop.port>
-        <jetty.version>8.1.5.v20120716</jetty.version>
     </properties>
 
     <dependencies>
@@ -76,7 +75,7 @@
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
+                <version>${org.eclipse.jetty.version}</version>
                 <configuration>
                     <webAppConfig>
                         <contextPath>/</contextPath>
@@ -115,7 +114,7 @@
                     <plugin>
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
-                        <version>${jetty.version}</version>
+                        <version>${org.eclipse.jetty.version}</version>
                         <executions>
                             <execution>
                                 <id>integration-tests-jetty-start</id>
@@ -169,7 +168,7 @@
                     <plugin>
                         <groupId>org.mortbay.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
-                        <version>${jetty.version}</version>
+                        <version>${org.eclipse.jetty.version}</version>
                         <configuration>
                             <daemon>false</daemon>
                             <reload>manual</reload>
