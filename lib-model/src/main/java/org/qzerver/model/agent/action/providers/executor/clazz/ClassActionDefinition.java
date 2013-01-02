@@ -5,10 +5,11 @@ import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-public class ClassActionDefinition implements ActionDefinition {
+public class ClassActionDefinition implements ActionDefinition, Serializable {
 
     /**
      * Class name of the agent which implements java.util.concurrent.Callable interface

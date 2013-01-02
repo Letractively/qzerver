@@ -50,6 +50,7 @@
         <property name="enabled" value="${app.mail.enabled}"/>
         <property name="locale" value="${app.view.locale}"/>
         <property name="timezone" value="${app.view.timezone}"/>
+        <property name="node" value="${app.host}"/>
     </bean>
 
 </beans>

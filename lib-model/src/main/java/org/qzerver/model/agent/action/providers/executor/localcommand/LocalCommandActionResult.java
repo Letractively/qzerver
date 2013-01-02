@@ -2,10 +2,12 @@ package org.qzerver.model.agent.action.providers.executor.localcommand;
 
 import org.qzerver.model.agent.action.providers.ActionResult;
 
+import java.io.Serializable;
+
 /**
  * Result from local command action
  */
-public class LocalCommandActionResult implements ActionResult {
+public class LocalCommandActionResult implements ActionResult, Serializable {
 
     /**
      * Is operation succeeded

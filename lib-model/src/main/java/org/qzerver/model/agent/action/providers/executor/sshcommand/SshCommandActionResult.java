@@ -2,13 +2,23 @@ package org.qzerver.model.agent.action.providers.executor.sshcommand;
 
 import org.qzerver.model.agent.action.providers.ActionResult;
 
-public class SshCommandActionResult implements ActionResult {
+import java.io.Serializable;
+
+public class SshCommandActionResult implements ActionResult, Serializable {
 
     private int exitCode;
 
-    private String stdout;
+    private SshCommandActionOutput stdout;
 
-    private String stderr;
+    private SshCommandActionOutput stderr;
+
+    private SshCommandActionResultStatus status = SshCommandActionResultStatus.EXECUTED;
+
+    private String exceptionClass;
+
+    private String exceptionMessage;
+
+    private boolean succeed;
 
     public int getExitCode() {
         return exitCode;
@@ -18,24 +28,52 @@ public class SshCommandActionResult implements ActionResult {
         this.exitCode = exitCode;
     }
 
-    public String getStderr() {
+    public SshCommandActionOutput getStderr() {
         return stderr;
     }
 
-    public void setStderr(String stderr) {
+    public void setStderr(SshCommandActionOutput stderr) {
         this.stderr = stderr;
     }
 
-    public String getStdout() {
+    public SshCommandActionOutput getStdout() {
         return stdout;
     }
 
-    public void setStdout(String stdout) {
+    public void setStdout(SshCommandActionOutput stdout) {
         this.stdout = stdout;
+    }
+
+    public SshCommandActionResultStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SshCommandActionResultStatus status) {
+        this.status = status;
+    }
+
+    public String getExceptionClass() {
+        return exceptionClass;
+    }
+
+    public void setExceptionClass(String exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
+    }
+
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
     }
 
     @Override
     public boolean isSucceed() {
-        return false;
+        return succeed;
     }
 }

@@ -1,23 +1,60 @@
 package org.qzerver.model.agent.action.providers.executor.sshcommand;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
-import java.util.List;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Map;
 
-public class SshCommandActionDefinition implements ActionDefinition {
+public class SshCommandActionDefinition implements ActionDefinition, Serializable {
 
-    private int port;
+    private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
 
+    private static final int DEFAULT_SSH_PORT = 22;
+
+    @Min(0)
+    @Max(65535)
+    private int port = DEFAULT_SSH_PORT;
+
+    @NotNull
+    @NotBlank
     private String username;
 
     private String password;
 
-    private byte[] privateKey;
+    private String privateKeyPath;
 
+    private String privateKeyPassphrase;
+
+    private String knownHostPath;
+
+    private boolean agentForwarding;
+
+    @NotNull
     private String command;
 
-    private List<String> parameters;
+    private Map<String, String> environmentVariables;
+
+    private Map<String, String> sshProperties;
+
+    @Min(0)
+    private int readTimeoutMs;
+
+    @Min(0)
+    private int connectionTimeoutMs;
+
+    @Min(0)
+    private int timeoutMs;
+
+    private boolean skipStdOutput;
+
+    private boolean skipStdError;
+
+    private int expectedExitCode = DEFAULT_EXPECTED_EXIT_CODE;
 
     public String getPassword() {
         return password;
@@ -25,6 +62,14 @@ public class SshCommandActionDefinition implements ActionDefinition {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getExpectedExitCode() {
+        return expectedExitCode;
+    }
+
+    public void setExpectedExitCode(int expectedExitCode) {
+        this.expectedExitCode = expectedExitCode;
     }
 
     public int getPort() {
@@ -35,12 +80,28 @@ public class SshCommandActionDefinition implements ActionDefinition {
         this.port = port;
     }
 
-    public byte[] getPrivateKey() {
-        return privateKey;
+    public String getPrivateKeyPath() {
+        return privateKeyPath;
     }
 
-    public void setPrivateKey(byte[] privateKey) {
-        this.privateKey = privateKey;
+    public void setPrivateKeyPath(String privateKeyPath) {
+        this.privateKeyPath = privateKeyPath;
+    }
+
+    public String getPrivateKeyPassphrase() {
+        return privateKeyPassphrase;
+    }
+
+    public void setPrivateKeyPassphrase(String privateKeyPassphrase) {
+        this.privateKeyPassphrase = privateKeyPassphrase;
+    }
+
+    public boolean isAgentForwarding() {
+        return agentForwarding;
+    }
+
+    public void setAgentForwarding(boolean agentForwarding) {
+        this.agentForwarding = agentForwarding;
     }
 
     public String getUsername() {
@@ -59,12 +120,68 @@ public class SshCommandActionDefinition implements ActionDefinition {
         this.command = command;
     }
 
-    public List<String> getParameters() {
-        return parameters;
+    public int getReadTimeoutMs() {
+        return readTimeoutMs;
     }
 
-    public void setParameters(List<String> parameters) {
-        this.parameters = parameters;
+    public void setReadTimeoutMs(int readTimeoutMs) {
+        this.readTimeoutMs = readTimeoutMs;
+    }
+
+    public int getConnectionTimeoutMs() {
+        return connectionTimeoutMs;
+    }
+
+    public void setConnectionTimeoutMs(int connectionTimeoutMs) {
+        this.connectionTimeoutMs = connectionTimeoutMs;
+    }
+
+    public int getTimeoutMs() {
+        return timeoutMs;
+    }
+
+    public void setTimeoutMs(int timeoutMs) {
+        this.timeoutMs = timeoutMs;
+    }
+
+    public Map<String, String> getEnvironmentVariables() {
+        return environmentVariables;
+    }
+
+    public void setEnvironmentVariables(Map<String, String> environmentVariables) {
+        this.environmentVariables = environmentVariables;
+    }
+
+    public boolean isSkipStdOutput() {
+        return skipStdOutput;
+    }
+
+    public void setSkipStdOutput(boolean skipStdOutput) {
+        this.skipStdOutput = skipStdOutput;
+    }
+
+    public boolean isSkipStdError() {
+        return skipStdError;
+    }
+
+    public void setSkipStdError(boolean skipStdError) {
+        this.skipStdError = skipStdError;
+    }
+
+    public String getKnownHostPath() {
+        return knownHostPath;
+    }
+
+    public void setKnownHostPath(String knownHostPath) {
+        this.knownHostPath = knownHostPath;
+    }
+
+    public Map<String, String> getSshProperties() {
+        return sshProperties;
+    }
+
+    public void setSshProperties(Map<String, String> sshProperties) {
+        this.sshProperties = sshProperties;
     }
 
     @Override

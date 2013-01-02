@@ -79,6 +79,9 @@
     </bean>
 
     <bean id="sshCommandActionExecutor" class="org.qzerver.model.agent.action.providers.executor.sshcommand.SshCommandActionExecutor">
+        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
+        <property name="beanValidator" ref="modelBeanValidator"/>
+        <property name="chronometer" ref="chronometer"/>
     </bean>
 
     <bean id="socketActionExecutor" class="org.qzerver.model.agent.action.providers.executor.socket.SocketActionExecutor">

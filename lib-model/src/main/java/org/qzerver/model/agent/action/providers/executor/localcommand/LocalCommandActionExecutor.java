@@ -23,7 +23,9 @@ public class LocalCommandActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandActionExecutor.class);
 
-    private static final String PARAM_NODE = "${nodeAddress}";
+    private static final String CMD_PARAM_NODE = "${nodeAddress}";
+
+    private static final String CMD_PARAM_EXECUTION = "${executionId}";
 
     private long maxCaptureSize;
 
@@ -56,9 +58,11 @@ public class LocalCommandActionExecutor implements ActionExecutor {
             pb.environment().putAll(System.getenv());
         }
 
-        for (Map.Entry<String, String> environmentEntry : definition.getEnvironmentVariables().entrySet()) {
-            pb.environment().put(environmentEntry.getKey(), environmentEntry.getValue());
+        if (definition.getEnvironmentVariables() != null) {
+            for (Map.Entry<String, String> environmentEntry : definition.getEnvironmentVariables().entrySet()) {
+                pb.environment().put(environmentEntry.getKey(), environmentEntry.getValue());
 
+            }
         }
 
         // Parameters list
@@ -66,8 +70,10 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         commands.add(definition.getCommand());
 
         for (String parameter : definition.getParameters()) {
-            if (PARAM_NODE.equals(parameter)) {
+            if (CMD_PARAM_NODE.equals(parameter)) {
                 commands.add(nodeAddress);
+            } else if (CMD_PARAM_EXECUTION.equals(parameter)) {
+                commands.add(Long.toString(scheduleExecutionId));
             } else {
                 commands.add(parameter);
             }

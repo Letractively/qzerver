@@ -52,6 +52,9 @@ public class MailServiceImpl implements MailService {
     @NotNull
     private MessageSourceAccessor messageSourceAccessor;
 
+    @NotNull
+    private String node;
+
     @Async
     @Override
     public void notifyJobExecutionFailed(ScheduleExecution execution) {
@@ -107,12 +110,14 @@ public class MailServiceImpl implements MailService {
         String defaultSubject = messageSourceAccessor.getMessage("mail.subject.default",
             null, DEFAULT_SUBJECT, locale);
 
-        String currentSubject = messageSourceAccessor.getMessage("mail.subject." + name,
+        String specificSubject = messageSourceAccessor.getMessage("mail.subject." + name,
             subjectArguments, defaultSubject, locale);
+
+        String effectiveSubject = String.format("%s [%s]", specificSubject, node);
 
         // Send mail
         try {
-            mailAgent.sendMail(mailTo, currentSubject, text);
+            mailAgent.sendMail(mailTo, effectiveSubject, text);
         } catch (MailAgentException e) {
             LOGGER.error("Fail to send message [" + name + "]", e);
             return;
@@ -156,4 +161,8 @@ public class MailServiceImpl implements MailService {
         this.messageSourceAccessor = messageSourceAccessor;
     }
 
+    @Required
+    public void setNode(String node) {
+        this.node = node;
+    }
 }

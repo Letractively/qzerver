@@ -19,4 +19,11 @@ public interface ActionAgent {
     ActionAgentResult executeAction(long scheduleExecutionId,
         String identifier, byte[] definition, String address);
 
+    /**
+     * Check is specified execution is perfomed right now
+     * @param scheduleExecutionId Schedule execution identifier
+     * @return Returns true if action is executing
+     */
+    boolean checkActionExecuting(long scheduleExecutionId);
+
 }

@@ -3,7 +3,9 @@ package org.qzerver.model.agent.action.providers.executor.clazz;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
-public class ClassActionResult implements ActionResult {
+import java.io.Serializable;
+
+public class ClassActionResult implements ActionResult, Serializable {
 
     private String result;
 

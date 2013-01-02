@@ -5,11 +5,12 @@ import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-public class LocalCommandActionDefinition implements ActionDefinition {
+public class LocalCommandActionDefinition implements ActionDefinition, Serializable {
 
     private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
 

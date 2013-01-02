@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Transactional(propagation = Propagation.NEVER)
 public class ActionAgentImpl implements ActionAgent {
@@ -30,6 +32,12 @@ public class ActionAgentImpl implements ActionAgent {
     @NotNull
     private Map<ActionIdentifier, ActionExecutor> executors;
 
+    private ConcurrentMap<Long, Boolean> executionTracker;
+
+    public ActionAgentImpl() {
+        this.executionTracker = new ConcurrentHashMap<Long, Boolean>();
+    }
+
     @Override
     public ActionAgentResult executeAction(long scheduleExecutionId,
         String identifier, byte[] definition, String address)
@@ -38,8 +46,10 @@ public class ActionAgentImpl implements ActionAgent {
         Preconditions.checkNotNull(definition, "Definition is null");
         Preconditions.checkNotNull(address, "Address is null");
 
+        // Search for identifier
         ActionIdentifier actionIdentifier = ActionIdentifier.findByIdentifier(identifier);
 
+        // Unmarshall action definition
         ActionDefinition actionDefinition;
 
         try {
@@ -49,25 +59,45 @@ public class ActionAgentImpl implements ActionAgent {
             throw new SystemIntegrityException("Fail to unmarshall definition", e);
         }
 
+        // Search for action executor
         ActionExecutor actionExecutor = executors.get(actionIdentifier);
         if (actionExecutor == null) {
             throw new NullPointerException("Executor is not found for identifier " + identifier);
         }
 
-        ActionResult actionResult = actionExecutor.execute(actionDefinition, scheduleExecutionId, address);
-        if (actionResult == null) {
-            String message = String.format("Action result is null for execution=[%d] and node=[%s]",
-                scheduleExecutionId, address);
-            throw new NullPointerException(message);
+        // Execute action
+        Boolean alreadyExists = executionTracker.putIfAbsent(scheduleExecutionId, true);
+        if (alreadyExists != null) {
+            throw new IllegalStateException("Action is already perfomed for execution=#" + scheduleExecutionId);
         }
 
+        ActionResult actionResult;
+
+        try {
+            actionResult = actionExecutor.execute(actionDefinition, scheduleExecutionId, address);
+            if (actionResult == null) {
+                String message = String.format("Action result is null for execution=#[%d] and node=[%s]",
+                    scheduleExecutionId, address);
+                throw new NullPointerException(message);
+            }
+        } finally {
+            executionTracker.remove(scheduleExecutionId);
+        }
+
+        // Marshall execution result
         byte[] actionResultData = actionResultMarshaller.marshall(actionResult);
 
+        // Compose the result record
         ActionAgentResult actionAgentResult = new ActionAgentResult();
         actionAgentResult.setSucceed(actionResult.isSucceed());
         actionAgentResult.setData(actionResultData);
 
         return actionAgentResult;
+    }
+
+    @Override
+    public boolean checkActionExecuting(long scheduleExecutionId) {
+        return executionTracker.keySet().contains(scheduleExecutionId);
     }
 
     @Required

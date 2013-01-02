@@ -35,9 +35,8 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
     @Test
     public void testNormal() throws Exception {
         List<String> commandArguments = ImmutableList.<String>builder()
-            .add("-cp")
-            .add(System.getProperty("java.class.path"))
-            .add("org.qzerver.util.SampleProgram")
+            .add("-cp").add(System.getProperty("java.class.path"))
+            .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
             .add("${nodeAddress}")
@@ -117,19 +116,18 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
     @Test
     public void testTimeout() throws Exception {
         List<String> commandArguments = ImmutableList.<String>builder()
-            .add("-cp")
-            .add(System.getProperty("java.class.path"))
-            .add("org.qzerver.util.SampleProgram")
+            .add("-cp").add(System.getProperty("java.class.path"))
+            .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
             .add("${nodeAddress}")
+            .add("-s").add("600")
+            .add("-e").add("some_error_text")
             .build();
 
         Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
             .put("KEY1", "VALUE1")
             .put("KEY2", "VALUE2")
-            .put("SCRIPT_SLEEP", "600")
-            .put("SCRIPT_ERROR", "some_error_text")
             .build();
 
         String workDirectory = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
@@ -205,18 +203,17 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
     @Test
     public void testOverflow() throws Exception {
         List<String> commandArguments = ImmutableList.<String>builder()
-            .add("-cp")
-            .add(System.getProperty("java.class.path"))
-            .add("org.qzerver.util.SampleProgram")
+            .add("-cp").add(System.getProperty("java.class.path"))
+            .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
             .add("${nodeAddress}")
+            .add("-l").add(Long.toString(maxCaptureSize / 50 * 2))
             .build();
 
         Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
             .put("KEY1", "VALUE1")
             .put("KEY2", "VALUE2")
-            .put("SCRIPT_LINES", Long.toString(maxCaptureSize / 50 * 2))
             .build();
 
         String workDirectory = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
@@ -288,8 +285,10 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
     @Test
     public void testWrongCommand() throws Exception {
         String command = "some-wrong-command-7326732";
+
         List<String> commandArguments = ImmutableList.<String>builder()
             .build();
+
         Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
             .build();
 
