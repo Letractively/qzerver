@@ -47,7 +47,7 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testNormal() throws Exception {
-        String command = String.format("%s -cp %s %s %s %s ${nodeAddress}",
+        String command = String.format("%s -cp %s %s %s %s ${node}",
             javaCommand,
             System.getProperty("java.class.path"),
             "org.qzerver.util.programs.SampleProgram",
@@ -130,7 +130,7 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testSkip() throws Exception {
-        String command = String.format("%s -cp %s %s %s %s ${nodeAddress}",
+        String command = String.format("%s -cp %s %s %s %s ${node}",
             javaCommand,
             System.getProperty("java.class.path"),
             "org.qzerver.util.programs.SampleProgram",
@@ -194,7 +194,7 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testTimeout() throws Exception {
-        String command = String.format("%s -cp %s %s %s %s ${nodeAddress} -s 600 -e some_error_text",
+        String command = String.format("%s -cp %s %s %s %s ${node} -s 600 -e some_error_text",
             javaCommand,
             System.getProperty("java.class.path"),
             "org.qzerver.util.programs.SampleProgram",
@@ -283,7 +283,7 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testOverflow() throws Exception {
-        String command = String.format("%s -cp %s %s %s %s ${nodeAddress} -l %d",
+        String command = String.format("%s -cp %s %s %s %s ${node} -l %d",
             javaCommand,
             System.getProperty("java.class.path"),
             "org.qzerver.util.programs.SampleProgram",

@@ -62,7 +62,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
     @Test
     public void testNormalGet() throws Exception {
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test?key1=value1&key2=value2");
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test?key1=value1&key2=value2");
         definition.setMethod(HttpActionMethod.GET);
         definition.setPostParams(null);
         definition.setPlainAuthUsername(null);
@@ -114,7 +114,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
             .build();
 
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test");
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test");
         definition.setMethod(HttpActionMethod.POST);
         definition.setPostParams(postParams);
         definition.setPlainAuthUsername(null);
@@ -159,7 +159,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
     @Test
     public void testSkip() throws Exception {
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test");
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test");
         definition.setMethod(HttpActionMethod.GET);
         definition.setPostParams(null);
         definition.setPlainAuthUsername(null);
@@ -189,7 +189,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
     @Test
     public void testTimeout() throws Exception {
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test?sleep=600");
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test?sleep=600");
         definition.setMethod(HttpActionMethod.GET);
         definition.setPostParams(null);
         definition.setPlainAuthUsername(null);
@@ -232,7 +232,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
         long lines = maxCaptureSize / 50 * 2;
 
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test?lines=" + lines);
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test?lines=" + lines);
         definition.setMethod(HttpActionMethod.GET);
         definition.setPostParams(null);
         definition.setPlainAuthUsername(null);
@@ -274,7 +274,7 @@ public class HttpActionExecutorTest extends AbstractModelTest {
     @Test
     public void testException() throws Exception {
         HttpActionDefinition definition = new HttpActionDefinition();
-        definition.setUrl("http://${nodeAddress}:" + HTTP_SERVER_PORT + "/test");
+        definition.setUrl("http://${node}:" + HTTP_SERVER_PORT + "/test");
         definition.setMethod(HttpActionMethod.GET);
         definition.setPostParams(null);
         definition.setPlainAuthUsername(null);

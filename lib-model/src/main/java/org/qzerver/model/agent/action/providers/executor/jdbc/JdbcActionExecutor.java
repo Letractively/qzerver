@@ -4,6 +4,7 @@ import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.google.common.base.Preconditions;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.qzerver.model.agent.action.providers.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,6 @@ import java.sql.Statement;
 public class JdbcActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcActionExecutor.class);
-
-    private static final String JDBC_PARAM_NODE = "\\$\\{nodeAddress\\}";
 
     private Validator beanValidator;
 
@@ -34,7 +33,7 @@ public class JdbcActionExecutor implements ActionExecutor {
         LOGGER.debug("Execute jdbc query on node [{}]", nodeAddress);
 
         String effectiveUrl = definition.getJdbcUrl();
-        effectiveUrl = effectiveUrl.replaceAll(JDBC_PARAM_NODE, nodeAddress);
+        effectiveUrl = ActionPlaceholders.substituteNode(effectiveUrl, nodeAddress);
 
         try {
             return processAction(definition, effectiveUrl);

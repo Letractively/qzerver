@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.qzerver.model.agent.action.providers.executor.localcommand.threads.ProcessExecutionThread;
 import org.qzerver.model.agent.action.providers.executor.localcommand.threads.ProcessOutputThread;
 import org.qzerver.model.agent.action.providers.executor.localcommand.threads.ProcessTimeoutThread;
@@ -21,10 +22,6 @@ import java.util.Map;
 public class LocalCommandActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalCommandActionExecutor.class);
-
-    private static final String CMD_PARAM_NODE = "${nodeAddress}";
-
-    private static final String CMD_PARAM_EXECUTION = "${executionId}";
 
     private long maxCaptureSize;
 
@@ -68,16 +65,11 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         List<String> commands = new ArrayList<String>();
         commands.add(definition.getCommand());
 
-        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
-
         for (String parameter : definition.getParameters()) {
-            if (CMD_PARAM_NODE.equals(parameter)) {
-                commands.add(nodeAddress);
-            } else if (CMD_PARAM_EXECUTION.equals(parameter)) {
-                commands.add(scheduleExecutionIdText);
-            } else {
-                commands.add(parameter);
-            }
+            String effectiveParameter = parameter;
+            effectiveParameter = ActionPlaceholders.substituteNode(effectiveParameter, nodeAddress);
+            effectiveParameter = ActionPlaceholders.substituteExecution(effectiveParameter, scheduleExecutionId);
+            commands.add(effectiveParameter);
         }
 
         pb.command(commands);

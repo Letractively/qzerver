@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.collections.CollectionUtils;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -23,10 +24,6 @@ public class JmxActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JmxActionExecutor.class);
 
-    private static final String JMX_PARAM_NODE = "\\$\\{nodeAddress\\}";
-
-    private static final String JMX_PARAM_EXECUTION = "\\$\\{executionId\\}";
-
     private Validator beanValidator;
 
     @Override
@@ -43,7 +40,8 @@ public class JmxActionExecutor implements ActionExecutor {
         LOGGER.debug("Execute jmx call action on node [{}]", nodeAddress);
 
         String effectiveUrl = definition.getUrl();
-        effectiveUrl = effectiveUrl.replaceAll(JMX_PARAM_NODE, nodeAddress);
+        effectiveUrl = ActionPlaceholders.substituteNode(effectiveUrl, nodeAddress);
+        effectiveUrl = ActionPlaceholders.substituteExecution(effectiveUrl, scheduleExecutionId);
 
         try {
             JMXServiceURL jmxUrl = new JMXServiceURL(effectiveUrl);

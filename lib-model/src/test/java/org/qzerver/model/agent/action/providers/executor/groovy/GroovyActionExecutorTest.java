@@ -15,7 +15,7 @@ public class GroovyActionExecutorTest extends AbstractModelTest {
     @Test
     public void testNormal() throws Exception {
         GroovyActionDefinition definition = new GroovyActionDefinition();
-        definition.setScript("return '[' + nodeAddress + '|' + scheduleExecutionId + ']'");
+        definition.setScript("return '[' + node + '|' + execution + ']'");
 
         GroovyActionResult result = (GroovyActionResult) groovyActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);

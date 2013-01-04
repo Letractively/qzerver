@@ -1,7 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.jdbc;
 
 import junit.framework.Assert;
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,8 +49,6 @@ public class JdbcActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testNormal() throws Exception {
-        String randomToken = RandomStringUtils.randomAlphanumeric(32);
-
         JdbcActionDefinition definition = new JdbcActionDefinition();
         definition.setJdbcClass(JDBC_CLASS);
         definition.setJdbcUrl(JDBC_URL);
@@ -59,7 +56,7 @@ public class JdbcActionExecutorTest extends AbstractModelTest {
         definition.setPassword(JDBC_PASSWORD);
         definition.setExpected(1);
         definition.setRelation(JdbcActionExpectedRelation.EQUAL);
-        definition.setSql("INSERT INTO TEST (V) VALUES ('" + randomToken + "')");
+        definition.setSql("INSERT INTO TEST (V) VALUES ('ABC')");
 
         JdbcActionResult result = (JdbcActionResult) jdbcActionExecutor.execute(definition, 123L, "doesn't matter");
         Assert.assertNotNull(result);
@@ -71,8 +68,6 @@ public class JdbcActionExecutorTest extends AbstractModelTest {
 
     @Test
     public void testException() throws Exception {
-        String randomToken = RandomStringUtils.randomAlphanumeric(32);
-
         JdbcActionDefinition definition = new JdbcActionDefinition();
         definition.setJdbcClass(JDBC_CLASS);
         definition.setJdbcUrl(JDBC_URL);
@@ -80,7 +75,7 @@ public class JdbcActionExecutorTest extends AbstractModelTest {
         definition.setPassword(JDBC_PASSWORD);
         definition.setExpected(1);
         definition.setRelation(JdbcActionExpectedRelation.EQUAL);
-        definition.setSql("INSERT INTO TEST (XYZ) VALUES ('" + randomToken + "')");
+        definition.setSql("INSERT INTO TEST (XYZ) VALUES ('ABC')");
 
         JdbcActionResult result = (JdbcActionResult) jdbcActionExecutor.execute(definition, 123L, "doesn't matter");
         Assert.assertNotNull(result);

@@ -6,6 +6,7 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.qzerver.model.agent.action.providers.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,8 @@ public class GroovyActionExecutor implements ActionExecutor {
         LOGGER.debug("Groovy action will be executed on node node [{}]", nodeAddress);
 
         Binding binding = new Binding();
-        binding.setVariable("nodeAddress", nodeAddress);
-        binding.setVariable("scheduleExecutionId", scheduleExecutionId);
+        binding.setVariable(ActionPlaceholders.NODE_VARIABLE, nodeAddress);
+        binding.setVariable(ActionPlaceholders.EXECUTION_VARIABLE, scheduleExecutionId);
 
         GroovyShell shell = new GroovyShell(binding);
 

@@ -10,6 +10,7 @@ import com.jcraft.jsch.Session;
 import org.apache.commons.io.IOUtils;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -24,10 +25,6 @@ import java.util.Properties;
 public class SshCommandActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SshCommandActionExecutor.class);
-
-    private static final String CMD_PARAM_NODE = "\\$\\{nodeAddress\\}";
-
-    private static final String CMD_PARAM_EXECUTION = "\\$\\{executionId\\}";
 
     private static final int LOOP_PAUSE_MS = 250;
 
@@ -55,9 +52,8 @@ public class SshCommandActionExecutor implements ActionExecutor {
         JSch jsch = new JSch();
 
         String effectiveCommand = definition.getCommand();
-        effectiveCommand = effectiveCommand.replaceAll(CMD_PARAM_NODE, nodeAddress);
-        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
-        effectiveCommand = effectiveCommand.replaceAll(CMD_PARAM_EXECUTION, scheduleExecutionIdText);
+        effectiveCommand = ActionPlaceholders.substituteNode(effectiveCommand, nodeAddress);
+        effectiveCommand = ActionPlaceholders.substituteExecution(effectiveCommand, scheduleExecutionId);
 
         try {
             if (definition.getKnownHostPath() != null) {

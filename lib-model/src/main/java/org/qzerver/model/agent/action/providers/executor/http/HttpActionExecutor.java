@@ -22,6 +22,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
+import org.qzerver.model.agent.action.providers.ActionPlaceholders;
 import org.qzerver.model.agent.action.providers.executor.http.threads.HttpOutputThread;
 import org.qzerver.model.agent.action.providers.executor.http.threads.HttpTimeoutThread;
 import org.slf4j.Logger;
@@ -36,10 +37,6 @@ import java.util.Map;
 public class HttpActionExecutor implements ActionExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpActionExecutor.class);
-
-    private static final String JMX_PARAM_NODE = "\\$\\{nodeAddress\\}";
-
-    private static final String JMX_PARAM_EXECUTION = "\\$\\{executionId\\}";
 
     private Validator beanValidator;
 
@@ -58,15 +55,10 @@ public class HttpActionExecutor implements ActionExecutor {
 
         LOGGER.debug("HTTP query will be executed on node [{}]", nodeAddress);
 
-        String effectiveUrl = definition.getUrl();
-        effectiveUrl = effectiveUrl.replaceAll(JMX_PARAM_NODE, nodeAddress);
-        String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
-        effectiveUrl = effectiveUrl.replaceAll(JMX_PARAM_EXECUTION, scheduleExecutionIdText);
-
         HttpClient httpClient = composeHttpClient(definition);
 
         try {
-            return processHttpClient(httpClient, effectiveUrl, definition);
+            return processHttpClient(definition, httpClient, scheduleExecutionId, nodeAddress);
         } catch (Exception e) {
             LOGGER.warn("Fail to process HTTP request");
             return produceExceptionalResult(e);
@@ -107,17 +99,17 @@ public class HttpActionExecutor implements ActionExecutor {
         return result;
     }
 
-    private HttpActionResult processHttpClient(HttpClient httpClient, String effectiveUrl,
-        HttpActionDefinition definition) throws Exception
+    private HttpActionResult processHttpClient(HttpActionDefinition definition,
+        HttpClient httpClient, long scheduleExecutionId, String nodeAddress) throws Exception
     {
         HttpUriRequest request;
 
         switch (definition.getMethod()) {
             case GET:
-                request = composeGetRequest(effectiveUrl, definition);
+                request = composeGetRequest(definition, scheduleExecutionId, nodeAddress);
                 break;
             case POST:
-                request = composePostRequest(effectiveUrl, definition);
+                request = composePostRequest(definition, scheduleExecutionId, nodeAddress);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown method: " + definition.getMethod());
@@ -125,11 +117,11 @@ public class HttpActionExecutor implements ActionExecutor {
 
         HttpResponse response = httpClient.execute(request);
 
-        return processHttpResponse(request, response, definition);
+        return processHttpResponse(definition, request, response);
     }
 
-    private HttpActionResult processHttpResponse(HttpUriRequest request, HttpResponse response,
-        HttpActionDefinition definition) throws Exception
+    private HttpActionResult processHttpResponse(HttpActionDefinition definition,
+        HttpUriRequest request, HttpResponse response) throws Exception
     {
         HttpActionOutput output = new HttpActionOutput();
         output.setStatus(HttpActionOutputStatus.CAPTURED);
@@ -163,31 +155,53 @@ public class HttpActionExecutor implements ActionExecutor {
         return result;
     }
 
-    private HttpUriRequest composeGetRequest(String effectiveUrl, HttpActionDefinition definition) {
+    private HttpUriRequest composeGetRequest(HttpActionDefinition definition,
+            long scheduleExecutionId, String nodeAddress)
+    {
+        String effectiveUrl = definition.getUrl();
+        effectiveUrl = ActionPlaceholders.substituteNode(effectiveUrl, nodeAddress);
+        effectiveUrl = ActionPlaceholders.substituteExecution(effectiveUrl, scheduleExecutionId);
+
         HttpGet request = new HttpGet(effectiveUrl);
 
         if (MapUtils.isNotEmpty(definition.getHeaders())) {
             for (Map.Entry<String, String> entry : definition.getHeaders().entrySet()) {
-                request.addHeader(entry.getKey(), entry.getValue());
+                String effectiveValue = entry.getValue();
+                effectiveValue = ActionPlaceholders.substituteNode(effectiveValue, nodeAddress);
+                effectiveValue = ActionPlaceholders.substituteExecution(effectiveValue, scheduleExecutionId);
+                request.addHeader(entry.getKey(), effectiveValue);
             }
         }
 
         return request;
     }
 
-    private HttpUriRequest composePostRequest(String effectiveUrl, HttpActionDefinition definition) {
+    private HttpUriRequest composePostRequest(HttpActionDefinition definition,
+            long scheduleExecutionId, String nodeAddress)
+    {
+        String effectiveUrl = definition.getUrl();
+        effectiveUrl = ActionPlaceholders.substituteNode(effectiveUrl, nodeAddress);
+        effectiveUrl = ActionPlaceholders.substituteExecution(effectiveUrl, scheduleExecutionId);
+
         HttpPost request = new HttpPost(effectiveUrl);
 
         if (MapUtils.isNotEmpty(definition.getHeaders())) {
             for (Map.Entry<String, String> entry : definition.getHeaders().entrySet()) {
-                request.addHeader(entry.getKey(), entry.getValue());
+                String effectiveValue = entry.getValue();
+                effectiveValue = ActionPlaceholders.substituteNode(effectiveValue, nodeAddress);
+                effectiveValue = ActionPlaceholders.substituteExecution(effectiveValue, scheduleExecutionId);
+                request.addHeader(entry.getKey(), effectiveValue);
             }
         }
 
         if (MapUtils.isNotEmpty(definition.getPostParams())) {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             for (Map.Entry<String, String> entry : definition.getPostParams().entrySet()) {
-                NameValuePair nameValuePair = new BasicNameValuePair(entry.getKey(), entry.getValue());
+                String effectiveValue = entry.getValue();
+                effectiveValue = ActionPlaceholders.substituteNode(effectiveValue, nodeAddress);
+                effectiveValue = ActionPlaceholders.substituteExecution(effectiveValue, scheduleExecutionId);
+
+                NameValuePair nameValuePair = new BasicNameValuePair(entry.getKey(), effectiveValue);
                 nameValuePairs.add(nameValuePair);
             }
 

@@ -39,7 +39,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
             .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
-            .add("${nodeAddress}")
+            .add("${node}")
             .build();
 
         Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
@@ -120,7 +120,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
             .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
-            .add("${nodeAddress}")
+            .add("${node}")
             .build();
 
         Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
@@ -179,7 +179,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
             .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
-            .add("${nodeAddress}")
+            .add("${node}")
             .add("-s").add("600")
             .add("-e").add("some_error_text")
             .build();
@@ -266,7 +266,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
             .add("org.qzerver.util.programs.SampleProgram")
             .add("arg1")
             .add("arg2")
-            .add("${nodeAddress}")
+            .add("${node}")
             .add("-l").add(Long.toString(maxCaptureSize / 50 * 2))
             .build();
 

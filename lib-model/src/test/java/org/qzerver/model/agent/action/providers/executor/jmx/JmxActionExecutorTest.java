@@ -79,7 +79,7 @@ public class JmxActionExecutorTest extends AbstractModelTest {
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user");
         definition.setPassword("pass");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/server");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${node}:" + JMX_SERVER_PORT + "/server");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
@@ -98,7 +98,7 @@ public class JmxActionExecutorTest extends AbstractModelTest {
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user");
         definition.setPassword("pass");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/nonexisting");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${node}:" + JMX_SERVER_PORT + "/nonexisting");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
@@ -117,7 +117,7 @@ public class JmxActionExecutorTest extends AbstractModelTest {
         definition.setParameters(Lists.newArrayList("arg1", "arg2"));
         definition.setUsername("user123");
         definition.setPassword("pass123");
-        definition.setUrl("service:jmx:rmi:///jndi/rmi://${nodeAddress}:" + JMX_SERVER_PORT + "/server");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${node}:" + JMX_SERVER_PORT + "/server");
 
         JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
         Assert.assertNotNull(result);
