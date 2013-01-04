@@ -2,42 +2,78 @@ package org.qzerver.model.agent.action.providers.executor.http;
 
 import org.qzerver.model.agent.action.providers.ActionResult;
 
-public class HttpActionResult implements ActionResult {
+import java.io.Serializable;
 
-    private static final int HTTP_SUCCESS_CODE = 200;
+public class HttpActionResult implements ActionResult, Serializable {
 
-    private int status;
+    private int statusCode;
 
-    private String mime;
+    private String reason;
 
-    private byte[] content;
+    private boolean succeed;
 
-    public byte[] getContent() {
-        return content;
+    private HttpActionResultStatus status;
+
+    private String exceptionClass;
+
+    private String exceptionMessage;
+
+    private HttpActionOutput output;
+
+    public HttpActionOutput getOutput() {
+        return output;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
+    public void setOutput(HttpActionOutput output) {
+        this.output = output;
     }
 
-    public String getMime() {
-        return mime;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setMime(String mime) {
-        this.mime = mime;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public int getStatus() {
+    public String getExceptionClass() {
+        return exceptionClass;
+    }
+
+    public void setExceptionClass(String exceptionClass) {
+        this.exceptionClass = exceptionClass;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
+    }
+
+    public void setExceptionMessage(String exceptionMessage) {
+        this.exceptionMessage = exceptionMessage;
+    }
+
+    public HttpActionResultStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(HttpActionResultStatus status) {
         this.status = status;
+    }
+
+    public void setSucceed(boolean succeed) {
+        this.succeed = succeed;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     @Override
     public boolean isSucceed() {
-        return status == HTTP_SUCCESS_CODE;
+        return succeed;
     }
 }

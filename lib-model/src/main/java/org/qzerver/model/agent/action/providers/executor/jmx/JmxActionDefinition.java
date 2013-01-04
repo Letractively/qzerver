@@ -3,9 +3,10 @@ package org.qzerver.model.agent.action.providers.executor.jmx;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class JmxActionDefinition implements ActionDefinition {
+public class JmxActionDefinition implements ActionDefinition, Serializable {
 
     private String url;
 

@@ -29,7 +29,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
     private static final String CMD_PARAM_EXECUTION = "\\$\\{executionId\\}";
 
-    private static final long CHANNEL_PAUSE_MS = 100;
+    private static final int LOOP_PAUSE_MS = 250;
 
     private static final int BUFFER_SIZE = 16 * 1024;
 
@@ -64,7 +64,6 @@ public class SshCommandActionExecutor implements ActionExecutor {
                 jsch.setKnownHosts(definition.getKnownHostPath());
             }
 
-
             if (definition.getPrivateKeyPath() != null) {
                 jsch.addIdentity(definition.getPrivateKeyPath(), definition.getPrivateKeyPassphrase());
             }
@@ -77,19 +76,18 @@ public class SshCommandActionExecutor implements ActionExecutor {
     }
 
     private SshCommandActionResult produceExceptionalResult(Exception e) {
-        SshCommandActionResult result = new SshCommandActionResult();
+        SshCommandActionOutput stdOutOutput = new SshCommandActionOutput();
+        stdOutOutput.setStatus(SshCommandActionOutputStatus.IDLE);
 
+        SshCommandActionOutput stdErrOutput = new SshCommandActionOutput();
+        stdErrOutput.setStatus(SshCommandActionOutputStatus.IDLE);
+
+        SshCommandActionResult result = new SshCommandActionResult();
         result.setExitCode(-1);
         result.setStatus(SshCommandActionResultStatus.EXCEPTION);
         result.setExceptionClass(e.getClass().getCanonicalName());
         result.setExceptionMessage(e.getLocalizedMessage());
-
-        SshCommandActionOutput stdOutOutput = new SshCommandActionOutput();
-        stdOutOutput.setStatus(SshCommandActionOutputStatus.IDLE);
         result.setStdout(stdOutOutput);
-
-        SshCommandActionOutput stdErrOutput = new SshCommandActionOutput();
-        stdErrOutput.setStatus(SshCommandActionOutputStatus.IDLE);
         result.setStderr(stdErrOutput);
 
         return result;
@@ -101,7 +99,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
         Session session = jsch.getSession(definition.getUsername(), nodeAddress, definition.getPort());
 
         session.setPassword(definition.getPassword());
-        session.setTimeout(definition.getReadTimeoutMs());
+        session.setTimeout(0);
         session.setDaemonThread(true);
 
         if (definition.getSshProperties() != null) {
@@ -179,7 +177,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
             // Make a pause
             try {
-                Thread.sleep(CHANNEL_PAUSE_MS);
+                Thread.sleep(LOOP_PAUSE_MS);
             } catch (InterruptedException e) {
                 LOGGER.warn("Unexpected interruption");
             }
@@ -190,11 +188,9 @@ public class SshCommandActionExecutor implements ActionExecutor {
         int exitCode, boolean succeed)
     {
         SshCommandActionResult result = new SshCommandActionResult();
-
         result.setExitCode(exitCode);
         result.setStatus(SshCommandActionResultStatus.EXECUTED);
         result.setSucceed(succeed);
-
         result.setStdout(stdOutCapturer.requestOutput());
         result.setStderr(stdErrCapturer.requestOutput());
 
@@ -202,24 +198,23 @@ public class SshCommandActionExecutor implements ActionExecutor {
     }
 
     private SshCommandActionResult produceTimeoutResult(OutputCapturer stdOutCapturer, OutputCapturer stdErrCapturer) {
-        SshCommandActionResult result = new SshCommandActionResult();
-
-        result.setExitCode(-1);
-        result.setStatus(SshCommandActionResultStatus.TIMEOUT);
-        result.setSucceed(false);
-
         // Change status to "bad" when output is "good" for standard output
         SshCommandActionOutput stdOutOutput = stdOutCapturer.requestOutput();
         if (stdOutOutput.getStatus() == SshCommandActionOutputStatus.CAPTURED) {
             stdOutOutput.setStatus(SshCommandActionOutputStatus.TIMEOUT);
         }
-        result.setStdout(stdOutOutput);
 
         // Change status to "bad" when output is "good" for error output
         SshCommandActionOutput stdErrOutput = stdErrCapturer.requestOutput();
         if (stdErrOutput.getStatus() == SshCommandActionOutputStatus.CAPTURED) {
             stdErrOutput.setStatus(SshCommandActionOutputStatus.TIMEOUT);
         }
+
+        SshCommandActionResult result = new SshCommandActionResult();
+        result.setExitCode(-1);
+        result.setStatus(SshCommandActionResultStatus.TIMEOUT);
+        result.setSucceed(false);
+        result.setStdout(stdOutOutput);
         result.setStderr(stdErrOutput);
 
         return result;
@@ -242,22 +237,22 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
     private final class OutputCapturer {
 
-        private InputStream inputStream;
+        private final InputStream inputStream;
 
-        private ByteArrayOutputStream outputBuffer;
+        private final ByteArrayOutputStream outputBuffer;
+
+        private final SshCommandActionOutput output;
+
+        private final byte[] buffer;
 
         private int readTotal;
 
-        private boolean closed;
-
-        private SshCommandActionOutput output;
-
-        private byte[] buffer;
+        private boolean reading;
 
         private OutputCapturer(InputStream inputStream, boolean skip) {
             this.inputStream = inputStream;
             this.readTotal = 0;
-            this.closed = false;
+            this.reading = true;
             this.buffer = new byte[BUFFER_SIZE];
             this.outputBuffer = new ByteArrayOutputStream();
 
@@ -269,15 +264,16 @@ public class SshCommandActionExecutor implements ActionExecutor {
         }
 
         public void read() throws IOException {
-            while ((!closed) && (inputStream.available() > 0)) {
-                // Read from input
-                int readOnce = inputStream.read(buffer, 0, BUFFER_SIZE);
-                if (readOnce == -1) {
-                    closed = true;
-                    return;
+            int readOnce;
 
+            while (reading && (inputStream.available() > 0)) {
+                readOnce = inputStream.read(buffer, 0, BUFFER_SIZE);
+
+                if (readOnce == -1) {
+                    reading = false;
+                    return;
                 }
-                // Capture data
+
                 if (output.getStatus() == SshCommandActionOutputStatus.CAPTURED) {
                     readTotal += readOnce;
 

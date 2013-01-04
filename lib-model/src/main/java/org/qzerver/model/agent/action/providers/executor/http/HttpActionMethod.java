@@ -1,8 +1,9 @@
 package org.qzerver.model.agent.action.providers.executor.http;
 
-public enum HttpActionProtocol {
+public enum HttpActionMethod {
 
-    HTTP,
+    GET,
 
-    HTTPS
+    POST
+
 }

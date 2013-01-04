@@ -57,7 +57,6 @@ public class JmxActionExecutor implements ActionExecutor {
 
     private JmxActionResult produceExceptionalResult(Exception e) {
         JmxActionResult result = new JmxActionResult();
-
         result.setExceptionClass(e.getClass().getCanonicalName());
         result.setExceptionMessage(e.getLocalizedMessage());
         result.setStatus(JmxActionResultStatus.EXCEPTION);

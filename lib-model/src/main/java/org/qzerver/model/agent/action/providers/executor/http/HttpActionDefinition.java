@@ -1,31 +1,42 @@
 package org.qzerver.model.agent.action.providers.executor.http;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Map;
 
-public class HttpActionDefinition implements ActionDefinition {
+public class HttpActionDefinition implements ActionDefinition, Serializable {
 
-    private static final HttpActionProtocol DEFAULT_PROTOCOL = HttpActionProtocol.HTTP;
+    private static final int HTTP_SUCCESS_CODE = 200;
 
-    private static final int DEFAULT_CONNECTION_TIMEOUT_MS = 3000;
+    @NotNull
+    @NotBlank
+    private String url;
 
-    private static final int DEFAULT_READ_TIMEOUT_MS = 600000;
+    private String plainAuthUsername;
 
-    private String path;
-
-    private String username;
-
-    private String password;
+    private String plainAuthPassword;
 
     private Map<String, String> headers;
 
-    private HttpActionProtocol protocol = DEFAULT_PROTOCOL;
+    private Map<String, String> postParams;
 
-    private int connectionTimeoutMs = DEFAULT_CONNECTION_TIMEOUT_MS;
+    private boolean skipOutput;
 
-    private int readTimeoutMs = DEFAULT_READ_TIMEOUT_MS;
+    @NotNull
+    private HttpActionMethod method;
+
+    @Min(0)
+    private int connectionTimeoutMs;
+
+    @Min(0)
+    private int timeoutMs;
+
+    private int expectedStatusCode = HTTP_SUCCESS_CODE;
 
     public int getConnectionTimeoutMs() {
         return connectionTimeoutMs;
@@ -43,44 +54,68 @@ public class HttpActionDefinition implements ActionDefinition {
         this.headers = headers;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPlainAuthPassword() {
+        return plainAuthPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPlainAuthPassword(String plainAuthPassword) {
+        this.plainAuthPassword = plainAuthPassword;
     }
 
-    public String getPath() {
-        return path;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public HttpActionProtocol getProtocol() {
-        return protocol;
+    public String getPlainAuthUsername() {
+        return plainAuthUsername;
     }
 
-    public void setProtocol(HttpActionProtocol protocol) {
-        this.protocol = protocol;
+    public void setPlainAuthUsername(String plainAuthUsername) {
+        this.plainAuthUsername = plainAuthUsername;
     }
 
-    public int getReadTimeoutMs() {
-        return readTimeoutMs;
+    public int getExpectedStatusCode() {
+        return expectedStatusCode;
     }
 
-    public void setReadTimeoutMs(int readTimeoutMs) {
-        this.readTimeoutMs = readTimeoutMs;
+    public void setExpectedStatusCode(int expectedStatusCode) {
+        this.expectedStatusCode = expectedStatusCode;
     }
 
-    public String getUsername() {
-        return username;
+    public HttpActionMethod getMethod() {
+        return method;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMethod(HttpActionMethod method) {
+        this.method = method;
+    }
+
+    public Map<String, String> getPostParams() {
+        return postParams;
+    }
+
+    public void setPostParams(Map<String, String> postParams) {
+        this.postParams = postParams;
+    }
+
+    public boolean isSkipOutput() {
+        return skipOutput;
+    }
+
+    public void setSkipOutput(boolean skipOutput) {
+        this.skipOutput = skipOutput;
+    }
+
+    public int getTimeoutMs() {
+        return timeoutMs;
+    }
+
+    public void setTimeoutMs(int timeoutMs) {
+        this.timeoutMs = timeoutMs;
     }
 
     @Override

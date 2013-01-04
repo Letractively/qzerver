@@ -56,7 +56,6 @@ public class SshCommandActionExecutorHangTest extends AbstractModelTest {
         definition.setSkipStdError(false);
         definition.setExpectedExitCode(0);
         definition.setConnectionTimeoutMs(0);
-        definition.setReadTimeoutMs(0);
         definition.setTimeoutMs(3000);
         definition.setPrivateKeyPath(privateKeyPath);
         definition.setPrivateKeyPassphrase(null);

@@ -1,6 +1,5 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand;
 
-import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import com.gainmatrix.lib.spring.validation.BeanValidationUtils;
 import com.google.common.base.Preconditions;
 import org.apache.commons.io.IOUtils;
@@ -94,30 +93,35 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         }
 
         // Wait while process exits and grab all the result
-        return executeProcess(process, definition);
+        try {
+            return executeProcess(process, definition);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to execute process", e);
+            return produceExceptionalResult(e);
+        }
     }
 
     private LocalCommandActionResult produceExceptionalResult(Exception e) {
-        LocalCommandActionResult result = new LocalCommandActionResult();
+        LocalCommandActionOutput standardOutput = new LocalCommandActionOutput();
+        standardOutput.setStatus(LocalCommandActionOutputStatus.IDLE);
 
+        LocalCommandActionOutput standardError = new LocalCommandActionOutput();
+        standardError.setStatus(LocalCommandActionOutputStatus.IDLE);
+
+        LocalCommandActionResult result = new LocalCommandActionResult();
         result.setStatus(LocalCommandActionResultStatus.EXCEPTION);
         result.setExitCode(-1);
         result.setExceptionClass(e.getClass().getCanonicalName());
         result.setExceptionMessage(e.getLocalizedMessage());
         result.setSucceed(false);
-
-        LocalCommandActionOutput standardOutput = new LocalCommandActionOutput();
-        standardOutput.setStatus(LocalCommandActionOutputStatus.IDLE);
         result.setStdout(standardOutput);
-
-        LocalCommandActionOutput standardError = new LocalCommandActionOutput();
-        standardError.setStatus(LocalCommandActionOutputStatus.IDLE);
         result.setStderr(standardError);
 
         return result;
     }
 
     private LocalCommandActionResult executeProcess(Process process, LocalCommandActionDefinition definition)
+        throws Exception
     {
         // Start process thread
         ProcessExecutionThread processExecutionThread = new ProcessExecutionThread(process);
@@ -141,11 +145,7 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         }
 
         // Wait while process thread exits
-        try {
-            processExecutionThread.join();
-        } catch (InterruptedException e) {
-            throw new SystemIntegrityException("Unexpected interruption of joining process execution thread");
-        }
+        processExecutionThread.join();
 
         // Release all resources - even the process is not alive (http://kylecartmell.com/?p=9)
         IOUtils.closeQuietly(process.getErrorStream());
@@ -161,18 +161,18 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         LocalCommandActionResult result = new LocalCommandActionResult();
         result.setStatus(processExecutionThread.getStatus());
         result.setExitCode(processExecutionThread.getExitCode());
-        result.setStdout(processStandardOutputThread.getActionOutput());
-        result.setStderr(processStandardErrorThread.getActionOutput());
+        result.setStdout(processStandardOutputThread.composeActionOutput());
+        result.setStderr(processStandardErrorThread.composeActionOutput());
 
         // In case of the process termination change "success" status to "terminated"
-        if (result.getStatus() == LocalCommandActionResultStatus.TERMINATED) {
+        if (result.getStatus() == LocalCommandActionResultStatus.TIMEOUT) {
             LocalCommandActionOutput stdout = result.getStdout();
             if (stdout.getStatus() == LocalCommandActionOutputStatus.CAPTURED) {
-                stdout.setStatus(LocalCommandActionOutputStatus.TERMINATED);
+                stdout.setStatus(LocalCommandActionOutputStatus.TIMEOUT);
             }
             LocalCommandActionOutput stderr = result.getStderr();
             if (stderr.getStatus() == LocalCommandActionOutputStatus.CAPTURED) {
-                stderr.setStatus(LocalCommandActionOutputStatus.TERMINATED);
+                stderr.setStatus(LocalCommandActionOutputStatus.TIMEOUT);
             }
         }
 

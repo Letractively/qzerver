@@ -68,6 +68,8 @@
     <!-- Action executors -->
 
     <bean id="httpActionExecutor" class="org.qzerver.model.agent.action.providers.executor.http.HttpActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
+        <property name="maxCaptureSize" value="${app.action.capture.size.max}"/>
     </bean>
 
     <bean id="jmxActionExecutor" class="org.qzerver.model.agent.action.providers.executor.jmx.JmxActionExecutor">
@@ -86,6 +88,7 @@
     </bean>
 
     <bean id="socketActionExecutor" class="org.qzerver.model.agent.action.providers.executor.socket.SocketActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
     </bean>
 
     <bean id="classActionExecutor" class="org.qzerver.model.agent.action.providers.executor.clazz.ClassActionExecutor">

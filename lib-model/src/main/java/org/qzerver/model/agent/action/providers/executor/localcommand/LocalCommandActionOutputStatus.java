@@ -15,7 +15,7 @@ public enum LocalCommandActionOutputStatus {
     /**
      * Capturing thread was terminated beceause of process termination
      */
-    TERMINATED(true, true),
+    TIMEOUT(true, true),
 
     /**
      * Capturing thread hung and we can't close it in normal way

@@ -10,7 +10,7 @@ public enum LocalCommandActionResultStatus {
     /**
      * Command was terminated due to timeout or manual termination
      */
-    TERMINATED,
+    TIMEOUT,
 
     /**
      * Exception on executing the command

@@ -46,9 +46,6 @@ public class SshCommandActionDefinition implements ActionDefinition, Serializabl
     private Map<String, String> sshProperties;
 
     @Min(0)
-    private int readTimeoutMs;
-
-    @Min(0)
     private int connectionTimeoutMs;
 
     @Min(0)
@@ -122,14 +119,6 @@ public class SshCommandActionDefinition implements ActionDefinition, Serializabl
 
     public void setCommand(String command) {
         this.command = command;
-    }
-
-    public int getReadTimeoutMs() {
-        return readTimeoutMs;
-    }
-
-    public void setReadTimeoutMs(int readTimeoutMs) {
-        this.readTimeoutMs = readTimeoutMs;
     }
 
     public int getConnectionTimeoutMs() {

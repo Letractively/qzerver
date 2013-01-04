@@ -114,6 +114,65 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
     }
 
     @Test
+    public void testSkip() throws Exception {
+        List<String> commandArguments = ImmutableList.<String>builder()
+            .add("-cp").add(System.getProperty("java.class.path"))
+            .add("org.qzerver.util.programs.SampleProgram")
+            .add("arg1")
+            .add("arg2")
+            .add("${nodeAddress}")
+            .build();
+
+        Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
+            .put("KEY1", "VALUE1")
+            .put("KEY2", "VALUE2")
+            .build();
+
+        String workDirectory = SystemUtils.getJavaIoTmpDir().getAbsolutePath();
+
+        LocalCommandActionDefinition definition = new LocalCommandActionDefinition();
+        definition.setCommand(javaCommand);
+        definition.setParameters(commandArguments);
+        definition.setDirectory(workDirectory);
+        definition.setCharset(Charset.defaultCharset());
+        definition.setCombineOutput(false);
+        definition.setSkipStdOutput(true);
+        definition.setSkipStdError(true);
+        definition.setExpectedExitCode(0);
+        definition.setTimeoutMs(0);
+        definition.setEnvironmentInherit(true);
+        definition.setEnvironmentVariables(commandEnvironments);
+
+        LocalCommandActionResult result = (LocalCommandActionResult) localCommandActionExecutor.execute(
+            definition, 123L, "127.1.2.3"
+        );
+
+        // Check result
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0, result.getExitCode());
+        Assert.assertEquals(true, result.isSucceed());
+        Assert.assertEquals(LocalCommandActionResultStatus.EXECUTED, result.getStatus());
+        Assert.assertNull(result.getExceptionClass());
+        Assert.assertNull(result.getExceptionMessage());
+
+        // Check standard output
+        LocalCommandActionOutput standardOutput = result.getStdout();
+        Assert.assertNotNull(standardOutput);
+        Assert.assertEquals(LocalCommandActionOutputStatus.SKIPPED, standardOutput.getStatus());
+        Assert.assertNull(standardOutput.getData());
+        Assert.assertNull(standardOutput.getExceptionClass());
+        Assert.assertNull(standardOutput.getExceptionMessage());
+
+        // Check standard error
+        LocalCommandActionOutput standardError = result.getStderr();
+        Assert.assertNotNull(standardError);
+        Assert.assertEquals(LocalCommandActionOutputStatus.SKIPPED, standardError.getStatus());
+        Assert.assertNull(standardError.getData());
+        Assert.assertNull(standardError.getExceptionClass());
+        Assert.assertNull(standardError.getExceptionMessage());
+    }
+
+    @Test
     public void testTimeout() throws Exception {
         List<String> commandArguments = ImmutableList.<String>builder()
             .add("-cp").add(System.getProperty("java.class.path"))
@@ -153,14 +212,14 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         Assert.assertNotNull(result);
         Assert.assertEquals(-1, result.getExitCode());
         Assert.assertEquals(false, result.isSucceed());
-        Assert.assertEquals(LocalCommandActionResultStatus.TERMINATED, result.getStatus());
+        Assert.assertEquals(LocalCommandActionResultStatus.TIMEOUT, result.getStatus());
         Assert.assertNull(result.getExceptionClass());
         Assert.assertNull(result.getExceptionMessage());
 
         // Check standard output
         LocalCommandActionOutput standardOutput = result.getStdout();
         Assert.assertNotNull(standardOutput);
-        Assert.assertEquals(LocalCommandActionOutputStatus.TERMINATED, standardOutput.getStatus());
+        Assert.assertEquals(LocalCommandActionOutputStatus.TIMEOUT, standardOutput.getStatus());
         Assert.assertNotNull(standardOutput.getData());
         Assert.assertNull(standardOutput.getExceptionClass());
         Assert.assertNull(standardOutput.getExceptionMessage());
@@ -190,7 +249,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         // Check standard error
         LocalCommandActionOutput standardError = result.getStderr();
         Assert.assertNotNull(standardError);
-        Assert.assertEquals(LocalCommandActionOutputStatus.TERMINATED, standardError.getStatus());
+        Assert.assertEquals(LocalCommandActionOutputStatus.TIMEOUT, standardError.getStatus());
         Assert.assertNotNull(standardError.getData());
         Assert.assertNull(standardError.getExceptionClass());
         Assert.assertNull(standardError.getExceptionMessage());

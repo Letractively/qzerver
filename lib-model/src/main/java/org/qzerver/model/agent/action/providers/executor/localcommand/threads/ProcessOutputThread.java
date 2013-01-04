@@ -1,12 +1,14 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand.threads;
 
-import com.gainmatrix.lib.business.exception.SystemIntegrityException;
 import org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionOutput;
 import org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionOutputStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class ProcessOutputThread extends Thread {
 
@@ -16,7 +18,7 @@ public class ProcessOutputThread extends Thread {
 
     private static final int BUFFER_SIZE = 16 * 1024;
 
-    private static final int WAIT_AFTER_PROCESS_MS = 1000;
+    private static final int SHUTDOWN_WAIT_MS = 1000;
 
     private final InputStream inputStream;
 
@@ -24,13 +26,11 @@ public class ProcessOutputThread extends Thread {
 
     private final boolean skip;
 
-    private ByteArrayOutputStream outputStream;
+    private final ByteArrayOutputStream outputStream;
 
     private LocalCommandActionOutputStatus status;
 
-    private byte[] data;
-
-    private String excepionClass;
+    private String exceptionClass;
 
     private String exceptionMessage;
 
@@ -66,7 +66,7 @@ public class ProcessOutputThread extends Thread {
         } catch (Exception e) {
             LOGGER.error("Fail to capture process output", e);
             status = LocalCommandActionOutputStatus.EXCEPTION;
-            excepionClass = e.getClass().getCanonicalName();
+            exceptionClass = e.getClass().getCanonicalName();
             exceptionMessage = e.getLocalizedMessage();
         }
     }
@@ -77,7 +77,12 @@ public class ProcessOutputThread extends Thread {
         int readOnce;
         long readTotal = 0;
 
-        while ((readOnce = inputStream.read(buffer, 0, BUFFER_SIZE)) != -1) {
+        while (true) {
+            readOnce = inputStream.read(buffer, 0, BUFFER_SIZE);
+            if (readOnce == -1) {
+                return;
+            }
+
             readTotal += readOnce;
 
             if ((maxCaptureSize > 0) && (readTotal > maxCaptureSize)) {
@@ -108,18 +113,20 @@ public class ProcessOutputThread extends Thread {
 
     private void skipStreamOutput(InputStream inputStream) throws IOException {
         byte[] buffer = new byte[BUFFER_SIZE];
+        int readOnce;
 
-        while (inputStream.read(buffer, 0, BUFFER_SIZE) != -1) {
-            // do nothing - just skip the output
+        // do nothing - just comsume all the output
+        while (true) {
+            readOnce = inputStream.read(buffer, 0, BUFFER_SIZE);
+            if (readOnce == -1) {
+                return;
+            }
         }
     }
 
-    public void shutdownCapture() {
-        try {
-            this.join(WAIT_AFTER_PROCESS_MS);
-        } catch (InterruptedException e) {
-            throw new SystemIntegrityException("Unexpected output thread join interruption", e);
-        }
+    public void shutdownCapture() throws InterruptedException {
+        // Stream should be closed after process exits - we'll check anyway
+        this.join(SHUTDOWN_WAIT_MS);
 
         // For some unknown reason commands like "bash -c 'sleep 600'" can be terminated on timeout but read
         // operations on the process streams are in block forever. Thread interruption, thread stopping nor stream
@@ -128,21 +135,22 @@ public class ProcessOutputThread extends Thread {
             LOGGER.warn("Capture thread hung after process has stopped");
             this.status = LocalCommandActionOutputStatus.HUNG;
         }
+    }
 
-        // Store the data
+    public LocalCommandActionOutput composeActionOutput() {
+        byte[] data = null;
+
         if (status.isCaptured()) {
             byte[] capturedData = outputStream.toByteArray();
             if ((capturedData != null) && (capturedData.length > 0)) {
                 data = capturedData;
             }
         }
-    }
 
-    public LocalCommandActionOutput getActionOutput() {
         LocalCommandActionOutput output = new LocalCommandActionOutput();
         output.setStatus(status);
         output.setData(data);
-        output.setExceptionClass(excepionClass);
+        output.setExceptionClass(exceptionClass);
         output.setExceptionMessage(exceptionMessage);
         return output;
     }

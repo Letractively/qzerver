@@ -64,7 +64,7 @@ public class LocalCommandActionExecutorHangTest extends AbstractModelTest {
         Assert.assertNotNull(result);
         Assert.assertEquals(-1, result.getExitCode());
         Assert.assertEquals(false, result.isSucceed());
-        Assert.assertEquals(LocalCommandActionResultStatus.TERMINATED, result.getStatus());
+        Assert.assertEquals(LocalCommandActionResultStatus.TIMEOUT, result.getStatus());
         Assert.assertNull(result.getExceptionClass());
         Assert.assertNull(result.getExceptionMessage());
 

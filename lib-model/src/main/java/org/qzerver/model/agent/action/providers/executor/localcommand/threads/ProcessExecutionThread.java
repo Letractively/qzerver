@@ -37,11 +37,15 @@ public class ProcessExecutionThread extends Thread {
             exitCode = process.waitFor();
         } catch (InterruptedException e) {
             LOGGER.debug("Local process thread has been interrupted - process will be destroyed");
-            status = LocalCommandActionResultStatus.TERMINATED;
+            status = LocalCommandActionResultStatus.TIMEOUT;
             exitCode = -1;
         }
 
         LOGGER.debug("Local process thread is finishing with exit code [{}] and status [{}]", exitCode, status);
+    }
+
+    public void interruptOnTimeout() {
+        this.interrupt();
     }
 
     public int getExitCode() {

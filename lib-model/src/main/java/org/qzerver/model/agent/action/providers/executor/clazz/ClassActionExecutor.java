@@ -35,19 +35,19 @@ public class ClassActionExecutor implements ActionExecutor {
 
         BeanValidationUtils.checkValidity(actionDefinition, beanValidator);
 
-        ClassActionDefinition classActionDefinition = (ClassActionDefinition) actionDefinition;
+        ClassActionDefinition definition = (ClassActionDefinition) actionDefinition;
 
         LOGGER.debug("Callable instance will be executed. Class [{}] on node [{}]",
-            classActionDefinition.getCallableClassName(), nodeAddress);
+            definition.getCallableClassName(), nodeAddress);
 
         Object callable;
 
-        if (classActionDefinition.getCallableInstance() == null) {
+        if (definition.getCallableInstance() == null) {
             // Search for class
             Class<?> classToExecute;
 
             try {
-                classToExecute = Class.forName(classActionDefinition.getCallableClassName());
+                classToExecute = Class.forName(definition.getCallableClassName());
             } catch (Exception e) {
                 return new ClassActionResult(e);
             }
@@ -65,11 +65,11 @@ public class ClassActionExecutor implements ActionExecutor {
                 return new ClassActionResult(e);
             }
         } else {
-            callable = classActionDefinition.getCallableInstance();
+            callable = definition.getCallableInstance();
         }
 
         // Set object properties
-        Map<String, String> properties = new HashMap<String, String>(classActionDefinition.getParameters());
+        Map<String, String> properties = new HashMap<String, String>(definition.getParameters());
         properties.put("nodeAddress", nodeAddress);
         String scheduleExecutionIdText = Long.toString(scheduleExecutionId);
         properties.put("executionId", scheduleExecutionIdText);

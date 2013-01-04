@@ -2,7 +2,9 @@ package org.qzerver.model.agent.action.providers.executor.jmx;
 
 import org.qzerver.model.agent.action.providers.ActionResult;
 
-public class JmxActionResult implements ActionResult {
+import java.io.Serializable;
+
+public class JmxActionResult implements ActionResult, Serializable {
 
     private String result;
 

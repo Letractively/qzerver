@@ -17,6 +17,14 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.Resource;
 import java.util.Map;
 
+/**
+ * To pass the test the system must follow the conditions:
+ * <ul>
+ *     <li>OpenSSH service must be installed and operating on the current system</li>
+ *     <li>Current user must have valid private key in ${user.home}/.ssh/id_rsa</li>
+ *     <li>Current user must be able to login on the localhost with key authentication (use ssh-copy-id tool)</li>
+ * </ul>
+ */
 public class SshCommandActionExecutorTest extends AbstractModelTest {
 
     @Resource
@@ -68,7 +76,6 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
         definition.setSkipStdError(false);
         definition.setExpectedExitCode(0);
         definition.setConnectionTimeoutMs(0);
-        definition.setReadTimeoutMs(0);
         definition.setTimeoutMs(0);
         definition.setPrivateKeyPath(privateKeyPath);
         definition.setPrivateKeyPassphrase(null);
@@ -122,6 +129,70 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
     }
 
     @Test
+    public void testSkip() throws Exception {
+        String command = String.format("%s -cp %s %s %s %s ${nodeAddress}",
+            javaCommand,
+            System.getProperty("java.class.path"),
+            "org.qzerver.util.programs.SampleProgram",
+            "arg1",
+            "arg2"
+        );
+
+        Map<String, String> commandEnvironments = ImmutableMap.<String, String>builder()
+            .put("KEY1", "VALUE1")
+            .put("KEY2", "VALUE2")
+            .build();
+
+        Map<String, String> sshOptions = ImmutableMap.<String, String>builder()
+            .put("StrictHostKeyChecking", "no")
+            .build();
+
+        String username = System.getProperty("user.name");
+
+        String privateKeyPath = System.getProperty("user.home") + "/.ssh/id_rsa";
+
+        SshCommandActionDefinition definition = new SshCommandActionDefinition();
+        definition.setCommand(command);
+        definition.setEnvironmentVariables(commandEnvironments);
+        definition.setAgentForwarding(false);
+        definition.setSkipStdOutput(true);
+        definition.setSkipStdError(true);
+        definition.setExpectedExitCode(0);
+        definition.setConnectionTimeoutMs(0);
+        definition.setTimeoutMs(0);
+        definition.setPrivateKeyPath(privateKeyPath);
+        definition.setPrivateKeyPassphrase(null);
+        definition.setSshProperties(sshOptions);
+        definition.setPassword(null);
+        definition.setPort(22);
+        definition.setKnownHostPath(null);
+        definition.setUsername(username);
+
+        SshCommandActionResult result = (SshCommandActionResult) sshCommandActionExecutor.execute(definition,
+            123L, "localhost");
+
+        // Check result
+        Assert.assertNotNull(result);
+        Assert.assertEquals(SshCommandActionResultStatus.EXECUTED, result.getStatus());
+        Assert.assertEquals(0, result.getExitCode());
+        Assert.assertEquals(true, result.isSucceed());
+        Assert.assertNull(result.getExceptionClass());
+        Assert.assertNull(result.getExceptionMessage());
+
+        // Check standard output
+        SshCommandActionOutput standardOutput = result.getStdout();
+        Assert.assertNotNull(standardOutput);
+        Assert.assertEquals(SshCommandActionOutputStatus.SKIPPED, standardOutput.getStatus());
+        Assert.assertNull(standardOutput.getData());
+
+        // Check standard error
+        SshCommandActionOutput standardError = result.getStderr();
+        Assert.assertNotNull(standardError);
+        Assert.assertEquals(SshCommandActionOutputStatus.SKIPPED, standardError.getStatus());
+        Assert.assertNull(standardError.getData());
+    }
+
+    @Test
     public void testTimeout() throws Exception {
         String command = String.format("%s -cp %s %s %s %s ${nodeAddress} -s 600 -e some_error_text",
             javaCommand,
@@ -152,7 +223,6 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
         definition.setSkipStdError(false);
         definition.setExpectedExitCode(0);
         definition.setConnectionTimeoutMs(0);
-        definition.setReadTimeoutMs(0);
         definition.setTimeoutMs(3000);
         definition.setPrivateKeyPath(privateKeyPath);
         definition.setPrivateKeyPassphrase(null);
@@ -243,7 +313,6 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
         definition.setSkipStdError(false);
         definition.setExpectedExitCode(0);
         definition.setConnectionTimeoutMs(0);
-        definition.setReadTimeoutMs(0);
         definition.setTimeoutMs(0);
         definition.setPrivateKeyPath(privateKeyPath);
         definition.setPrivateKeyPassphrase(null);
@@ -322,7 +391,6 @@ public class SshCommandActionExecutorTest extends AbstractModelTest {
         definition.setSkipStdError(false);
         definition.setExpectedExitCode(0);
         definition.setConnectionTimeoutMs(0);
-        definition.setReadTimeoutMs(0);
         definition.setTimeoutMs(0);
         definition.setPrivateKeyPath(privateKeyPath);
         definition.setPrivateKeyPassphrase(null);

@@ -53,7 +53,8 @@ public class ActionAgentImplTest {
         HttpActionDefinition httpActionDefinition = new HttpActionDefinition();
 
         HttpActionResult httpActionResult = new HttpActionResult();
-        httpActionResult.setStatus(200);
+        httpActionResult.setStatusCode(200);
+        httpActionResult.setSucceed(true);
 
         String definitionData = "<definition/>";
         String resultData = "<result/>";
