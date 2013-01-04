@@ -2,6 +2,8 @@ package org.qzerver.model.agent.action.providers;
 
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionResult;
+import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionResult;
 import org.qzerver.model.agent.action.providers.executor.jmx.JmxActionDefinition;
@@ -15,53 +17,55 @@ import org.qzerver.model.agent.action.providers.executor.sshcommand.SshCommandAc
 
 public enum ActionIdentifier {
 
-    LOCAL_COMMAND("action.local.command",
+    LOCAL_COMMAND(
         LocalCommandActionDefinition.class,
         LocalCommandActionResult.class
     ),
 
-    SSH_COMMAND("action.ssh.command",
+    SSH_COMMAND(
         SshCommandActionDefinition.class,
         SshCommandActionResult.class
     ),
 
-    HTTP("action.http",
+    HTTP(
         HttpActionDefinition.class,
         HttpActionResult.class
     ),
 
-    SOCKET("action.socket",
+    SOCKET(
         SocketActionDefinition.class,
         SocketActionResult.class
     ),
 
-    JMX("action.jmx",
+    JMX(
         JmxActionDefinition.class,
         JmxActionResult.class
     ),
 
-    CLASS("action.class",
+    CLASS(
         ClassActionDefinition.class,
         ClassActionResult.class
-    );
+    ),
 
-    private final String identifier;
+    GROOVY(
+        GroovyActionDefinition.class,
+        GroovyActionResult.class
+    );
 
     private final Class<? extends ActionDefinition> actionDefinitionClass;
 
     private final Class<? extends ActionResult> actionResultClass;
 
-    private ActionIdentifier(String identifier,
+    private ActionIdentifier(
         Class<? extends ActionDefinition> actionDefinitionClass,
         Class<? extends ActionResult> actionResultClass)
     {
-        this.identifier = identifier;
         this.actionDefinitionClass = actionDefinitionClass;
         this.actionResultClass = actionResultClass;
     }
 
     public String getIdentifier() {
-        return identifier;
+        return name();
     }
 
     public Class<? extends ActionDefinition> getActionDefinitionClass() {

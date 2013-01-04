@@ -19,6 +19,7 @@
                 <entry key="HTTP" value-ref="httpActionExecutor"/>
                 <entry key="SOCKET" value-ref="socketActionExecutor"/>
                 <entry key="CLASS" value-ref="classActionExecutor"/>
+                <entry key="GROOVY" value-ref="groovyActionExecutor"/>
             </map>
         </property>
     </bean>
@@ -92,6 +93,10 @@
     </bean>
 
     <bean id="classActionExecutor" class="org.qzerver.model.agent.action.providers.executor.clazz.ClassActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
+    </bean>
+
+    <bean id="groovyActionExecutor" class="org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionExecutor">
         <property name="beanValidator" ref="modelBeanValidator"/>
     </bean>
 

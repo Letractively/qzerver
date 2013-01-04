@@ -33,6 +33,8 @@ public class SocketActionExecutor implements ActionExecutor {
 
         SocketActionDefinition definition = (SocketActionDefinition) actionDefinition;
 
+        LOGGER.debug("Socket action will be executed on node node [{}]", nodeAddress);
+
         try {
             return processAction(definition, nodeAddress);
         } catch (Exception e) {

@@ -7,8 +7,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class SocketActionDefinition implements ActionDefinition {
+public class SocketActionDefinition implements ActionDefinition, Serializable {
 
     public static final int MIN_PORT_NUMBER = 0;
 

@@ -2,7 +2,9 @@ package org.qzerver.model.agent.action.providers.executor.socket;
 
 import org.qzerver.model.agent.action.providers.ActionResult;
 
-public class SocketActionResult implements ActionResult {
+import java.io.Serializable;
+
+public class SocketActionResult implements ActionResult, Serializable {
 
     private byte[] response;
 
