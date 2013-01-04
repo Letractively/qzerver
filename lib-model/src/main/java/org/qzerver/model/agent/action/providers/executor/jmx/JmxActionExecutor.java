@@ -48,7 +48,7 @@ public class JmxActionExecutor implements ActionExecutor {
 
             return processJmxUrl(jmxUrl, definition);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute jmx call", e);
+            LOGGER.debug("Fail to execute jmx call", e);
             return produceExceptionalResult(e);
         }
     }

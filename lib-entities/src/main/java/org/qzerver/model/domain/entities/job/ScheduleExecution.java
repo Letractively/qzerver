@@ -99,6 +99,13 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
     private boolean allNodes;
 
     /**
+     * How many threads use to execute all nodes (value 0 means that execution is sequential with timeout
+     * and cancelation)
+     */
+    @Min(0)
+    private int allNodesPool;
+
+    /**
      * Action to execute (copied from schedule job)
      */
     @NotNull
@@ -268,6 +275,14 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
 
     public void setAllNodes(boolean allNodes) {
         this.allNodes = allNodes;
+    }
+
+    public int getAllNodesPool() {
+        return allNodesPool;
+    }
+
+    public void setAllNodesPool(int allNodesPool) {
+        this.allNodesPool = allNodesPool;
     }
 
     public ScheduleExecutionStrategy getStrategy() {

@@ -26,6 +26,9 @@ public class ScheduleJobModifyParameters implements Serializable {
 
     private boolean allNodes;
 
+    @Min(0)
+    private int allNodesPool;
+
     public String getDescription() {
         return description;
     }
@@ -72,5 +75,13 @@ public class ScheduleJobModifyParameters implements Serializable {
 
     public void setAllNodes(boolean allNodes) {
         this.allNodes = allNodes;
+    }
+
+    public int getAllNodesPool() {
+        return allNodesPool;
+    }
+
+    public void setAllNodesPool(int allNodesPool) {
+        this.allNodesPool = allNodesPool;
     }
 }

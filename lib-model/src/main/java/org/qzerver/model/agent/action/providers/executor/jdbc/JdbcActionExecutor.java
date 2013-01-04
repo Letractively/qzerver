@@ -38,7 +38,7 @@ public class JdbcActionExecutor implements ActionExecutor {
         try {
             return processAction(definition, effectiveUrl);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute jdbc query", e);
+            LOGGER.debug("Fail to execute jdbc query", e);
             return produceExceptionalResult(e);
         }
     }

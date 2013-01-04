@@ -141,6 +141,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setStandby(false);
         scheduleJob.setName(parameters.getName());
         scheduleJob.setAllNodes(parameters.isAllNodes());
+        scheduleJob.setAllNodesPool(parameters.getAllNodesPool());
         scheduleJob.setDescription(parameters.getDescription());
         scheduleJob.setCron(parameters.getCron());
         scheduleJob.setTimezone(parameters.getTimezone());
@@ -195,6 +196,7 @@ public class ScheduleJobManagementServiceImpl implements ScheduleJobManagementSe
         scheduleJob.setNodesLimit(parameters.getNodesLimit());
         scheduleJob.setTimeout(parameters.getTimeout());
         scheduleJob.setAllNodes(parameters.isAllNodes());
+        scheduleJob.setAllNodesPool(parameters.getAllNodesPool());
         scheduleJob.setModified(now);
 
         return scheduleJob;

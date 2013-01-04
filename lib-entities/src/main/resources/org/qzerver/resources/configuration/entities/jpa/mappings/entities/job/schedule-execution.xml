@@ -73,6 +73,9 @@
             <basic name="allNodes">
                 <column name="all_nodes" nullable="false"/>
             </basic>
+            <basic name="allNodesPool">
+                <column name="all_nodes_pool" nullable="false"/>
+            </basic>
             <basic name="strategy">
                 <column name="strategy" nullable="false"/>
                 <enumerated>ORDINAL</enumerated>

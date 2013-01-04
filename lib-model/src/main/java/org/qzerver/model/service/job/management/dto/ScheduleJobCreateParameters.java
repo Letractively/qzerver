@@ -56,6 +56,9 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     private boolean allNodes;
 
+    @Min(0)
+    private int allNodesPool;
+
     public String getCron() {
         return cron;
     }
@@ -134,6 +137,14 @@ public class ScheduleJobCreateParameters implements Serializable {
 
     public void setAllNodes(boolean allNodes) {
         this.allNodes = allNodes;
+    }
+
+    public int getAllNodesPool() {
+        return allNodesPool;
+    }
+
+    public void setAllNodesPool(int allNodesPool) {
+        this.allNodesPool = allNodesPool;
     }
 
     public int getTimeout() {

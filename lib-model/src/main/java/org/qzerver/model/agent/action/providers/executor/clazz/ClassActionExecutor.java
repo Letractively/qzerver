@@ -84,6 +84,7 @@ public class ClassActionExecutor implements ActionExecutor {
         try {
             beanWrapper.setPropertyValues(propertyValues, true, false);
         } catch (Exception e) {
+            LOGGER.debug("Error while setting bean properties", e);
             return new ClassActionResult(e);
         }
 
@@ -96,6 +97,7 @@ public class ClassActionExecutor implements ActionExecutor {
         try {
             resultAsObject = callable.call();
         } catch (Exception e) {
+            LOGGER.debug("Error while calling the callable", e);
             return new ClassActionResult(e);
         }
 

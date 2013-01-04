@@ -111,6 +111,9 @@
             <column name="all_nodes" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="all_nodes_pool" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
             <column name="strategy" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
@@ -235,6 +238,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="all_nodes" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="all_nodes_pool" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
             <column name="strategy" type="INTEGER">

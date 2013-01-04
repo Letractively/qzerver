@@ -66,7 +66,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
             return processConnection(jsch, definition, nodeAddress, effectiveCommand);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute command", e);
+            LOGGER.debug("Fail to execute command", e);
             return produceExceptionalResult(e);
         }
     }

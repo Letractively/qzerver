@@ -60,7 +60,7 @@ public class HttpActionExecutor implements ActionExecutor {
         try {
             return processHttpClient(definition, httpClient, scheduleExecutionId, nodeAddress);
         } catch (Exception e) {
-            LOGGER.warn("Fail to process HTTP request");
+            LOGGER.debug("Fail to process HTTP request", e);
             return produceExceptionalResult(e);
         } finally {
             httpClient.getConnectionManager().shutdown();

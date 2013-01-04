@@ -83,6 +83,7 @@ public class ScheduleExecutionManagementServiceImpl implements ScheduleExecution
         scheduleExecution.setStrategy(scheduleJob.getStrategy());
         scheduleExecution.setTimeout(scheduleJob.getTimeout());
         scheduleExecution.setAllNodes(scheduleJob.isAllNodes());
+        scheduleExecution.setAllNodesPool(scheduleJob.getAllNodesPool());
         scheduleExecution.setScheduled(parameters.getScheduled());
         scheduleExecution.setFired(parameters.getFired());
         scheduleExecution.setForced(parameters.isManual());

@@ -23,13 +23,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.*;
 
 @Transactional(propagation = Propagation.NEVER)
 public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleJobExecutorServiceImpl.class);
+
+    private static final int POOL_SHUTDOWN_WAIT_MS = 1000;
 
     @NotNull
     private Validator beanValidator;
@@ -95,13 +100,17 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         // Compose execution descriptor
         ScheduleExecution scheduleExecution = executionManagementService.startExecution(scheduleJobId, parameters);
 
-        // The only reason the status is not assigned is that exception occurs in executeJobNodes() call
+        // The only reason the status is not assigned is that exception occurs in executeJobNodes*() call
         ScheduleExecutionStatus status = ScheduleExecutionStatus.EXCEPTION;
 
         // Try to execute action on a node from the cluster
         try {
             try {
-                status = executeJobNodes(scheduleExecution);
+                if (scheduleExecution.isAllNodes() && (scheduleExecution.getAllNodesPool() > 0)) {
+                    status = executeJobNodesParallel(scheduleExecution);
+                } else {
+                    status = executeJobNodesSequentially(scheduleExecution);
+                }
             } catch (Exception e) {
                 LOGGER.error("Internal error while executing the job : " + scheduleExecution.getJob().getId(), e);
             } finally {
@@ -114,7 +123,71 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
         return scheduleExecution;
     }
 
-    protected ScheduleExecutionStatus executeJobNodes(ScheduleExecution scheduleExecution)
+    protected ScheduleExecutionStatus executeJobNodesParallel(ScheduleExecution scheduleExecution)
+        throws AbstractServiceException
+    {
+        // Check if node list not empty
+        if (CollectionUtils.isEmpty(scheduleExecution.getNodes())) {
+            return ScheduleExecutionStatus.EMPTYNODES;
+        }
+
+        ExecutorService executorService = Executors.newFixedThreadPool(scheduleExecution.getAllNodesPool());
+
+        List<ScheduleExecutionNode> nodes = scheduleExecution.getNodes();
+
+        // Execute tasks in parallel
+        List<Callable<ScheduleExecutionResult>> tasks = new ArrayList<Callable<ScheduleExecutionResult>>(nodes.size());
+        for (ScheduleExecutionNode node : nodes) {
+            Callable<ScheduleExecutionResult> callable = new ScheduleNodeCallable(scheduleExecution, node);
+            tasks.add(callable);
+        }
+
+        List<Future<ScheduleExecutionResult>> resultFutures;
+        try {
+            resultFutures = executorService.invokeAll(tasks);
+
+            executorService.shutdown();
+
+            boolean terminated = executorService.awaitTermination(POOL_SHUTDOWN_WAIT_MS, TimeUnit.MILLISECONDS);
+            if (!terminated) {
+                LOGGER.error("Executor service is not terminated");
+            }
+        } catch (InterruptedException e) {
+            throw new SystemIntegrityException("Unexpected interruption");
+        }
+
+        // Check the result
+        int succeedNodes = 0;
+        boolean exception = false;
+        for (Future<ScheduleExecutionResult> resultFuture : resultFutures) {
+            ScheduleExecutionResult result;
+
+            try {
+                result = resultFuture.get();
+            } catch (Exception e) {
+                LOGGER.error("Error while executing node in pool", e);
+                exception = true;
+                // We could break the loop but we are still rolling - to print into the log all the errors
+                result = null;
+            }
+
+            if ((result != null) && result.isSucceed()) {
+                succeedNodes++;
+            }
+        }
+
+        if (!exception) {
+            if (succeedNodes == nodes.size()) {
+                return ScheduleExecutionStatus.SUCCEED;
+            } else {
+                return ScheduleExecutionStatus.FAILED;
+            }
+        } else {
+            return ScheduleExecutionStatus.EXCEPTION;
+        }
+    }
+
+    protected ScheduleExecutionStatus executeJobNodesSequentially(ScheduleExecution scheduleExecution)
         throws AbstractServiceException
     {
         // Check if node list not empty
@@ -232,6 +305,23 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
     @Required
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
+    }
+
+    private final class ScheduleNodeCallable implements Callable<ScheduleExecutionResult> {
+
+        private final ScheduleExecution scheduleExecution;
+
+        private final ScheduleExecutionNode node;
+
+        private ScheduleNodeCallable(ScheduleExecution scheduleExecution, ScheduleExecutionNode node) {
+            this.scheduleExecution = scheduleExecution;
+            this.node = node;
+        }
+
+        @Override
+        public ScheduleExecutionResult call() throws Exception {
+            return executeJobNode(scheduleExecution, node);
+        }
     }
 
 }

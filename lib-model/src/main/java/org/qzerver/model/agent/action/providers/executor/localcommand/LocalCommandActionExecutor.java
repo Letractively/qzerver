@@ -80,7 +80,7 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         try {
             process = pb.start();
         } catch (Exception e) {
-            LOGGER.warn("Failed to start a process", e);
+            LOGGER.debug("Failed to start a process", e);
             return produceExceptionalResult(e);
         }
 
@@ -88,7 +88,7 @@ public class LocalCommandActionExecutor implements ActionExecutor {
         try {
             return executeProcess(process, definition);
         } catch (Exception e) {
-            LOGGER.warn("Failed to execute process", e);
+            LOGGER.debug("Failed to execute process", e);
             return produceExceptionalResult(e);
         }
     }

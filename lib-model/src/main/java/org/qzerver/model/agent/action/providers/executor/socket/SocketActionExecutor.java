@@ -38,7 +38,7 @@ public class SocketActionExecutor implements ActionExecutor {
         try {
             return processAction(definition, nodeAddress);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute socket action", e);
+            LOGGER.debug("Fail to execute socket action", e);
             return produceExceptionalResult(e);
         }
     }

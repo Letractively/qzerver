@@ -36,7 +36,7 @@ public class DatagramActionExecutor implements ActionExecutor {
         try {
             return processAction(definition, nodeAddress);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute socket action", e);
+            LOGGER.debug("Fail to execute datagram action", e);
             return produceExceptionalResult(e);
         }
     }
@@ -68,13 +68,13 @@ public class DatagramActionExecutor implements ActionExecutor {
 
         try {
             socket.send(sendPacket);
-            return processSocketAnswer(definition, socket);
+            return processDatagramAnswer(definition, socket);
         } finally {
             socket.close();
         }
     }
 
-    private DatagramActionResult processSocketAnswer(DatagramActionDefinition definition, DatagramSocket socket)
+    private DatagramActionResult processDatagramAnswer(DatagramActionDefinition definition, DatagramSocket socket)
         throws Exception
     {
         DatagramActionResult result = new DatagramActionResult();

@@ -40,7 +40,7 @@ public class GroovyActionExecutor implements ActionExecutor {
             Object value = shell.evaluate(definition.getScript());
             return produceSuccessResult(value);
         } catch (Exception e) {
-            LOGGER.warn("Fail to execute groovy script");
+            LOGGER.debug("Fail to execute groovy script", e);
             return produceExceptionalResult(e);
         }
     }
