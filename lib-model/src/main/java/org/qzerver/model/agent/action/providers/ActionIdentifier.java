@@ -2,6 +2,8 @@ package org.qzerver.model.agent.action.providers;
 
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionResult;
+import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionResult;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
@@ -17,40 +19,21 @@ import org.qzerver.model.agent.action.providers.executor.sshcommand.SshCommandAc
 
 public enum ActionIdentifier {
 
-    LOCAL_COMMAND(
-        LocalCommandActionDefinition.class,
-        LocalCommandActionResult.class
-    ),
+    LOCAL_COMMAND(LocalCommandActionDefinition.class, LocalCommandActionResult.class),
 
-    SSH_COMMAND(
-        SshCommandActionDefinition.class,
-        SshCommandActionResult.class
-    ),
+    SSH_COMMAND(SshCommandActionDefinition.class, SshCommandActionResult.class),
 
-    HTTP(
-        HttpActionDefinition.class,
-        HttpActionResult.class
-    ),
+    HTTP(HttpActionDefinition.class, HttpActionResult.class),
 
-    SOCKET(
-        SocketActionDefinition.class,
-        SocketActionResult.class
-    ),
+    SOCKET(SocketActionDefinition.class, SocketActionResult.class),
 
-    JMX(
-        JmxActionDefinition.class,
-        JmxActionResult.class
-    ),
+    DATAGRAM(DatagramActionDefinition.class, DatagramActionResult.class),
 
-    CLASS(
-        ClassActionDefinition.class,
-        ClassActionResult.class
-    ),
+    JMX(JmxActionDefinition.class, JmxActionResult.class),
 
-    GROOVY(
-        GroovyActionDefinition.class,
-        GroovyActionResult.class
-    );
+    CLASS(ClassActionDefinition.class, ClassActionResult.class),
+
+    GROOVY(GroovyActionDefinition.class, GroovyActionResult.class);
 
     private final Class<? extends ActionDefinition> actionDefinitionClass;
 

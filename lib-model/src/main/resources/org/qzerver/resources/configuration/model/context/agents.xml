@@ -18,6 +18,7 @@
                 <entry key="JMX" value-ref="jmxActionExecutor"/>
                 <entry key="HTTP" value-ref="httpActionExecutor"/>
                 <entry key="SOCKET" value-ref="socketActionExecutor"/>
+                <entry key="DATAGRAM" value-ref="datagramActionExecutor"/>
                 <entry key="CLASS" value-ref="classActionExecutor"/>
                 <entry key="GROOVY" value-ref="groovyActionExecutor"/>
             </map>
@@ -97,6 +98,10 @@
     </bean>
 
     <bean id="groovyActionExecutor" class="org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
+    </bean>
+
+    <bean id="datagramActionExecutor" class="org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionExecutor">
         <property name="beanValidator" ref="modelBeanValidator"/>
     </bean>
 

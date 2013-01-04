@@ -36,7 +36,6 @@ public class GroovyActionResult implements ActionResult, Serializable {
         this.exceptionMessage = exceptionMessage;
     }
 
-
     @Override
     public boolean isSucceed() {
         return exceptionClass == null;
