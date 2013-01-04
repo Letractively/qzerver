@@ -21,6 +21,7 @@
                 <entry key="DATAGRAM" value-ref="datagramActionExecutor"/>
                 <entry key="CLASS" value-ref="classActionExecutor"/>
                 <entry key="GROOVY" value-ref="groovyActionExecutor"/>
+                <entry key="JDBC" value-ref="jdbcActionExecutor"/>
             </map>
         </property>
     </bean>
@@ -102,6 +103,10 @@
     </bean>
 
     <bean id="datagramActionExecutor" class="org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionExecutor">
+        <property name="beanValidator" ref="modelBeanValidator"/>
+    </bean>
+
+    <bean id="jdbcActionExecutor" class="org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionExecutor">
         <property name="beanValidator" ref="modelBeanValidator"/>
     </bean>
 

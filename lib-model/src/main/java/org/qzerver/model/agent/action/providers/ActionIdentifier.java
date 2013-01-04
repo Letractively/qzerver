@@ -4,6 +4,8 @@ import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionDefini
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionResult;
 import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionResult;
+import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionResult;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
@@ -33,7 +35,9 @@ public enum ActionIdentifier {
 
     CLASS(ClassActionDefinition.class, ClassActionResult.class),
 
-    GROOVY(GroovyActionDefinition.class, GroovyActionResult.class);
+    GROOVY(GroovyActionDefinition.class, GroovyActionResult.class),
+
+    JDBC(JdbcActionDefinition.class, JdbcActionResult.class);
 
     private final Class<? extends ActionDefinition> actionDefinitionClass;
 

@@ -5,7 +5,6 @@ import com.google.common.base.Preconditions;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
 import org.qzerver.model.agent.action.providers.ActionResult;
-import org.qzerver.model.agent.action.providers.executor.socket.SocketActionExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 
 public class DatagramActionExecutor implements ActionExecutor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SocketActionExecutor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatagramActionExecutor.class);
 
     private Validator beanValidator;
 
