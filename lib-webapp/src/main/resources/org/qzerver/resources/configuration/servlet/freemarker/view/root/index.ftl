@@ -1,11 +1,18 @@
 [#ftl encoding="UTF-8" strict_syntax="true" strip_whitespace="true"]
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.ExtendedRenderContext" --]
-[#import "/com/gainmatrix/resources/freemarker/macro/web/system.ftl" as system]
-[#import "/com/gainmatrix/resources/freemarker/macro/web/layout.ftl" as layout]
-[#import "/com/gainmatrix/resources/freemarker/macro/core/helpers.ftl" as helpers]
+[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/system.ftl" as system]
+[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/layout.ftl" as layout]
+[#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/core/helpers.ftl" as helpers]
 [@layout.root_main titleCode="FreeMarker sample page"]
 [#escape x as x?html]
+
+
+
+
+<div class="row">
+
+    <div class="span12">
 
     <p>{${helpers.getText(renderContext.now)}}</p>
 
@@ -62,10 +69,47 @@
             document.body.appendChild(div);
         }
     }
-    checkTwo(10, 5);
+    checkTwo(3, 5);
     //]]>
     </script>
 
+        <pre>
+            frwf
+            war
+            fwr
+            fqw
+            rf
+            wqr
+            fqwrf
+            qwr
+            f
+            qwr
+            fqw
+            fq
+            rf
+            qwr
+            f
+            q
+            rf
+            q
+            wrf
+            qwrf
+            qwr
+            f
+            qrf
+            q
+            rf
+            qwr
+            fq
+            rf
+            qr
+            fq
+            wf
+            qwr
+        </pre>
+
+    </div>
+</div>
 
 [/#escape]
 [/@layout.root_main]

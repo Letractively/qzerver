@@ -57,6 +57,10 @@
                    location="${app.servlet.static.resource}${app.servlet.static.prefix}i/"
                    cache-period="31536000"/>
     <!--suppress SpringModelInspection -->
+    <mvc:resources mapping="/img/**"
+                   location="${app.servlet.static.resource}${app.servlet.static.prefix}img/"
+                   cache-period="31536000"/>
+    <!--suppress SpringModelInspection -->
     <mvc:resources mapping="/js/**"
                    location="${app.servlet.static.resource}${app.servlet.static.prefix}js/"
                    cache-period="31536000"/>
