@@ -1,6 +1,5 @@
 package org.qzerver.model.agent.action.providers.marshaller;
 
-
 public class ActionResultMarshallerException extends Exception {
 
     public ActionResultMarshallerException() {

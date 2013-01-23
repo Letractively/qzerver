@@ -11,7 +11,7 @@
  * method - post method ("get" or "post")
  * attrs - optional html-attribute list
 --]
-[#macro form path method="post" attrs={}]
+[#macro form path method="post" attrs={} style="" classes=[]]
 [#local formBindStatus = requestContext.getBindStatus(path, false)/]
 <div class="form-block[#if formBindStatus.error] form-block-error[/#if]">
 <div class="form-errors">
@@ -19,7 +19,7 @@
     <div class="form-error form-error-${formErrorMessage_index?c}">${formErrorMessage?html}</div>
 [/#list]
 </div>
-<form [@helpers.outputAttributes attrs/] method="${method}">
+<form [@controlAttributes attrs classes style/] method="${method}">
 [#nested]
 </form>
 </div>

@@ -301,6 +301,3 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> {
         this.description = description;
     }
 }
-
-
-

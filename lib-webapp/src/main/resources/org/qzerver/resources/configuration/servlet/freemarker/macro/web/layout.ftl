@@ -32,11 +32,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="[@system.resource "/favicon.ico"/]" rel="icon"/>
     <link href="[@system.resource "/favicon.ico"/]" rel="shortcut icon"/>
-    <link href="[@system.resource "/css/bootstrap.css"/]" rel="stylesheet" type="text/css" media="screen">
-    <link href="[@system.resource "/css/bootstrap-responsive.css"/]" rel="stylesheet" type="text/css" media="all">
-    <link href="[@system.resource "/css/style.css"/]" rel="stylesheet" type="text/css" media="all"/>
+    <link href="[@system.resource "/css/bootstrap.css"/]" rel="stylesheet" media="screen">
+    <link href="[@system.resource "/css/bootstrap-responsive.css"/]" rel="stylesheet" media="all">
+    <link href="[@system.resource "/css/style.css"/]" rel="stylesheet" media="all"/>
     [#list cssIncludes as cssInclude]
-    <link href="[@system.resource "${cssInclude}"/]" rel="stylesheet" type="text/css" media="all"/>
+    <link href="[@system.resource "${cssInclude}"/]" rel="stylesheet" media="all"/>
     [/#list]
     [#list jsIncludes as jsInclude]
     <script src="[@system.resource "${jsInclude}"/]"></script>
