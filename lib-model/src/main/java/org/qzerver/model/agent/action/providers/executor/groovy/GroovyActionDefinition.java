@@ -5,6 +5,7 @@ import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 
 public class GroovyActionDefinition implements ActionDefinition, Serializable {

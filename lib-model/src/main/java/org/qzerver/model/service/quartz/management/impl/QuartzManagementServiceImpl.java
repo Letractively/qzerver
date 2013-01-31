@@ -1,9 +1,17 @@
 package org.qzerver.model.service.quartz.management.impl;
 
 import com.gainmatrix.lib.business.exception.SystemIntegrityException;
-import org.quartz.*;
-import org.qzerver.model.service.quartz.management.QuartzManagementService;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.qzerver.model.service.job.executor.quartz.QzerverJob;
+import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.List;
 import java.util.TimeZone;
 

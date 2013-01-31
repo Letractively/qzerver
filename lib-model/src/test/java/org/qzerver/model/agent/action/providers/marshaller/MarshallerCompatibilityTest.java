@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.qzerver.base.AbstractModelTest;
 
 import javax.annotation.Resource;
+
 import java.util.Date;
 
 public class MarshallerCompatibilityTest extends AbstractModelTest {

@@ -4,12 +4,12 @@ import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionDefini
 import org.qzerver.model.agent.action.providers.executor.clazz.ClassActionResult;
 import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.datagram.DatagramActionResult;
-import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionDefinition;
-import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionResult;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.groovy.GroovyActionResult;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.http.HttpActionResult;
+import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionDefinition;
+import org.qzerver.model.agent.action.providers.executor.jdbc.JdbcActionResult;
 import org.qzerver.model.agent.action.providers.executor.jmx.JmxActionDefinition;
 import org.qzerver.model.agent.action.providers.executor.jmx.JmxActionResult;
 import org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionDefinition;

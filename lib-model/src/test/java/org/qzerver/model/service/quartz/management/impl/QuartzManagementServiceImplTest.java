@@ -6,7 +6,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.impl.matchers.EverythingMatcher;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
@@ -19,7 +23,10 @@ import org.qzerver.system.quartz.QzerverKeyUtils;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import java.util.Calendar;
-import java.util.*;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

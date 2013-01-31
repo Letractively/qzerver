@@ -10,11 +10,17 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.qzerver.base.AbstractTransactionalTest;
-import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.agent.action.providers.ActionResult;
+import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.job.*;
+import org.qzerver.model.domain.entities.job.ScheduleExecution;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
+import org.qzerver.model.domain.entities.job.ScheduleGroup;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.management.ScheduleJobManagementService;
@@ -25,6 +31,7 @@ import org.springframework.validation.Validator;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.List;
 
 public class ScheduleExecutionManagementServiceImplTest extends AbstractTransactionalTest {

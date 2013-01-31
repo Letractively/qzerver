@@ -4,6 +4,7 @@ import org.quartz.CronExpression;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+
 import java.text.ParseException;
 
 public class CronValidator implements ConstraintValidator<Cron, Object> {

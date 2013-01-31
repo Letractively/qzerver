@@ -5,6 +5,7 @@ import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 import javax.validation.constraints.Min;
+
 import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.List;

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 
 import javax.validation.constraints.Min;
+
 import java.io.Serializable;
 
 public class ScheduleJobModifyParameters implements Serializable {

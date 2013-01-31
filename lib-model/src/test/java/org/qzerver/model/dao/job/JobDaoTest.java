@@ -5,11 +5,17 @@ import com.gainmatrix.lib.jpa.BusinessEntityJpaDaoChecker;
 import com.gainmatrix.lib.time.ChronometerUtils;
 import org.junit.Test;
 import org.qzerver.base.AbstractTransactionalTest;
-import org.qzerver.model.domain.entities.job.*;
+import org.qzerver.model.domain.entities.job.ScheduleAction;
+import org.qzerver.model.domain.entities.job.ScheduleExecution;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStrategy;
+import org.qzerver.model.domain.entities.job.ScheduleGroup;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.Date;
 
 @Deprecated

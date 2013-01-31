@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.springframework.beans.factory.FactoryBean;
 
 import javax.annotation.PostConstruct;
+
 import java.util.Map;
 
 /**

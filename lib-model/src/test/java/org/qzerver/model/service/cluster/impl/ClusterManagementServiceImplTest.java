@@ -23,6 +23,7 @@ import org.qzerver.model.service.job.management.dto.ScheduleJobCreateParameters;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.List;
 
 public class ClusterManagementServiceImplTest extends AbstractTransactionalTest {

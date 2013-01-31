@@ -8,7 +8,12 @@ import com.gainmatrix.lib.time.ChronometerTimer;
 import org.apache.commons.collections.CollectionUtils;
 import org.qzerver.model.agent.action.ActionAgent;
 import org.qzerver.model.agent.action.ActionAgentResult;
-import org.qzerver.model.domain.entities.job.*;
+import org.qzerver.model.domain.entities.job.ScheduleAction;
+import org.qzerver.model.domain.entities.job.ScheduleExecution;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
 import org.qzerver.model.service.job.executor.ScheduleJobExecutorService;
@@ -23,11 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Transactional(propagation = Propagation.NEVER)
 public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorService {

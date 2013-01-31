@@ -8,6 +8,7 @@ import org.qzerver.base.AbstractModelTest;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
 import javax.annotation.Resource;
+
 import java.util.Date;
 
 public class ActionResultMarshallerTest extends AbstractModelTest {

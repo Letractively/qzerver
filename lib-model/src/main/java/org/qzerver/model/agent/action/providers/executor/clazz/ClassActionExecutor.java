@@ -7,7 +7,11 @@ import org.qzerver.model.agent.action.providers.ActionExecutor;
 import org.qzerver.model.agent.action.providers.ActionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.*;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Validator;
 

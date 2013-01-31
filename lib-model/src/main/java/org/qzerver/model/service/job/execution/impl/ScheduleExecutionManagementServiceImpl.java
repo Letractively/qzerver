@@ -13,7 +13,12 @@ import org.hibernate.Hibernate;
 import org.qzerver.model.dao.job.ScheduleExecutionDao;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 import org.qzerver.model.domain.entities.cluster.ClusterNode;
-import org.qzerver.model.domain.entities.job.*;
+import org.qzerver.model.domain.entities.job.ScheduleAction;
+import org.qzerver.model.domain.entities.job.ScheduleExecution;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionNode;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionResult;
+import org.qzerver.model.domain.entities.job.ScheduleExecutionStatus;
+import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.job.execution.ScheduleExecutionManagementService;
 import org.qzerver.model.service.job.execution.dto.StartExecutionParameters;
@@ -27,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;

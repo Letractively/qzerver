@@ -9,6 +9,7 @@ import org.qzerver.model.agent.action.providers.marshaller.ActionDefinitionMarsh
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.constraints.NotNull;
+
 import java.io.IOException;
 
 public class ActionDefinitionJsonMarshaller implements ActionDefinitionMarshaller {

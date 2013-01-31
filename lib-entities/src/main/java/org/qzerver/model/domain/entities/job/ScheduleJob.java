@@ -8,6 +8,7 @@ import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 
 public class ScheduleJob extends AbstractBusinessEntity<Long> {

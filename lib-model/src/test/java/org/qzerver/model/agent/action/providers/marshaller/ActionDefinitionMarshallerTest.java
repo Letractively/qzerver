@@ -9,6 +9,7 @@ import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
 
 import javax.annotation.Resource;
+
 import java.util.Date;
 
 public class ActionDefinitionMarshallerTest extends AbstractModelTest {

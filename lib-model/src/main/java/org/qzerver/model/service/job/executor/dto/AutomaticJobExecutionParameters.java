@@ -1,6 +1,7 @@
 package org.qzerver.model.service.job.executor.dto;
 
 import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.util.Date;
 

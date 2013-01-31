@@ -11,6 +11,7 @@ import org.qzerver.base.AbstractModelTest;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
 
 import javax.annotation.Resource;
+
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
