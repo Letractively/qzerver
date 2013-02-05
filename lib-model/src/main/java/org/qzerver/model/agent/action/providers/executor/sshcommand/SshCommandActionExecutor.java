@@ -8,6 +8,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionExecutor;
 import org.qzerver.model.agent.action.providers.ActionPlaceholders;
@@ -289,7 +290,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
         public SshCommandActionOutput requestOutput() {
             byte[] capturedData = outputBuffer.toByteArray();
 
-            if ((capturedData != null) && (capturedData.length > 0)) {
+            if (ArrayUtils.isNotEmpty(capturedData)) {
                 output.setData(capturedData);
             }
 

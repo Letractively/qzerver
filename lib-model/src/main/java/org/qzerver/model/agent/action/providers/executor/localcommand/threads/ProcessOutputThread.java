@@ -1,5 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand.threads;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionOutput;
 import org.qzerver.model.agent.action.providers.executor.localcommand.LocalCommandActionOutputStatus;
 import org.slf4j.Logger;
@@ -128,7 +129,7 @@ public class ProcessOutputThread extends Thread {
         // Stream should be closed after process exits - we'll check anyway
         this.join(SHUTDOWN_WAIT_MS);
 
-        // For some unknown reason commands like "bash -c 'sleep 600'" can be terminated on timeout but read
+        // For some unknown reason some commands like "bash -c 'sleep 600'" can be terminated on timeout but read
         // operations on the process streams are in block forever. Thread interruption, thread stopping nor stream
         // closing doesn't help at all. All we can do is just to print the warning - capturing thread remains blocked.
         if (this.isAlive()) {
@@ -142,7 +143,7 @@ public class ProcessOutputThread extends Thread {
 
         if (status.isCaptured()) {
             byte[] capturedData = outputStream.toByteArray();
-            if ((capturedData != null) && (capturedData.length > 0)) {
+            if (ArrayUtils.isNotEmpty(capturedData)) {
                 data = capturedData;
             }
         }

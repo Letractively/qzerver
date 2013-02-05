@@ -1,5 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.http.threads;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
 
@@ -79,7 +81,7 @@ public class HttpOutputThread extends Thread {
         }
     }
 
-    private void captureQueryEntity() throws Exception {
+    private void captureQueryEntity() throws IOException {
         InputStream inputStream = entity.getContent();
         try {
             captureQueryStream(inputStream);
@@ -94,7 +96,7 @@ public class HttpOutputThread extends Thread {
         }
     }
 
-    private void captureQueryStream(InputStream inputStream) throws Exception {
+    private void captureQueryStream(InputStream inputStream) throws IOException {
         byte[] buffer = new byte[BUFFER_SIZE];
 
         int readOnce;
@@ -138,7 +140,7 @@ public class HttpOutputThread extends Thread {
 
         if (status.isCaptured()) {
             byte[] capturedData = outputStream.toByteArray();
-            if ((capturedData != null) && (capturedData.length > 0)) {
+            if (ArrayUtils.isNotEmpty(capturedData)) {
                 data = capturedData;
             }
         }

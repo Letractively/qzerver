@@ -2,6 +2,8 @@ package org.qzerver.model.agent.action.providers.executor.jdbc;
 
 public enum JdbcActionExpectedRelation {
 
+    ANY,
+
     EQUAL,
 
     NOT_EQUAL,

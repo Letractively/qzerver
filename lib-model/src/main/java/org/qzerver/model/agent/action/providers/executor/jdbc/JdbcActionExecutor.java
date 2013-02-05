@@ -87,6 +87,9 @@ public class JdbcActionExecutor implements ActionExecutor {
         boolean succeed;
 
         switch (definition.getRelation()) {
+            case ANY:
+                succeed = true;
+                break;
             case EQUAL:
                 succeed = modified == definition.getExpected();
                 break;

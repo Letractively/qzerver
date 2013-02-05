@@ -29,9 +29,7 @@ public class ClassActionResult implements ActionResult, Serializable {
     }
 
     public ClassActionResult(Exception e) {
-        this.exceptionClass = e.getClass().getCanonicalName();
-        this.exceptionMessage = e.getLocalizedMessage();
-        this.exceptionStacktrace = ExceptionUtils.getStackTrace(e);
+        this(e.getClass().getCanonicalName(), e.getLocalizedMessage(), ExceptionUtils.getStackTrace(e));
     }
 
     @Override

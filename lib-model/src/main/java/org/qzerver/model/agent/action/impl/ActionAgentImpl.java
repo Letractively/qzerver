@@ -66,12 +66,13 @@ public class ActionAgentImpl implements ActionAgent {
             throw new NullPointerException("Executor is not found for identifier " + identifier);
         }
 
-        // Execute action
+        // Check: is action in progress
         Boolean alreadyExists = executionTracker.putIfAbsent(scheduleExecutionId, true);
         if (alreadyExists != null) {
             throw new IllegalStateException("Action is already perfomed for execution=#" + scheduleExecutionId);
         }
 
+        // Execute action
         ActionResult actionResult;
 
         try {

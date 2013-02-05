@@ -15,4 +15,17 @@ public class SampleJmxService implements SampleJmxServiceMBean {
         return Long.valueOf(arg1);
     }
 
+    @Override
+    public void method3() throws Exception {
+    }
+
+    @Override
+    public long method4(long value1, byte value2, Integer value3) {
+        return value1 + value2 + value3;
+    }
+
+    @Override
+    public void method5() throws Exception {
+        Thread.sleep(5000);
+    }
 }

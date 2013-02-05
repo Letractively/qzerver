@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -77,7 +78,9 @@ public class HttpActionExecutor implements ActionExecutor {
         if (definition.getPlainAuthUsername() != null) {
             Credentials credentials = new UsernamePasswordCredentials(
                 definition.getPlainAuthUsername(), definition.getPlainAuthPassword());
-            httpClient.getCredentialsProvider().setCredentials(AuthScope.ANY, credentials);
+
+            CredentialsProvider credentialsProvider = httpClient.getCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, credentials);
         }
 
         return httpClient;

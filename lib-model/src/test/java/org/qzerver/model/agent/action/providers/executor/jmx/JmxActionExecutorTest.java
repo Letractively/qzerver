@@ -92,6 +92,44 @@ public class JmxActionExecutorTest extends AbstractModelTest {
     }
 
     @Test
+    public void testNormal2() throws Exception {
+        JmxActionDefinition definition = new JmxActionDefinition();
+        definition.setBean(JMX_MBEAN_NAME);
+        definition.setMethod("method3");
+        definition.setParameters(null);
+        definition.setUsername("user");
+        definition.setPassword("pass");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${node}:" + JMX_SERVER_PORT + "/server");
+
+        JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(true, result.isSucceed());
+        Assert.assertEquals(JmxActionResultStatus.CALLED, result.getStatus());
+        Assert.assertEquals("null", result.getResult());
+        Assert.assertNull(result.getExceptionClass());
+        Assert.assertNull(result.getExceptionMessage());
+    }
+
+    @Test
+    public void testNormal3() throws Exception {
+        JmxActionDefinition definition = new JmxActionDefinition();
+        definition.setBean(JMX_MBEAN_NAME);
+        definition.setMethod("method4(long,byte,java.lang.Integer)");
+        definition.setParameters(Lists.newArrayList("1", "2", "3"));
+        definition.setUsername("user");
+        definition.setPassword("pass");
+        definition.setUrl("service:jmx:rmi:///jndi/rmi://${node}:" + JMX_SERVER_PORT + "/server");
+
+        JmxActionResult result = (JmxActionResult) jmxActionExecutor.execute(definition, 123L, "localhost");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(true, result.isSucceed());
+        Assert.assertEquals(JmxActionResultStatus.CALLED, result.getStatus());
+        Assert.assertEquals("6", result.getResult());
+        Assert.assertNull(result.getExceptionClass());
+        Assert.assertNull(result.getExceptionMessage());
+    }
+
+    @Test
     public void testException() throws Exception {
         JmxActionDefinition definition = new JmxActionDefinition();
         definition.setBean(JMX_MBEAN_NAME);
