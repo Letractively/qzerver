@@ -14,10 +14,12 @@
     description="Please check the error log"
     /]
 
-[#if exception??]
-    [@block_error.exception
-        throwable=exception
-        /]
+[#if renderContext.development]
+    [#if exception??]
+        [@block_error.exception
+            throwable=exception
+            /]
+    [/#if]
 [/#if]
 
 [/#escape]

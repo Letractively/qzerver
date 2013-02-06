@@ -8,10 +8,9 @@
     <div class="span8 offset2">
         <div class="page-header">
             <h1>${name} <small>${reason}</small></h1>
-            <p class="text-error">
-                ${description}
-            </p>
+            <p class="text-error">${description}</p>
         </div>
+        [#nested]
         <p>
             <a class="btn btn-primary" href="[@system.url "/" /]">Return to the main page</a>
         </p>
@@ -24,17 +23,11 @@
 <div class="row">
     <div class="span8 offset2">
         <div style="height: 2em">&nbsp;</div>
-        <p>
-            <a href="#" onclick="$('#exception_block').toggle()">Show the exception</a>
-        </p>
-        <div id="exception_block" style="display:none">
-            <hr/>
-            <p><strong>${throwable.class.name}</strong></p>
-            [#if throwable.message??]
-                <p>${throwable.message}</p>
-            [/#if]
-            <pre style="font-size: 80%">[@exceptionDump throwable=throwable /]</pre>
-        </div>
+        <p><strong>${throwable.class.name}</strong></p>
+        [#if throwable.message??]
+            <p>${throwable.message}</p>
+        [/#if]
+        <pre style="font-size: 80%">[@exceptionDump throwable=throwable /]</pre>
     </div>
 </div>
 [/#macro]

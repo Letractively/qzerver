@@ -9,7 +9,9 @@ public class ExtendedRenderContext extends RenderContext {
 
     private int businessModelVersion;
 
-    private String web;
+    private String url;
+
+    private boolean development;
 
     public int getBusinessModelVersion() {
         return businessModelVersion;
@@ -19,12 +21,19 @@ public class ExtendedRenderContext extends RenderContext {
         this.businessModelVersion = businessModelVersion;
     }
 
-    public String getWeb() {
-        return web;
+    public String getUrl() {
+        return url;
     }
 
-    public void setWeb(String web) {
-        this.web = web;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
+    public boolean isDevelopment() {
+        return development;
+    }
+
+    public void setDevelopment(boolean development) {
+        this.development = development;
+    }
 }

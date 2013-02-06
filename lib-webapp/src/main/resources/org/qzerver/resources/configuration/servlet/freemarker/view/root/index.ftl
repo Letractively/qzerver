@@ -7,16 +7,13 @@
 [@layout.root_main titleCode="FreeMarker sample page"]
 [#escape x as x?html]
 
-
-
-
 <div class="row">
 
     <div class="span12">
 
     <p>{${helpers.getText(renderContext.now)}}</p>
 
-    [#assign propName="web"]
+    [#assign propName="url"]
     <p>${renderContext[propName]}</p>
 
     <p>[#if helpers.isEqualText(renderContext.timezone.ID, "UTC")]YES![/#if]</p>

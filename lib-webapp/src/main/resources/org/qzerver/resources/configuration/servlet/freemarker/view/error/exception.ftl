@@ -14,10 +14,12 @@
     description="Please check the error log"
     /]
 
-[#if .vars["javax.servlet.error.exception"]??]
-    [@block_error.exception
-        throwable=.vars["javax.servlet.error.exception"]
-        /]
+[#if renderContext.development]
+    [#if .vars["javax.servlet.error.exception"]??]
+        [@block_error.exception
+            throwable=.vars["javax.servlet.error.exception"]
+            /]
+    [/#if]
 [/#if]
 
 [/#escape]

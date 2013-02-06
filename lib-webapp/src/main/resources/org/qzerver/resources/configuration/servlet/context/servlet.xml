@@ -156,6 +156,7 @@
                      <property name="clientI18nResolver" ref="clientI18nResolver"/>
                      <property name="url" value="${app.url}"/>
                      <property name="applicationVersion" value="${app.version}"/>
+                     <property name="development" value="${app.development}"/>
                  </bean>
                  <bean class="com.gainmatrix.lib.freemarker.web.attributes.FreemarkerAttributePublisher"/>
              </list>

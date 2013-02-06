@@ -12,6 +12,8 @@ public class ExtendedRenderContextAttributePublisher extends RenderContextAttrib
     @NotNull
     private String url;
 
+    private boolean development;
+
     @Override
     protected RenderContext createRenderContext() {
         return new ExtendedRenderContext();
@@ -22,18 +24,18 @@ public class ExtendedRenderContextAttributePublisher extends RenderContextAttrib
         super.publishRenderContext(renderContext);
 
         ExtendedRenderContext extendedRenderContext = (ExtendedRenderContext) renderContext;
-        extendedRenderContext.setWeb(url);
+        extendedRenderContext.setUrl(url);
+        extendedRenderContext.setDevelopment(development);
         extendedRenderContext.setBusinessModelVersion(BusinessModelVersionHolder.VERSION);
     }
 
-    @Override
-    public void setApplicationVersion(String applicationVersion) {
-        super.setApplicationVersion(applicationVersion);
+    @Required
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    @Required
-    public void setUrl(String web) {
-        this.url = web;
+    public void setDevelopment(boolean development) {
+        this.development = development;
     }
 
 }
