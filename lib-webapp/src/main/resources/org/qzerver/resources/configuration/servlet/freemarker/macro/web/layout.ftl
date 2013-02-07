@@ -2,6 +2,7 @@
 
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.ExtendedRenderContext" --]
+[#-- @ftlvariable name="freemarker_static['org.qzerver.web.map.SiteMap']" type="org.qzerver.web.map.SiteMap.static" --]
 
 [#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/system.ftl" as system]
 
@@ -11,6 +12,8 @@
 [#setting time_format="full"]
 [#setting datetime_format="full"]
 [#setting url_escaping_charset="UTF-8"]
+
+[#assign SiteMap = freemarker_static["org.qzerver.web.map.SiteMap"]]
 
 [#-- Document declaration
 --]
@@ -42,7 +45,7 @@
     <script src="[@system.resource "${jsInclude}"/]"></script>
     [/#list]
     [#nested]
-    [#if titleCode?has_content]<title>[@system.msg titleCode/]</title>[/#if]
+    <title>${renderContext.applicationName?html}[#if titleCode?has_content] - [@system.msg titleCode/][/#if]</title>
 </head>
 [/#macro]
 
@@ -69,10 +72,10 @@
         <div class="container">
             <a class="brand" href="[@system.url "/" /]">QZERVER</a>
             <ul class="nav">
-                <li class="active"><a href="[@system.url "/jobs"/]">Jobs</a></li>
-                <li><a href="[@system.url "/clusters"/]">Clusters</a></li>
-                <li><a href="[@system.url "/executions"/]">Executions</a></li>
-                <li><a href="[@system.url "/system"/]">System</a></li>
+                <li[#if renderContext.mainMenuItem == 'JOBS'] class="active"[/#if]><a href="[@system.url SiteMap.JOBS /]">Jobs</a></li>
+                <li[#if renderContext.mainMenuItem == 'CLUSTERS'] class="active"[/#if]><a href="[@system.url SiteMap.CLUSTERS /]">Clusters</a></li>
+                <li[#if renderContext.mainMenuItem == 'EXECUTIONS'] class="active"[/#if]><a href="[@system.url SiteMap.EXECUTIONS /]">Executions</a></li>
+                <li[#if renderContext.mainMenuItem == 'SYSTEM'] class="active"[/#if]><a href="[@system.url SiteMap.SYSTEM /]">System</a></li>
             </ul>
         </div>
     </div>

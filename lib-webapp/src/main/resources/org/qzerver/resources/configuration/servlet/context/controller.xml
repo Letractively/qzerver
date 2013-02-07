@@ -5,6 +5,22 @@
 
     <bean class="org.qzerver.web.controller.RootController"/>
 
-    <bean class="org.qzerver.web.controller.ExceptionController"/>
+    <bean class="org.qzerver.web.controller.JobsController">
+        <property name="extendedRenderContextAccessor" ref="extendedRenderContextAttributePublisher"/>
+    </bean>
+
+    <bean class="org.qzerver.web.controller.SystemController">
+        <property name="extendedRenderContextAccessor" ref="extendedRenderContextAttributePublisher"/>
+    </bean>
+
+    <bean class="org.qzerver.web.controller.ClustersController">
+        <property name="extendedRenderContextAccessor" ref="extendedRenderContextAttributePublisher"/>
+    </bean>
+
+    <bean class="org.qzerver.web.controller.ExecutionsController">
+        <property name="extendedRenderContextAccessor" ref="extendedRenderContextAttributePublisher"/>
+    </bean>
+
+    <bean class="org.qzerver.web.controller.test.ExceptionController"/>
 
 </beans>

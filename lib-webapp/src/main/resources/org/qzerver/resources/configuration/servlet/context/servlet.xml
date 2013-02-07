@@ -148,20 +148,23 @@
 
     <!-- Attributes publishing -->
 
-     <bean id="attributePublisher" class="com.gainmatrix.lib.web.attribute.impl.CompositeAttributePublisher">
-         <property name="attributePublishers">
-             <list value-type="com.gainmatrix.lib.web.attribute.AttributePublisher">
-                 <bean class="org.qzerver.web.attribute.render.ExtendedRenderContextAttributePublisher">
-                     <property name="chronometer" ref="chronometer"/>
-                     <property name="clientI18nResolver" ref="clientI18nResolver"/>
-                     <property name="url" value="${app.url}"/>
-                     <property name="applicationVersion" value="${app.version}"/>
-                     <property name="development" value="${app.development}"/>
-                 </bean>
-                 <bean class="com.gainmatrix.lib.freemarker.web.attributes.FreemarkerAttributePublisher"/>
-             </list>
-         </property>
-     </bean>
+    <bean id="extendedRenderContextAttributePublisher" class="org.qzerver.web.attribute.render.ExtendedRenderContextAttributePublisher">
+        <property name="chronometer" ref="chronometer"/>
+        <property name="clientI18nResolver" ref="clientI18nResolver"/>
+        <property name="url" value="${app.url}"/>
+        <property name="applicationName" value="${app.name}"/>
+        <property name="applicationVersion" value="${app.version}"/>
+        <property name="development" value="${app.development}"/>
+    </bean>
+
+    <bean id="attributePublisher" class="com.gainmatrix.lib.web.attribute.impl.CompositeAttributePublisher">
+        <property name="attributePublishers">
+            <list value-type="com.gainmatrix.lib.web.attribute.AttributePublisher">
+                <ref bean="extendedRenderContextAttributePublisher"/>
+                <bean class="com.gainmatrix.lib.freemarker.web.attributes.FreemarkerAttributePublisher"/>
+            </list>
+        </property>
+    </bean>
 
     <!-- I18N resolvers -->
 

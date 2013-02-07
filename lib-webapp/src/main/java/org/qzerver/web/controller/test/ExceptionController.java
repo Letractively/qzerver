@@ -1,4 +1,4 @@
-package org.qzerver.web.controller;
+package org.qzerver.web.controller.test;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ public class ExceptionController {
         HttpServletResponse response
     ) throws Exception
     {
-        throw new IllegalStateException("Just an exception");
+        throw new IllegalStateException("Just an exception for testing purposes");
     }
 
 }

@@ -44,10 +44,6 @@
 
     <p>${renderContext.now?datetime?string}</p>
 
-    <p>${renderContext.businessModelVersion}</p>
-
-    <p>${renderContext.businessModelVersion?c}</p>
-
     <p>timezone: ${renderContext.timezone.ID}</p>
 
     <p>locale: ${renderContext.locale.toString()}</p>
