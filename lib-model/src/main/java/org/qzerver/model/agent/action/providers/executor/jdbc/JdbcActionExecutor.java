@@ -57,7 +57,7 @@ public class JdbcActionExecutor implements ActionExecutor {
     private JdbcActionResult processAction(JdbcActionDefinition definition, String effectiveUrl) throws Exception {
         Class.forName(definition.getJdbcClass());
 
-        Connection connection = DriverManager.getConnection(definition.getJdbcUrl(),
+        Connection connection = DriverManager.getConnection(effectiveUrl,
             definition.getUsername(), definition.getPassword());
         connection.setAutoCommit(false);
         connection.setReadOnly(false);

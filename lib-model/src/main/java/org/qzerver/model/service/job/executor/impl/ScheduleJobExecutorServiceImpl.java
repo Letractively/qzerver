@@ -246,17 +246,13 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
             // Are there any other pending nodes?
             if (nodeIterator.hasNext()) {
                 // Check timeout
-                if (scheduleExecution.getTimeout() > 0) {
-                    if (timer.elapsed() > scheduleExecution.getTimeout()) {
-                        LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getId());
-                        return ScheduleExecutionStatus.TIMEOUT;
-                    }
+                if ((scheduleExecution.getTimeout() > 0) && (timer.elapsed() > scheduleExecution.getTimeout())) {
+                    LOGGER.debug("Execution [{}] is timed out", scheduleExecution.getId());
+                    return ScheduleExecutionStatus.TIMEOUT;
                 }
             } else {
-                if (scheduleExecution.isAllNodes()) {
-                    if (succeedNodes == scheduleExecution.getNodes().size()) {
-                        return ScheduleExecutionStatus.SUCCEED;
-                    }
+                if (scheduleExecution.isAllNodes() && (succeedNodes == scheduleExecution.getNodes().size())) {
+                    return ScheduleExecutionStatus.SUCCEED;
                 }
             }
         }

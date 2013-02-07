@@ -62,10 +62,8 @@ public final class DdlGeneratorApplication {
 
         if ((arguments != null) && (arguments.length > 0)) {
             targetDir = new File(arguments[0]);
-            if (!targetDir.isDirectory()) {
-                if (!targetDir.mkdirs()) {
-                    throw new IOException("Fail to create directory: " + targetDir);
-                }
+            if (!targetDir.isDirectory() && !targetDir.mkdirs()) {
+                throw new IOException("Fail to create directory: " + targetDir);
             }
         }
 

@@ -84,7 +84,6 @@ public class ScheduleJobManagementServiceImplTest extends AbstractTransactionalT
         scheduleJobManagementService.setBusinessEntityDao(businessEntityDao);
         scheduleJobManagementService.setChronometer(chronometer);
         scheduleJobManagementService.setScheduleExecutionDao(scheduleExecutionDao);
-        scheduleJobManagementService.setScheduleJobDao(scheduleJobDao);
         scheduleJobManagementService.setScheduleGroupDao(scheduleGroupDao);
         scheduleJobManagementService.setScheduleActionDao(scheduleActionDao);
     }

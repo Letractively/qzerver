@@ -2,7 +2,6 @@ package org.qzerver.web.attribute.render;
 
 import com.gainmatrix.lib.web.attribute.render.RenderContext;
 import com.gainmatrix.lib.web.attribute.render.RenderContextAttributePublisher;
-import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +25,6 @@ public class ExtendedRenderContextAttributePublisher extends RenderContextAttrib
         ExtendedRenderContext extendedRenderContext = (ExtendedRenderContext) renderContext;
         extendedRenderContext.setUrl(url);
         extendedRenderContext.setDevelopment(development);
-        extendedRenderContext.setBusinessModelVersion(BusinessModelVersionHolder.VERSION);
     }
 
     @Required

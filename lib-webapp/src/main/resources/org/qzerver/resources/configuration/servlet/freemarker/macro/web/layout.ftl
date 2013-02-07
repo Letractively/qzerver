@@ -1,7 +1,7 @@
 [#ftl encoding="UTF-8" strict_syntax="true" strip_whitespace="true"]
 
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
-[#-- @ftlvariable name="renderContext" type="com.gainmatrix.lib.web.attribute.render.RenderContext" --]
+[#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.ExtendedRenderContext" --]
 
 [#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/system.ftl" as system]
 
@@ -51,8 +51,13 @@
 [#macro body]
 <body>
 [#nested]
+[#if renderContext.development]
 <script src="[@system.resource "/js/jquery-1.8.3.js"/]"></script>
 <script src="[@system.resource "/js/bootstrap.js"/]"></script>
+[#else]
+<script src="[@system.resource "/js/jquery-1.8.3.min.js"/]"></script>
+<script src="[@system.resource "/js/bootstrap.min.js"/]"></script>
+[/#if]
 </body>
 [/#macro]
 

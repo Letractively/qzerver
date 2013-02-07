@@ -25,7 +25,6 @@
     <bean id="scheduleJobManagementService" class="org.qzerver.model.service.job.management.impl.ScheduleJobManagementServiceImpl">
         <property name="beanValidator" ref="modelBeanValidator"/>
         <property name="businessEntityDao" ref="businessEntityDao"/>
-        <property name="scheduleJobDao" ref="scheduleJobDao"/>
         <property name="scheduleExecutionDao" ref="scheduleExecutionDao"/>
         <property name="quartzManagementService" ref="quartzManagementService"/>
         <property name="scheduleGroupDao" ref="scheduleGroupDao"/>

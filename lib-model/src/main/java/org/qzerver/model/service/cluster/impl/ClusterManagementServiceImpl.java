@@ -13,8 +13,6 @@ import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
 import org.qzerver.model.service.cluster.ClusterManagementService;
 import org.qzerver.model.service.cluster.exception.ClusterGroupUsed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +23,6 @@ import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
 public class ClusterManagementServiceImpl implements ClusterManagementService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClusterManagementServiceImpl.class);
 
     @NotNull
     private ClusterGroupDao clusterGroupDao;

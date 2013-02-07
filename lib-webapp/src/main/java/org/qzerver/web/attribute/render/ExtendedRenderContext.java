@@ -7,19 +7,9 @@ import com.gainmatrix.lib.web.attribute.render.RenderContext;
  */
 public class ExtendedRenderContext extends RenderContext {
 
-    private int businessModelVersion;
-
     private String url;
 
     private boolean development;
-
-    public int getBusinessModelVersion() {
-        return businessModelVersion;
-    }
-
-    public void setBusinessModelVersion(int businessModelVersion) {
-        this.businessModelVersion = businessModelVersion;
-    }
 
     public String getUrl() {
         return url;
