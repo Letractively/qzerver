@@ -73,9 +73,9 @@
             <a class="brand" href="[@system.url "/" /]">QZERVER</a>
             <ul class="nav">
                 <li[#if renderContext.mainMenuItem == 'JOBS'] class="active"[/#if]><a href="[@system.url SiteMap.JOBS /]">Jobs</a></li>
-                <li[#if renderContext.mainMenuItem == 'CLUSTERS'] class="active"[/#if]><a href="[@system.url SiteMap.CLUSTERS /]">Clusters</a></li>
+                <li[#if renderContext.mainMenuItem == 'CLUSTERS'] class="active"[/#if]><a href="[@system.url SiteMap.CLUSTER_GROUP_EXPLORE /]">Clusters</a></li>
                 <li[#if renderContext.mainMenuItem == 'EXECUTIONS'] class="active"[/#if]><a href="[@system.url SiteMap.EXECUTIONS /]">Executions</a></li>
-                <li[#if renderContext.mainMenuItem == 'SYSTEM'] class="active"[/#if]><a href="[@system.url SiteMap.SYSTEM /]">System</a></li>
+                <li[#if renderContext.mainMenuItem == 'SYSTEM'] class="active"[/#if]><a href="[@system.url SiteMap.SYSTEM_STATE /]">System</a></li>
             </ul>
         </div>
     </div>

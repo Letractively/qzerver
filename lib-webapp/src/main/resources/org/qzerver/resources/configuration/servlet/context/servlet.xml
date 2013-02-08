@@ -151,6 +151,7 @@
     <bean id="extendedRenderContextAttributePublisher" class="org.qzerver.web.attribute.render.ExtendedRenderContextAttributePublisher">
         <property name="chronometer" ref="chronometer"/>
         <property name="clientI18nResolver" ref="clientI18nResolver"/>
+        <property name="host" value="${app.host}"/>
         <property name="url" value="${app.url}"/>
         <property name="applicationName" value="${app.name}"/>
         <property name="applicationVersion" value="${app.version}"/>

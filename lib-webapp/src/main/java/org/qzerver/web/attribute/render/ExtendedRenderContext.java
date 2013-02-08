@@ -8,6 +8,8 @@ import org.qzerver.web.map.MainMenuItem;
  */
 public class ExtendedRenderContext extends RenderContext {
 
+    private String host;
+
     private String url;
 
     private boolean development;
@@ -47,4 +49,13 @@ public class ExtendedRenderContext extends RenderContext {
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
 }

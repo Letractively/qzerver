@@ -1,4 +1,4 @@
-package org.qzerver.web.controller;
+package org.qzerver.web.controller.executions;
 
 import org.qzerver.web.attribute.render.ExtendedRenderContextAccessor;
 import org.qzerver.web.map.MainMenuItem;
@@ -14,19 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping
-public class ClustersController {
+public class ExecutionsController {
 
     private ExtendedRenderContextAccessor extendedRenderContextAccessor;
 
-    @RequestMapping(value = SiteMap.CLUSTERS, method = RequestMethod.GET)
+    @RequestMapping(value = SiteMap.EXECUTIONS, method = RequestMethod.GET)
     public String handle(
         HttpServletRequest request,
         HttpServletResponse response
     ) throws Exception
     {
-        extendedRenderContextAccessor.setMainMenuItem(request, MainMenuItem.CLUSTERS);
+        extendedRenderContextAccessor.setMainMenuItem(request, MainMenuItem.EXECUTIONS);
 
-        return SiteViews.CLUSTERS;
+        return SiteViews.EXECUTIONS;
     }
 
     @Required

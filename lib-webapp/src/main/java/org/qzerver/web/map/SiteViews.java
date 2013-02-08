@@ -8,9 +8,9 @@ public final class SiteViews {
 
     public static final String EXECUTIONS = "executions/list";
 
-    public static final String CLUSTERS = "clusters/list";
+    public static final String CLUSTER_GROUP_EXPLORE = "clusters/explore";
 
-    public static final String SYSTEM = "system/dashboard";
+    public static final String SYSTEM_DASHBOARD = "system/dashboard";
 
     private SiteViews() {
     }

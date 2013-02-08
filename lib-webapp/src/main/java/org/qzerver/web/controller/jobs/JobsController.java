@@ -1,4 +1,4 @@
-package org.qzerver.web.controller;
+package org.qzerver.web.controller.jobs;
 
 import org.qzerver.web.attribute.render.ExtendedRenderContextAccessor;
 import org.qzerver.web.map.MainMenuItem;

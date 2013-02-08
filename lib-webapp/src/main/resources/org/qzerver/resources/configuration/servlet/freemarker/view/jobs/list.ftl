@@ -8,6 +8,12 @@
 [#escape x as x?html]
 
 <div class="row">
+    <div class="span12">
+
+        <h1>Job groups</h1>
+
+        <hr/>
+    </div>
 </div>
 
 [/#escape]
