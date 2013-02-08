@@ -32,6 +32,9 @@
             <column name="name" type="VARCHAR(256)">
                 <constraints nullable="false"/>
             </column>
+            <column name="node_count" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
             <column name="rolling_index" type="INTEGER">
                 <constraints nullable="false"/>
             </column>

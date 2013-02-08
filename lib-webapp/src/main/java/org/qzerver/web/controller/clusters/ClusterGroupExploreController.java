@@ -30,7 +30,7 @@ public class ClusterGroupExploreController {
 
     private static final int PAGER_PAGE_LIMIT = 100;
 
-    private static final int PAGER_PAGE_SIZE = 20;
+    private static final int PAGER_PAGE_SIZE = 10;
 
     private ExtendedRenderContextAccessor extendedRenderContextAccessor;
 

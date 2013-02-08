@@ -33,6 +33,9 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
     @NotNull
     private List<ClusterNode> nodes;
 
+    @Min(0)
+    private int nodeCount;
+
     /**
      * Rolling node index for ClusterStrategy.CIRCLE strategy
      */
@@ -76,6 +79,10 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
             for (int i = 0, size = nodes.size(); i < size; i++) {
                 nodes.get(i).setOrderIndex(i);
             }
+
+            nodeCount = nodes.size();
+        } else {
+            nodeCount = 0;
         }
     }
 
@@ -87,4 +94,11 @@ public class ClusterGroup extends AbstractBusinessEntity<Long> {
         this.rollingIndex = rollingIndex;
     }
 
+    public int getNodeCount() {
+        return nodeCount;
+    }
+
+    public void setNodeCount(int nodeCount) {
+        this.nodeCount = nodeCount;
+    }
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 public class ExtendedRenderContextAttributePublisher extends RenderContextAttributePublisher
     implements ExtendedRenderContextAccessor
 {
+
     @NotNull
     private String host;
 

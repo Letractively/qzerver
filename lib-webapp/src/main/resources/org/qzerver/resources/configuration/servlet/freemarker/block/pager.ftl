@@ -6,7 +6,7 @@
 <div class="pagination pagination-centered">
     <ul>
         <li[#if pager.page=1] class="disabled"[/#if]><a href="[@system.url "${url}1"/]">&laquo;</a></li>
-        [#assign halfWindow=5]
+        [#assign halfWindow=4]
         [#if (pager.page - 1) > halfWindow]
             [#assign pageLeft=pager.page - halfWindow]
         [#else]

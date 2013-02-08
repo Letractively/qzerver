@@ -18,6 +18,9 @@
             <basic name="rollingIndex">
                 <column name="rolling_index" nullable="false"/>
             </basic>
+            <basic name="nodeCount">
+                <column name="node_count" nullable="false"/>
+            </basic>
             <one-to-many name="nodes" fetch="LAZY" mapped-by="group" orphan-removal="true">
                 <order-by>orderIndex</order-by>
                 <cascade>

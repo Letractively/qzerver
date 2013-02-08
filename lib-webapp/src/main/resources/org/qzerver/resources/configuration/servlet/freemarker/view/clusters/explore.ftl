@@ -21,37 +21,39 @@
 
         <div class="btn-toolbar">
             <div class="btn-group">
-                <a href="#" class="btn btn-success"><span class="icon-plus"></span> Create new..</a>
+                <a href="#" class="btn btn-success"><span class="icon-plus"></span> Create new cluster group..</a>
             </div>
         </div>
 
-        <table class="table table-condensed table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Nodes</th>
-                    <th>Rolling index</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                [#list model.clusterGroups as clusterGroup]
+        [#if model.clusterGroups?has_content]
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
                     <tr>
-                        <td>${clusterGroup.id}</td>
-                        <td>${clusterGroup.name} wrg wteg wrg wrg wrgw rag wrg w argqwrg qwarg qwgr qwrgqwrg qwrgw rwgw</td>
-                        <td>${clusterGroup.nodes?size}</td>
-                        <td>${clusterGroup.rollingIndex}</td>
-                        <td>
-                            <a href="#" class="btn btn-mini"><span class="icon-edit"></span> Edit</a>
-                            <a href="#" class="btn btn-mini btn-danger"><span class="icon-remove"></span> Delete</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Nodes</th>
+                        <th>Rolling index</th>
+                        <th>&nbsp;</th>
                     </tr>
-                [/#list]
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    [#list model.clusterGroups as clusterGroup]
+                        <tr>
+                            <td>${clusterGroup.id}</td>
+                            <td>${clusterGroup.name} wrg wteg wrg wrg wrgw rag wrg w argqwrg qwarg qwgr qwrgqwrg qwrgw rwgw</td>
+                            <td>${clusterGroup.nodeCount}</td>
+                            <td>${clusterGroup.rollingIndex}</td>
+                            <td>
+                                <a href="#" class="btn btn-mini"><span class="icon-edit"></span> Edit</a>
+                                <a href="#" class="btn btn-mini btn-danger"><span class="icon-remove"></span> Delete</a>
+                            </td>
+                        </tr>
+                    [/#list]
+                </tbody>
+            </table>
 
-        [@block_pager.navigator pager=model.pager url="${SiteMap.CLUSTER_GROUP_EXPLORE}?page=" /]
+            [@block_pager.navigator pager=model.pager url="${SiteMap.CLUSTER_GROUP_EXPLORE}?page=" /]
+        [/#if]
 
     </div>
 </div>
