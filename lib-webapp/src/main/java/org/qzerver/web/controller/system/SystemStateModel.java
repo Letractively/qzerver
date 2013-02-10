@@ -1,4 +1,4 @@
-package org.qzerver.web.controller.system.models;
+package org.qzerver.web.controller.system;
 
 import java.io.Serializable;
 

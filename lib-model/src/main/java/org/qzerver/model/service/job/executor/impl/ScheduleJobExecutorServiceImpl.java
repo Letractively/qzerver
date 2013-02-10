@@ -163,7 +163,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
                 LOGGER.error("Executor service is not terminated");
             }
         } catch (InterruptedException e) {
-            throw new SystemIntegrityException("Unexpected interruption");
+            throw new SystemIntegrityException("Unexpected interruption", e);
         }
 
         // Check the result
@@ -319,7 +319,7 @@ public class ScheduleJobExecutorServiceImpl implements ScheduleJobExecutorServic
 
         private final ScheduleExecutionNode node;
 
-        private ScheduleNodeCallable(ScheduleExecution scheduleExecution, ScheduleExecutionNode node) {
+        public ScheduleNodeCallable(ScheduleExecution scheduleExecution, ScheduleExecutionNode node) {
             this.scheduleExecution = scheduleExecution;
             this.node = node;
         }

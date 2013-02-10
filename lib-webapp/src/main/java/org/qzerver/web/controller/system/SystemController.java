@@ -2,7 +2,6 @@ package org.qzerver.web.controller.system;
 
 import org.qzerver.model.service.quartz.management.QuartzManagementService;
 import org.qzerver.web.attribute.render.ExtendedRenderContextAccessor;
-import org.qzerver.web.controller.system.models.SystemStateModel;
 import org.qzerver.web.map.MainMenuItem;
 import org.qzerver.web.map.SiteMap;
 import org.qzerver.web.map.SiteViews;

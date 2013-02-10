@@ -2,7 +2,7 @@
 [#-- @ftlvariable name="requestContext" type="org.springframework.web.servlet.support.RequestContext" --]
 [#-- @ftlvariable name="renderContext" type="org.qzerver.web.attribute.render.ExtendedRenderContext" --]
 [#-- @ftlvariable name="freemarker_static['org.qzerver.web.map.SiteMap']" type="org.qzerver.web.map.SiteMap.static" --]
-[#-- @ftlvariable name="model" type="org.qzerver.web.controller.system.models.SystemStateModel" --]
+[#-- @ftlvariable name="model" type="org.qzerver.web.controller.system.SystemStateModel" --]
 [#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/system.ftl" as system]
 [#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/web/layout.ftl" as layout]
 [#import "/org/qzerver/resources/configuration/servlet/freemarker/macro/core/helpers.ftl" as helpers]

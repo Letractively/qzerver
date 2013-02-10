@@ -28,7 +28,7 @@ public class ClassActionDefinition implements ActionDefinition, Serializable {
      * A real instance of Callable - this property is not used on production and used in tests only. If this property
      * is set then callableClassName is ignored and new bean is not instantiated
      */
-    private Callable<?> callableInstance;
+    private transient Callable<?> callableInstance;
 
     @Override
     public ActionIdentifier getIdentifier() {

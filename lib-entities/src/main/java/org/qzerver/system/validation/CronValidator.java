@@ -11,6 +11,7 @@ public class CronValidator implements ConstraintValidator<Cron, Object> {
 
     @Override
     public void initialize(Cron constraintAnnotation) {
+        // nothing to inititalize
     }
 
     @Override

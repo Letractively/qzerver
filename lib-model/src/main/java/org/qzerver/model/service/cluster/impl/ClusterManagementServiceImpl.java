@@ -5,6 +5,7 @@ import com.gainmatrix.lib.business.exception.AbstractServiceException;
 import com.gainmatrix.lib.business.exception.MissingEntityException;
 import com.gainmatrix.lib.paging.Extraction;
 import com.google.common.base.Preconditions;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Hibernate;
 import org.qzerver.model.dao.cluster.ClusterGroupDao;
 import org.qzerver.model.dao.job.ScheduleJobDao;
@@ -69,7 +70,7 @@ public class ClusterManagementServiceImpl implements ClusterManagementService {
     @Override
     public void deleteGroup(long clusterGroupId) throws AbstractServiceException {
         List<ScheduleJob> jobs = scheduleJobDao.findAllByClusterGroup(clusterGroupId);
-        if ((jobs != null) && (jobs.size() > 0)) {
+        if (CollectionUtils.isNotEmpty(jobs)) {
             throw new ClusterGroupUsed();
         }
 

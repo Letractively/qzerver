@@ -7,6 +7,4 @@ import com.gainmatrix.lib.business.exception.AbstractServiceException;
  */
 public class ClusterGroupUsed extends AbstractServiceException {
 
-    public ClusterGroupUsed() {
-    }
 }

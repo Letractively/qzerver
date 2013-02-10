@@ -33,7 +33,7 @@ public class HttpTimeoutThread extends Thread {
         try {
             watched.join(timeoutMs);
         } catch (InterruptedException e) {
-            throw new SystemIntegrityException("Watchdog thread is unexpectedly interrupted");
+            throw new SystemIntegrityException("Watchdog thread is unexpectedly interrupted", e);
         }
 
         if (watched.isAlive()) {

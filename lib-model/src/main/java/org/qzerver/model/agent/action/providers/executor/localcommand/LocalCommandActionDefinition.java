@@ -7,7 +7,6 @@ import org.qzerver.model.agent.action.providers.ActionIdentifier;
 import javax.validation.constraints.Min;
 
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +70,7 @@ public class LocalCommandActionDefinition implements ActionDefinition, Serializa
     /**
      * Charset of standard and error output. Value 'null' means that both outputs are binary.
      */
-    private Charset charset;
+    private String charset;
 
     public String getCommand() {
         return command;
@@ -153,11 +152,11 @@ public class LocalCommandActionDefinition implements ActionDefinition, Serializa
         this.expectedExitCode = expectedExitCode;
     }
 
-    public Charset getCharset() {
+    public String getCharset() {
         return charset;
     }
 
-    public void setCharset(Charset charset) {
+    public void setCharset(String charset) {
         this.charset = charset;
     }
 

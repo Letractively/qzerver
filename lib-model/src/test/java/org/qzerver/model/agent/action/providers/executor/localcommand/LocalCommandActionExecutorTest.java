@@ -54,7 +54,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         definition.setCommand(javaCommand);
         definition.setParameters(commandArguments);
         definition.setDirectory(workDirectory);
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(false);
         definition.setSkipStdError(false);
@@ -135,7 +135,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         definition.setCommand(javaCommand);
         definition.setParameters(commandArguments);
         definition.setDirectory(workDirectory);
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(true);
         definition.setSkipStdError(true);
@@ -196,7 +196,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         definition.setCommand(javaCommand);
         definition.setParameters(commandArguments);
         definition.setDirectory(workDirectory);
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(false);
         definition.setSkipStdError(false);
@@ -282,7 +282,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         definition.setCommand(javaCommand);
         definition.setParameters(commandArguments);
         definition.setDirectory(workDirectory);
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(false);
         definition.setSkipStdError(false);
@@ -356,7 +356,7 @@ public class LocalCommandActionExecutorTest extends AbstractModelTest {
         definition.setCommand(command);
         definition.setParameters(commandArguments);
         definition.setDirectory(SystemUtils.getJavaIoTmpDir().getAbsolutePath());
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(false);
         definition.setSkipStdError(false);

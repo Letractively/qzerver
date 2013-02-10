@@ -93,7 +93,7 @@ public final class DdlGeneratorApplication {
             Dialect dialect = Dialect.getDialect(dialectProps);
 
             // Generate create&drop DDL scripts
-            final String lineEnding = ";\n";
+            String lineEnding = ";\n";
 
             String[] scriptCreateDdlArray = cfg.generateSchemaCreationScript(dialect);
             List<String> scriptCreateDdlList = Arrays.asList(scriptCreateDdlArray);

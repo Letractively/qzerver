@@ -48,7 +48,7 @@ public class LocalCommandActionExecutorHangTest extends AbstractModelTest {
         definition.setCommand("/bin/sh");
         definition.setParameters(commandArguments);
         definition.setDirectory(workDirectory);
-        definition.setCharset(Charset.defaultCharset());
+        definition.setCharset(Charset.defaultCharset().name());
         definition.setCombineOutput(false);
         definition.setSkipStdOutput(false);
         definition.setSkipStdError(false);

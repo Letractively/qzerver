@@ -33,7 +33,7 @@ public class ActionAgentImpl implements ActionAgent {
     @NotNull
     private Map<ActionIdentifier, ActionExecutor> executors;
 
-    private ConcurrentMap<Long, Boolean> executionTracker;
+    private final ConcurrentMap<Long, Boolean> executionTracker;
 
     public ActionAgentImpl() {
         this.executionTracker = new ConcurrentHashMap<Long, Boolean>();

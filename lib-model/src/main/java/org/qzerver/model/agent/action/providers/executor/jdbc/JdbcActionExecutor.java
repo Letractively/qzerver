@@ -79,11 +79,29 @@ public class JdbcActionExecutor implements ActionExecutor {
     {
         Statement statement = connection.createStatement();
 
+        try {
+            return processStatement(definition, statement);
+        } finally {
+            statement.close();
+        }
+
+    }
+
+    private JdbcActionResult processStatement(JdbcActionDefinition definition, Statement statement)
+        throws Exception
+    {
         if (definition.getTimeoutSec() > 0) {
             statement.setQueryTimeout(definition.getTimeoutSec());
         }
 
         int modified = statement.executeUpdate(definition.getSql());
+
+        return processResult(definition, modified);
+    }
+
+    private JdbcActionResult processResult(JdbcActionDefinition definition, int modified)
+        throws Exception
+    {
         boolean succeed;
 
         switch (definition.getRelation()) {

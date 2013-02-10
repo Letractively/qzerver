@@ -246,7 +246,7 @@ public class SshCommandActionExecutor implements ActionExecutor {
 
         private boolean reading;
 
-        private OutputCapturer(InputStream inputStream, boolean skip) {
+        public OutputCapturer(InputStream inputStream, boolean skip) {
             this.inputStream = inputStream;
             this.readTotal = 0;
             this.reading = true;
