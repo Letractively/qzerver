@@ -1,10 +1,9 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModelVersionHolder;
+import org.qzerver.model.domain.entities.base.AbstractApplicationEntity;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ScheduleExecution extends AbstractBusinessEntity<Long> implements Serializable {
+public class ScheduleExecution extends AbstractApplicationEntity implements Serializable {
 
     public static final int MAX_NODE_LENGTH = 128;
 
@@ -134,10 +133,6 @@ public class ScheduleExecution extends AbstractBusinessEntity<Long> implements S
      */
     @Length(max = MAX_COMMENT_LENGTH)
     private String description;
-
-    public ScheduleExecution() {
-        super(BusinessModelVersionHolder.VERSION);
-    }
 
     @Override
     public Long getId() {

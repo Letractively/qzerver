@@ -1,16 +1,15 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModelVersionHolder;
+import org.qzerver.model.domain.entities.base.AbstractApplicationEntity;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ScheduleGroup extends AbstractBusinessEntity<Long> implements Serializable {
+public class ScheduleGroup extends AbstractApplicationEntity implements Serializable {
 
     public static final int MAX_NAME_LENGTH = 128;
 
@@ -29,10 +28,6 @@ public class ScheduleGroup extends AbstractBusinessEntity<Long> implements Seria
      * Jobs list (unsorted)
      */
     private Set<ScheduleJob> jobs;
-
-    public ScheduleGroup() {
-        super(BusinessModelVersionHolder.VERSION);
-    }
 
     @Override
     public Long getId() {

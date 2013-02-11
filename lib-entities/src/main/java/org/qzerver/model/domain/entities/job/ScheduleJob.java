@@ -1,10 +1,9 @@
 package org.qzerver.model.domain.entities.job;
 
-import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
 import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.qzerver.model.domain.business.BusinessModelVersionHolder;
+import org.qzerver.model.domain.entities.base.AbstractApplicationEntity;
 import org.qzerver.model.domain.entities.cluster.ClusterGroup;
 
 import javax.validation.constraints.Min;
@@ -13,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ScheduleJob extends AbstractBusinessEntity<Long> implements Serializable {
+public class ScheduleJob extends AbstractApplicationEntity implements Serializable {
 
     public static final int MAX_NAME_LENGTH = 128;
 
@@ -124,10 +123,6 @@ public class ScheduleJob extends AbstractBusinessEntity<Long> implements Seriali
      * Notify when failure occurs
      */
     private boolean notifyOnFailure;
-
-    public ScheduleJob() {
-        super(BusinessModelVersionHolder.VERSION);
-    }
 
     @Override
     public Long getId() {
