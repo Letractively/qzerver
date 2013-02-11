@@ -1,11 +1,15 @@
 package org.qzerver.model.service.job.executor.dto;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
+
 import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class AutomaticJobExecutionParameters implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     /**
      * Scheduled time for the job

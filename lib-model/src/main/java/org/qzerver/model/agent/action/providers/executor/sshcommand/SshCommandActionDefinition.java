@@ -1,5 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.sshcommand;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
@@ -16,6 +17,8 @@ public class SshCommandActionDefinition implements ActionDefinition, Serializabl
     public static final int MIN_PORT_NUMBER = 0;
 
     public static final int MAX_PORT_NUMBER = 65535;
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private static final int DEFAULT_EXPECTED_EXIT_CODE = 0;
 

@@ -1,11 +1,14 @@
 package org.qzerver.model.agent.action.providers.executor.clazz;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
 import java.io.Serializable;
 
 public class ClassActionResult implements ActionResult, Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private String result;
 

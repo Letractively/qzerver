@@ -1,10 +1,13 @@
 package org.qzerver.model.agent.action.providers.executor.jmx;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
 import java.io.Serializable;
 
 public class JmxActionResult implements ActionResult, Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private String result;
 

@@ -1,10 +1,13 @@
 package org.qzerver.model.agent.action.providers.executor.sshcommand;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.qzerver.model.agent.action.providers.ActionResult;
 
 import java.io.Serializable;
 
 public class SshCommandActionResult implements ActionResult, Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private int exitCode;
 

@@ -1,5 +1,6 @@
 package org.qzerver.model.service.job.execution.dto;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 
@@ -10,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 public class StartExecutionParameters implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     /**
      * When the execution was exactly scheduled on

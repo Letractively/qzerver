@@ -1,5 +1,6 @@
 package org.qzerver.model.agent.action.providers.executor.http;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.agent.action.providers.ActionDefinition;
 import org.qzerver.model.agent.action.providers.ActionIdentifier;
@@ -11,6 +12,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class HttpActionDefinition implements ActionDefinition, Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private static final int HTTP_SUCCESS_CODE = 200;
 

@@ -1,8 +1,12 @@
 package org.qzerver.model.agent.action;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
+
 import java.io.Serializable;
 
 public class ActionAgentResult implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private boolean succeed;
 

@@ -1,5 +1,6 @@
 package org.qzerver.model.service.job.management.dto;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
@@ -8,6 +9,8 @@ import org.qzerver.system.validation.Cron;
 import java.io.Serializable;
 
 public class ScheduleJobRescheduleParameters implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     @NotBlank
     @Cron

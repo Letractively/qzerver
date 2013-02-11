@@ -1,8 +1,12 @@
 package org.qzerver.model.agent.action.providers.executor.localcommand;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
+
 import java.io.Serializable;
 
 public class LocalCommandActionOutput implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private LocalCommandActionOutputStatus status;
 

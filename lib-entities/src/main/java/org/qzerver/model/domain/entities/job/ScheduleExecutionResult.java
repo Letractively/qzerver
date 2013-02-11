@@ -1,17 +1,21 @@
 package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> {
+public class ScheduleExecutionResult extends AbstractBusinessEntity<Long> implements Serializable {
 
     public static final int MAX_PAYLOAD_LENGTH = 8 * 1024 * 1024;
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private Long id;
 

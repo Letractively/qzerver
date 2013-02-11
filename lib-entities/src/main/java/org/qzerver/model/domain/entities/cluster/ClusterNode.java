@@ -1,6 +1,7 @@
 package org.qzerver.model.domain.entities.cluster;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
@@ -8,14 +9,18 @@ import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import java.io.Serializable;
+
 /**
  * Cluster node - describes single cluster node by domain address
  */
-public class ClusterNode extends AbstractBusinessEntity<Long> {
+public class ClusterNode extends AbstractBusinessEntity<Long> implements Serializable {
 
     public static final int MAX_ADDRESS_LENGTH = 128;
 
     public static final int MAX_DESCRIPTION_LENGTH = 256;
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private Long id;
 

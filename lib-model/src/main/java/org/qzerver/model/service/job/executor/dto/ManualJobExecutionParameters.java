@@ -1,5 +1,6 @@
 package org.qzerver.model.service.job.executor.dto;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.qzerver.model.domain.entities.job.ScheduleExecution;
 
@@ -7,6 +8,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ManualJobExecutionParameters implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     @Length(max = ScheduleExecution.MAX_COMMENT_LENGTH)
     private String comment;

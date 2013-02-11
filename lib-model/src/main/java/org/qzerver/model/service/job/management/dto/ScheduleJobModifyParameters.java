@@ -1,5 +1,6 @@
 package org.qzerver.model.service.job.management.dto;
 
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.entities.job.ScheduleJob;
@@ -9,6 +10,8 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 public class ScheduleJobModifyParameters implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     @NotBlank
     @Length(max = ScheduleJob.MAX_NAME_LENGTH)

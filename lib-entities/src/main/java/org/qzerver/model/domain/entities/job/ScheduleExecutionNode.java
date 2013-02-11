@@ -1,6 +1,7 @@
 package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
@@ -9,7 +10,11 @@ import org.qzerver.model.domain.entities.cluster.ClusterNode;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> {
+import java.io.Serializable;
+
+public class ScheduleExecutionNode extends AbstractBusinessEntity<Long> implements Serializable {
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private Long id;
 

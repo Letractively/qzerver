@@ -1,16 +1,20 @@
 package org.qzerver.model.domain.entities.job;
 
 import com.gainmatrix.lib.business.entity.AbstractBusinessEntity;
+import com.gainmatrix.lib.serialization.SerialVersionUID;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.qzerver.model.domain.business.BusinessModelVersionHolder;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ScheduleGroup extends AbstractBusinessEntity<Long> {
+public class ScheduleGroup extends AbstractBusinessEntity<Long> implements Serializable {
 
     public static final int MAX_NAME_LENGTH = 128;
+
+    private static final long serialVersionUID = SerialVersionUID.UNCONTROLLED;
 
     private Long id;
 
